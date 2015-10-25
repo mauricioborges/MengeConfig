@@ -40,7 +40,7 @@
 
 #include "glwidget.hpp"
 #include "window.hpp"
-#include "mainwindow.h"
+#include "mainwindow.hpp"
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QHBoxLayout>
