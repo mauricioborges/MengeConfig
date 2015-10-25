@@ -29,6 +29,7 @@
           Name="Moc" 
           BeforeTargets="ClCompile" 
           Outputs="@(QtIncludes->'$(GenDir)/moc_%(Filename).cpp')">
+	<Exec Command = "echo Moc'ing %(QtIncludes.identity)"  />
     <Exec Command = "$(MocExe) %(QtIncludes.identity) -nw -o $(GenDir)/moc_%(Filename).cpp $(MocFlags)"/>
   </Target>
 
