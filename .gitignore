@@ -3,3 +3,5 @@
 *.log
 Debug/
 Release/
+MengeConfig/src/gen/
+*.user
