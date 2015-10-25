@@ -38,34 +38,67 @@
 **
 ****************************************************************************/
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDesktopWidget>
-#include <QtGui/QSurfaceFormat>
+#ifndef GLWIDGET_H
+#define GLWIDGET_H
 
-#include "mainwindow.hpp"
+#include <QtWidgets/QOpenGLWidget>
+#include <QtGui/QOpenGLFunctions>
+#include <QtGui/QOpenGLVertexArrayObject>
+#include <QtGui/QOpenGLBuffer>
+#include <QtGui/QMatrix4x4>
+#include "logo.h"
 
-int main(int argc, char *argv[])
+QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
+
+class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
-    QApplication app(argc, argv);
+    Q_OBJECT
 
-    QSurfaceFormat fmt;
-    fmt.setDepthBufferSize(24);
-    if (QCoreApplication::arguments().contains(QStringLiteral("--multisample")))
-        fmt.setSamples(4);
-    if (QCoreApplication::arguments().contains(QStringLiteral("--coreprofile"))) {
-        fmt.setVersion(3, 2);
-        fmt.setProfile(QSurfaceFormat::CoreProfile);
-    }
-    QSurfaceFormat::setDefaultFormat(fmt);
+public:
+    GLWidget(QWidget *parent = 0);
+    ~GLWidget();
 
-    MainWindow mainWindow;
-    mainWindow.resize(mainWindow.sizeHint());
-    int desktopArea = QApplication::desktop()->width() *
-                     QApplication::desktop()->height();
-    int widgetArea = mainWindow.width() * mainWindow.height();
-    if (((float)widgetArea / (float)desktopArea) < 0.75f)
-        mainWindow.show();
-    else
-        mainWindow.showMaximized();
-    return app.exec();
-}
+    QSize minimumSizeHint() const Q_DECL_OVERRIDE;
+    QSize sizeHint() const Q_DECL_OVERRIDE;
+
+public slots:
+    void setXRotation(int angle);
+    void setYRotation(int angle);
+    void setZRotation(int angle);
+    void cleanup();
+
+signals:
+    void xRotationChanged(int angle);
+    void yRotationChanged(int angle);
+    void zRotationChanged(int angle);
+
+protected:
+    void initializeGL() Q_DECL_OVERRIDE;
+    void paintGL() Q_DECL_OVERRIDE;
+    void resizeGL(int width, int height) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+
+private:
+    void setupVertexAttribs();
+
+    bool m_core;
+    int m_xRot;
+    int m_yRot;
+    int m_zRot;
+    QPoint m_lastPos;
+    Logo m_logo;
+    QOpenGLVertexArrayObject m_vao;
+    QOpenGLBuffer m_logoVbo;
+    QOpenGLShaderProgram *m_program;
+    int m_projMatrixLoc;
+    int m_mvMatrixLoc;
+    int m_normalMatrixLoc;
+    int m_lightPosLoc;
+    QMatrix4x4 m_proj;
+    QMatrix4x4 m_camera;
+    QMatrix4x4 m_world;
+    bool m_transparent;
+};
+
+#endif

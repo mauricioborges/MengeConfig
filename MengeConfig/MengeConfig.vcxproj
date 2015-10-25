@@ -11,12 +11,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\gen\cpp\moc_glwidget.cpp" />
+    <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp" />
+    <ClCompile Include="src\gen\cpp\moc_window.cpp" />
+    <ClCompile Include="src\main\glwidget.cpp" />
+    <ClCompile Include="src\main\logo.cpp" />
     <ClCompile Include="src\main\main.cpp" />
-    <ClCompile Include="src\main\openglwindow.cpp" />
-	<ClCompile Include="src\gen\cpp\moc_openglwindow.cpp" />
+    <ClCompile Include="src\main\mainwindow.cpp" />
+    <ClCompile Include="src\main\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\main\openglwindow.hpp" />
+    <ClInclude Include="src\main\glwidget.hpp" />
+    <ClInclude Include="src\main\logo.h" />
+    <ClInclude Include="src\main\mainwindow.hpp" />
+    <ClInclude Include="src\main\window.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E0BDB1D2-5251-4792-8584-8AB6BEBB5E84}</ProjectGuid>
@@ -27,13 +35,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v90</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v90</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

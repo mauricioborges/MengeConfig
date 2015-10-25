@@ -18,18 +18,42 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\main\glwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\logo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\main\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\openglwindow.cpp">
+    <ClCompile Include="src\main\mainwindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\gen\cpp\moc_openglwindow.cpp">
+    <ClCompile Include="src\main\window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gen\cpp\moc_glwidget.cpp">
+      <Filter>Source Files\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gen\cpp\moc_window.cpp">
+      <Filter>Source Files\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp">
       <Filter>Source Files\moc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\main\openglwindow.hpp">
+    <ClInclude Include="src\main\glwidget.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\logo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\window.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\mainwindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
