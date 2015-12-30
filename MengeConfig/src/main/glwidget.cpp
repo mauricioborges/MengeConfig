@@ -143,11 +143,12 @@ static const char *fragmentShaderSourceCore =
     "out highp vec4 fragColor;\n"
     "uniform highp vec3 lightPos;\n"
     "void main() {\n"
-    "   highp vec3 L = normalize(lightPos - vert);\n"
-    "   highp float NL = max(dot(normalize(vertNormal), L), 0.0);\n"
-    "   highp vec3 color = vec3(0.39, 1.0, 0.0);\n"
-    "   highp vec3 col = clamp(color * 0.2 + color * 0.8 * NL, 0.0, 1.0);\n"
-    "   fragColor = vec4(col, 1.0);\n"
+    //"   highp vec3 L = normalize(lightPos - vert);\n"
+    //"   highp float NL = max(dot(normalize(vertNormal), L), 0.0);\n"
+    //"   highp vec3 color = vec3(0.39, 1.0, 0.0);\n"
+    //"   highp vec3 col = clamp(color * 0.2 + color * 0.8 * NL, 0.0, 1.0);\n"
+    //"   fragColor = vec4(col, 1.0);\n"
+	"   fragColor = vec4(0.39, 1.0, 0.0, 1.0);\n"
     "}\n";
 
 static const char *vertexShaderSource =
@@ -257,7 +258,8 @@ void GLWidget::paintGL()
     QMatrix3x3 normalMatrix = m_world.normalMatrix();
     m_program->setUniformValue(m_normalMatrixLoc, normalMatrix);
 
-    glDrawArrays(GL_TRIANGLES, 0, m_logo.vertexCount());
+    //glDrawArrays(GL_TRIANGLES, 0, m_logo.vertexCount());
+	glDrawArrays(GL_POINTS, 0, m_logo.vertexCount());
 
     m_program->release();
 }
