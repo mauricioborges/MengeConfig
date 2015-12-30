@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <QtDir>C:\tools\dev\Qt\5.5\msvc2012</QtDir>
+    <QtDir>C:\Qt\5.5\msvc2013_64</QtDir>
     <MocExt>hpp</MocExt>
     <MocExe>$(QtDir)/bin/moc.exe</MocExe>
   </PropertyGroup>
