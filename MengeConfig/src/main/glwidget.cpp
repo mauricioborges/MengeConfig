@@ -43,6 +43,7 @@
 #include <QtGui/QOpenGLShaderProgram>
 #include <QtCore/QCoreApplication>
 #include <math.h>
+#include <gl/GL.h>
 
 GLWidget::GLWidget(QWidget *parent)
     : QOpenGLWidget(parent),
@@ -251,6 +252,16 @@ void GLWidget::paintGL()
     m_world.rotate(m_yRot / 16.0f, 0, 1, 0);
     m_world.rotate(m_zRot / 16.0f, 0, 0, 1);
 
+
+	glPushMatrix();
+	glScalef(0.5f, 0.5f, 0.5f);
+	glBegin(GL_TRIANGLES);
+	glVertex3f(-1.f, -1.f, 0.f);
+	glVertex3f(1.f, -1.f, 0.f);
+	glVertex3f(0.f, 1.f, 0.f);
+	glEnd();
+	glPopMatrix();
+
     QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
     m_program->bind();
     m_program->setUniformValue(m_projMatrixLoc, m_proj);
@@ -258,8 +269,8 @@ void GLWidget::paintGL()
     QMatrix3x3 normalMatrix = m_world.normalMatrix();
     m_program->setUniformValue(m_normalMatrixLoc, normalMatrix);
 
-    //glDrawArrays(GL_TRIANGLES, 0, m_logo.vertexCount());
-	glDrawArrays(GL_POINTS, 0, m_logo.vertexCount());
+    glDrawArrays(GL_TRIANGLES, 0, m_logo.vertexCount());
+	//glDrawArrays(GL_POINTS, 0, m_logo.vertexCount());
 
     m_program->release();
 }
