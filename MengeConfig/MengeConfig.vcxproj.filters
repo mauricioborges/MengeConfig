@@ -42,6 +42,12 @@
     <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp">
       <Filter>Source Files\moc</Filter>
     </ClCompile>
+    <ClCompile Include="ReferenceGrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QReferenceGrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\glwidget.hpp">
@@ -54,6 +60,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\mainwindow.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReferenceGrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QReferenceGrid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
