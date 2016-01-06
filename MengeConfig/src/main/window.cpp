@@ -2,6 +2,7 @@
 #include "glwidget.hpp"
 #include "window.hpp"
 #include "mainwindow.hpp"
+#include "SceneViewer.hpp"
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QHBoxLayout>
@@ -10,6 +11,10 @@
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QTreeView>
+#include <QtWidgets/QToolBar>
+#include <iostream>
 
 Window::Window(MainWindow *mw)
     : mainWindow(mw)
@@ -29,6 +34,7 @@ Window::Window(MainWindow *mw)
     connect(glWidget, SIGNAL(zRotationChanged(int)), zSlider, SLOT(setValue(int)));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
+	//mainLayout->addWidget(new QToolBar());
     QHBoxLayout *container = new QHBoxLayout;
     container->addWidget(glWidget);
     container->addWidget(xSlider);
@@ -36,11 +42,18 @@ Window::Window(MainWindow *mw)
     container->addWidget(zSlider);
 
     QWidget *w = new QWidget;
+	splitter = new QSplitter();
+	splitter->addWidget(w);
+	
+	_sceneViewer = new SceneViewer();
+	
+	splitter->addWidget(_sceneViewer);
     w->setLayout(container);
-    mainLayout->addWidget(w);
-    dockBtn = new QPushButton(tr("Undock"), this);
-    connect(dockBtn, SIGNAL(clicked()), this, SLOT(dockUndock()));
-    mainLayout->addWidget(dockBtn);
+	
+    mainLayout->addWidget(splitter);
+    //dockBtn = new QPushButton(tr("Undock"), this);
+    //connect(dockBtn, SIGNAL(clicked()), this, SLOT(dockUndock()));
+    //mainLayout->addWidget(dockBtn);
 
     setLayout(mainLayout);
 
@@ -92,4 +105,8 @@ void Window::dockUndock()
             QMessageBox::information(0, tr("Cannot dock"), tr("Main window already occupied"));
         }
     }
+}
+
+void Window::toggleLog(bool state) {
+	_sceneViewer->setVisible(state);
 }

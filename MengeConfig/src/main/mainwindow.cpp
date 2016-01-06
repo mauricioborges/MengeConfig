@@ -3,25 +3,23 @@
 #include "window.hpp"
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMenu>
-#include <QtWidgets/QMessageBox>
+//#include <QtWidgets/QMessageBox>
 
 MainWindow::MainWindow()
 {
+	_window = new Window(this);
+	setCentralWidget(_window);
+
+	// Set up the main window
     QMenuBar *menuBar = new QMenuBar;
-    QMenu *menuWindow = menuBar->addMenu(tr("&Window"));
-    QAction *addNew = new QAction(menuWindow);
-    addNew->setText(tr("Add new"));
-    menuWindow->addAction(addNew);
-    connect(addNew, SIGNAL(triggered()), this, SLOT(onAddNew()));
+    QMenu *menuView = menuBar->addMenu(tr("&View"));
+	QAction *addNew = new QAction(menuView);
+    addNew->setText(tr("Log"));
+	addNew->setCheckable(true);
+	addNew->setChecked(true);
+    menuView->addAction(addNew);
+    connect(addNew, &QAction::triggered, _window, &Window::toggleLog);
     setMenuBar(menuBar);
 
-    onAddNew();
-}
-
-void MainWindow::onAddNew()
-{
-    if (!centralWidget())
-        setCentralWidget(new Window(this));
-    else
-        QMessageBox::information(0, tr("Cannot add new window"), tr("Already occupied. Undock first."));
+	
 }

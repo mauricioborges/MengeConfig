@@ -4,6 +4,8 @@
 
 #include <QtWidgets/QMainWindow>
 
+class Window;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -11,8 +13,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow();
 
-private slots:
-    void onAddNew();
+private:
+	Window * _window;
+//private slots:
+    //void onAddNew();
 };
 
 #endif

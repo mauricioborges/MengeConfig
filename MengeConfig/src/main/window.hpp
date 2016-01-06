@@ -7,10 +7,13 @@
 QT_BEGIN_NAMESPACE
 class QSlider;
 class QPushButton;
+class QSplitter;
+class QTreeView;
 QT_END_NAMESPACE
 
 class GLWidget;
 class MainWindow;
+class SceneViewer;
 
 class Window : public QWidget
 {
@@ -19,19 +22,28 @@ class Window : public QWidget
 public:
     Window(MainWindow *mw);
 
+	friend class MainWindow;
+
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
     void dockUndock();
 
+	/*!
+	 * Slot for when the state of the log visibility changes.
+	 */
+	void toggleLog(bool state);
+
 private:
     QSlider *createSlider();
 
     GLWidget *glWidget;
+	SceneViewer * _sceneViewer;
     QSlider *xSlider;
     QSlider *ySlider;
     QSlider *zSlider;
+	QSplitter *splitter;
     QPushButton *dockBtn;
     MainWindow *mainWindow;
 };

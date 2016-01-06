@@ -11,16 +11,11 @@ int main(int argc, char *argv[])
 
     QSurfaceFormat fmt;
     fmt.setDepthBufferSize(24);
-    if (QCoreApplication::arguments().contains(QStringLiteral("--multisample")))
-        fmt.setSamples(4);
-    if (QCoreApplication::arguments().contains(QStringLiteral("--coreprofile"))) {
-        fmt.setVersion(3, 2);
-        fmt.setProfile(QSurfaceFormat::CoreProfile);
-    }
     QSurfaceFormat::setDefaultFormat(fmt);
 
     MainWindow mainWindow;
     mainWindow.resize(mainWindow.sizeHint());
+	//QApplication::desktop()
     int desktopArea = QApplication::desktop()->width() *
                      QApplication::desktop()->height();
     int widgetArea = mainWindow.width() * mainWindow.height();
