@@ -33,7 +33,7 @@ private slots:
 	/*!
 	 * Slot for when the state of the log visibility changes.
 	 */
-	void toggleLog(bool state);
+	void toggleSceneViewer(bool state);
 
 private:
     QSlider *createSlider();

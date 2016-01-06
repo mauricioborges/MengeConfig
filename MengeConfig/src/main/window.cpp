@@ -3,6 +3,7 @@
 #include "window.hpp"
 #include "mainwindow.hpp"
 #include "SceneViewer.hpp"
+#include "SceneHierarchy.hpp"
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QHBoxLayout>
@@ -107,6 +108,6 @@ void Window::dockUndock()
     }
 }
 
-void Window::toggleLog(bool state) {
+void Window::toggleSceneViewer(bool state) {
 	_sceneViewer->setVisible(state);
 }
