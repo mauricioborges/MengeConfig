@@ -38,6 +38,7 @@ private:
 	QAction *	_toggleSceneHierarchy;
 
 	/*!
+	QAction *	_toggleFsmVis;
 	 *	@brief		Causes the hierarchy visibility to be toggled.
 	 *
 	 *	@param		state The visibility to set on the hierarchy.
@@ -56,6 +57,12 @@ private:
 	*/
 	void toggleSceneViewer(bool state);
 
+	/*!
+	 *	@brief		Slot for when the state of the fsm viewer visibility changes.
+	 *
+	 *	@param		state		The visibility state of the widget.
+	  */
+	void toggleFSMViewer(bool state);
 };
 
 #endif

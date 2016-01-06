@@ -40,6 +40,12 @@ MainWindow::MainWindow()
 	menuView->addAction(_toggleSceneHierarchy);
 	connect(_toggleSceneHierarchy, &QAction::triggered, this, &MainWindow::toggleHierarchy);
 
+	_toggleFsmVis = new QAction(menuView);
+	_toggleFsmVis->setText(tr("FSM Viewer"));
+	_toggleFsmVis->setCheckable(true);
+	_toggleFsmVis->setChecked(true);
+	menuView->addAction(_toggleFsmVis);
+	connect(_toggleFsmVis, &QAction::triggered, this, &MainWindow::toggleFSMViewer);
 	setMenuBar(menuBar);
 
 	// Docked elements
@@ -66,4 +72,8 @@ void MainWindow::hierarchyVisibilityChanged(bool state) {
 
 void MainWindow::toggleSceneViewer(bool state) {
 	_sceneViewer->setVisible(state);
+}
+
+void MainWindow::toggleFSMViewer(bool state) {
+	_fsmViewer->setVisible(state);
 }
