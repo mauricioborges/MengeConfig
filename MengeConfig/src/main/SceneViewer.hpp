@@ -5,8 +5,8 @@
 
 QT_BEGIN_NAMESPACE
 class QToolBar;
-class QTextEdit;
 QT_END_NAMESPACE
+class GLWidget;
 
 class SceneViewer : public QWidget {
 	Q_OBJECT
@@ -27,9 +27,9 @@ private:
 	QToolBar * _toolBar;
 
 	/*!
-	*	@brief		A child widget.
+	*	@brief		The Open GL viewer.
 	*/
-	QTextEdit * _someChild;
+	GLWidget * _glView;
 };
 
 #endif	// __SCENE_VIEWER_H__

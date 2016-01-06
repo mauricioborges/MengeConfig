@@ -1,7 +1,9 @@
 #include "SceneViewer.hpp"
+
+#include "glwidget.hpp"
+
 #include <QtWidgets/qToolbar.h>
 #include <QtWidgets/QBoxLayout.h>
-#include <QtWidgets/qtextedit.h>
 #include <QtWidgets/qaction.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -14,9 +16,8 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	QAction * action = new QAction(QIcon(":/images/delete.png"), tr("&Delete"), this);
 	_toolBar->addAction(action);
 	mainLayout->addWidget(_toolBar);
-	_someChild = new QTextEdit();
-	_someChild->setText(tr("This is some text"));
-	mainLayout->addWidget(_someChild);
+	_glView = new GLWidget();
+	mainLayout->addWidget(_glView);
 
 	setLayout(mainLayout);
 }
