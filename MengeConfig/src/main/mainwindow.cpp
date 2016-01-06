@@ -1,4 +1,3 @@
-
 #include "mainwindow.hpp"
 #include "FSMViewer.hpp"
 #include "SceneHierarchy.hpp"
@@ -12,14 +11,21 @@
 
 #include <iostream>
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+//						Implementation of MainWindow
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 MainWindow::MainWindow()
 {
 	// The major gui components
 	QSplitter * splitter = new QSplitter();
+
 	_sceneViewer = new SceneViewer();
 	splitter->addWidget(_sceneViewer);
+
 	_fsmViewer = new FSMViewer();
 	splitter->addWidget(_fsmViewer);
+
 	setCentralWidget(splitter);
 
 	// Set up the main window
@@ -46,6 +52,7 @@ MainWindow::MainWindow()
 	_toggleFsmVis->setChecked(true);
 	menuView->addAction(_toggleFsmVis);
 	connect(_toggleFsmVis, &QAction::triggered, this, &MainWindow::toggleFSMViewer);
+
 	setMenuBar(menuBar);
 
 	// Docked elements
@@ -58,11 +65,15 @@ MainWindow::MainWindow()
 	
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 void MainWindow::toggleHierarchy(bool state) {
 	// NOTE: This does not cause a feedback loop with hierarchyVisibilityChanged because
 	//	only if the visibility state *changes* does work get done.
 	_hierarchyDock->setVisible(state);
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void MainWindow::hierarchyVisibilityChanged(bool state) {
 	// NOTE: This does not cause a feedback loop with toggleHierarchy because
@@ -70,9 +81,13 @@ void MainWindow::hierarchyVisibilityChanged(bool state) {
 	_toggleSceneHierarchy->setChecked(state);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 void MainWindow::toggleSceneViewer(bool state) {
 	_sceneViewer->setVisible(state);
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void MainWindow::toggleFSMViewer(bool state) {
 	_fsmViewer->setVisible(state);
