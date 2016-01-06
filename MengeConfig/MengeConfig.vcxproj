@@ -19,23 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="QReferenceGrid.cpp" />
-    <ClCompile Include="ReferenceGrid.cpp" />
     <ClCompile Include="src\gen\cpp\moc_glwidget.cpp" />
     <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp" />
+    <ClCompile Include="src\gen\cpp\moc_QReferenceGrid.cpp" />
     <ClCompile Include="src\gen\cpp\moc_window.cpp" />
     <ClCompile Include="src\main\glwidget.cpp" />
     <ClCompile Include="src\main\logo.cpp" />
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\mainwindow.cpp" />
+    <ClCompile Include="src\main\QReferenceGrid.cpp" />
+    <ClCompile Include="src\main\ReferenceGrid.cpp" />
     <ClCompile Include="src\main\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="QReferenceGrid.h" />
-    <ClInclude Include="ReferenceGrid.h" />
     <ClInclude Include="src\main\glwidget.hpp" />
     <ClInclude Include="src\main\logo.h" />
     <ClInclude Include="src\main\mainwindow.hpp" />
+    <ClInclude Include="src\main\QReferenceGrid.hpp" />
+    <ClInclude Include="src\main\ReferenceGrid.h" />
     <ClInclude Include="src\main\window.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
