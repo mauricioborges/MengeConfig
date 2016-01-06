@@ -14,6 +14,7 @@ QT_END_NAMESPACE
 class GLWidget;
 class MainWindow;
 class SceneViewer;
+class FSMViewer;
 
 class Window : public QWidget
 {
@@ -40,6 +41,7 @@ private:
 
     GLWidget *glWidget;
 	SceneViewer * _sceneViewer;
+	FSMViewer * _fsmViewer;
     QSlider *xSlider;
     QSlider *ySlider;
     QSlider *zSlider;

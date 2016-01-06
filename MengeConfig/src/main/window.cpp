@@ -1,4 +1,5 @@
 
+#include "FSMViewer.hpp"
 #include "glwidget.hpp"
 #include "window.hpp"
 #include "mainwindow.hpp"
@@ -47,8 +48,10 @@ Window::Window(MainWindow *mw)
 	splitter->addWidget(w);
 	
 	_sceneViewer = new SceneViewer();
-	
 	splitter->addWidget(_sceneViewer);
+
+	_fsmViewer = new FSMViewer();
+	splitter->addWidget(_fsmViewer);
     w->setLayout(container);
 	
     mainLayout->addWidget(splitter);

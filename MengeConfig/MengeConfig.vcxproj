@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\gen\cpp\moc_FSMViewer.cpp" />
     <ClCompile Include="src\gen\cpp\moc_glwidget.cpp" />
     <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp" />
     <ClCompile Include="src\gen\cpp\moc_QReferenceGrid.cpp" />
@@ -26,6 +27,7 @@
     <ClCompile Include="src\gen\cpp\moc_SceneViewer.cpp" />
     <ClCompile Include="src\gen\cpp\moc_window.cpp" />
     <ClCompile Include="src\gen\cpp\qrc_MengeConfig.cpp" />
+    <ClCompile Include="src\main\FSMViewer.cpp" />
     <ClCompile Include="src\main\glwidget.cpp" />
     <ClCompile Include="src\main\logo.cpp" />
     <ClCompile Include="src\main\main.cpp" />
@@ -37,6 +39,7 @@
     <ClCompile Include="src\main\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\main\FSMViewer.hpp" />
     <ClInclude Include="src\main\glwidget.hpp" />
     <ClInclude Include="src\main\logo.h" />
     <ClInclude Include="src\main\mainwindow.hpp" />

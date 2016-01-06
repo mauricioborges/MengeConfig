@@ -66,6 +66,12 @@
     <ClCompile Include="src\main\SceneHierarchy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\gen\cpp\moc_FSMViewer.cpp">
+      <Filter>Source Files\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\FSMViewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\glwidget.hpp">
@@ -90,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\SceneHierarchy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\FSMViewer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
