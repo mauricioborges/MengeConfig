@@ -23,6 +23,7 @@
     <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp" />
     <ClCompile Include="src\gen\cpp\moc_QReferenceGrid.cpp" />
     <ClCompile Include="src\gen\cpp\moc_window.cpp" />
+    <ClCompile Include="src\gen\cpp\qrc_MengeConfig.cpp" />
     <ClCompile Include="src\main\glwidget.cpp" />
     <ClCompile Include="src\main\logo.cpp" />
     <ClCompile Include="src\main\main.cpp" />
@@ -38,6 +39,9 @@
     <ClInclude Include="src\main\QReferenceGrid.hpp" />
     <ClInclude Include="src\main\ReferenceGrid.h" />
     <ClInclude Include="src\main\window.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\main\MengeConfig.qrc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E0BDB1D2-5251-4792-8584-8AB6BEBB5E84}</ProjectGuid>

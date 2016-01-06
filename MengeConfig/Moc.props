@@ -11,6 +11,8 @@
     <QtDir>C:\Qt\5.5\msvc2013_64</QtDir>
     <MocExt>hpp</MocExt>
     <MocExe>$(QtDir)/bin/moc.exe</MocExe>
+	<QrcExt>qrc</QrcExt>
+	<RccExe>$(QtDir)/bin/rcc.exe</RccExe>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -24,7 +26,7 @@
   <ItemGroup>
     <QtIncludes Include="$(CppDir)/**/*.$(MocExt)"/>
   </ItemGroup>
-
+  
   <Target Inputs="@(QtIncludes)" 
           Name="Moc" 
           BeforeTargets="ClCompile" 
@@ -42,6 +44,18 @@
           Name="CopytoOut"
           Outputs="@(CopyToOutput->'%(DestinationFolder)/%(RecursiveDir)%(Filename)%(Extension)')"
           AfterTargets="Link">
+  </Target>
+  
+  <ItemGroup>
+	<QrcFiles Include="$(CppDir)/**/*.$(QrcExt)"/>
+  </ItemGroup>
+
+  <Target Inputs="@(QrcFiles)"
+		  Name="QRC"
+		  BeforeTargets="ClCompile"
+		  Outputs="@(QrcFiles->'$(GenDir)/qrc_%(Filename).cpp')">
+		  <Exec Command = "echo RCC %(QrcFiles.identity)" />
+		  <Exec Command = "$(RccExe) -no-compress -name (Filename_qrc) %(QrcFiles.identity) -o $(GenDir)/qrc_%(Filename).cpp" />
   </Target>
   
 </Project>
