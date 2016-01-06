@@ -4,8 +4,9 @@
 
 #include <QtWidgets/QMainWindow>
 
-class Window;
 class SceneHierarchy;
+class SceneViewer;
+class FSMViewer;
 
 class MainWindow : public QMainWindow
 {
@@ -15,15 +16,25 @@ public:
     MainWindow();
 
 private:
-	Window * _window;
+	
 	SceneHierarchy * _hierarchy;
 	QDockWidget * _hierarchyDock;
+	SceneViewer * _sceneViewer;
+	FSMViewer * _fsmViewer;
+	//QSplitter *splitter;
 
 	///////////////////////////////////////////////////////////////////////////
 	//				Menu items
 	///////////////////////////////////////////////////////////////////////////
 
+	/*!
+	 *	@brief		The toggle for showing/hiding the scene viewer.
+	 */
 	QAction *	_toggleSceneVis;
+
+	/*!
+	 *	@brief		The toggle for shoing/hiding the scene hierarchy.
+	 */
 	QAction *	_toggleSceneHierarchy;
 
 	/*!
@@ -40,8 +51,11 @@ private:
 	 */
 	void hierarchyVisibilityChanged(bool state);
 
-//private slots:
-    //void onAddNew();
+	/*!
+	* Slot for when the state of the log visibility changes.
+	*/
+	void toggleSceneViewer(bool state);
+
 };
 
 #endif
