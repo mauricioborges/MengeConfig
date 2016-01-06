@@ -1,4 +1,4 @@
-#include "QReferenceGrid.h"
+#include "QReferenceGrid.hpp"
 #include <QtGui/QOpenGLShaderProgram>
 
 
