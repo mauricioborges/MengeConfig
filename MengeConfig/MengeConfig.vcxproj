@@ -28,7 +28,6 @@
     <ClCompile Include="src\gen\cpp\qrc_MengeConfig.cpp" />
     <ClCompile Include="src\main\FSMViewer.cpp" />
     <ClCompile Include="src\main\glwidget.cpp" />
-    <ClCompile Include="src\main\logo.cpp" />
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\mainwindow.cpp" />
     <ClCompile Include="src\main\QReferenceGrid.cpp" />
@@ -39,7 +38,6 @@
   <ItemGroup>
     <ClInclude Include="src\main\FSMViewer.hpp" />
     <ClInclude Include="src\main\glwidget.hpp" />
-    <ClInclude Include="src\main\logo.h" />
     <ClInclude Include="src\main\mainwindow.hpp" />
     <ClInclude Include="src\main\QReferenceGrid.hpp" />
     <ClInclude Include="src\main\ReferenceGrid.h" />
