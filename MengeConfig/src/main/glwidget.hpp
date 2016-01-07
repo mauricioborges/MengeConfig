@@ -17,6 +17,8 @@ namespace Menge {
 	}
 }
 
+class SceneViewer;
+
 /*!
  *	@brief		The view that contains the open gl context.
  */
@@ -78,6 +80,8 @@ public:
 	*/
 	void setCameraFarPlane(int i, float dist);// { _cameras[i].setFarPlane(dist); }
 
+	friend class SceneViewer;
+
 public slots:
 	/*!
 	 *	@brief		Cleans up the OpenGL state when the OpenGL context is lost.
@@ -111,22 +115,29 @@ protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 	/*!
-	*	@brief		The callback for when the mouse is moved.
-	*
-	*	@param		event		The event parameters.
-	*/
+	 *	@brief		The callback for when the mouse is moved.
+	 *
+	 *	@param		event		The event parameters.
+	 */
 	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 	/*!
-	*	@brief		Causes the viewer to recognize that a new OpenGL context has been
-	*				created (such as window resizes).
-	*/
+	 *	@brief		Causes the viewer to recognize that a new OpenGL context has been
+	 *				created (such as window resizes).
+	 */
 	void newGLContext();
+
+	/*!
+	 *	@brief		Sets the views state for drawing the axis.
+	 *
+	 *	@param		state		True to draw it, false to hide it.
+	 */
+	void setDrawAxis(bool state);
 
 protected:
 	/*!
-	*	@brief		The GLScene to draw.
-	*/
+	 *	@brief		The GLScene to draw.
+	 */
 	Menge::SceneGraph::GLScene *	_scene;
 
 	/*!

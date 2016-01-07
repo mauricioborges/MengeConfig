@@ -12,12 +12,21 @@
 
 SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	QVBoxLayout * mainLayout = new QVBoxLayout();
+
 	_toolBar = new QToolBar();
-	QAction * action = new QAction(QIcon(":/images/delete.png"), tr("&Delete"), this);
-	_toolBar->addAction(action);
 	mainLayout->addWidget(_toolBar);
+
 	_glView = new GLWidget();
 	mainLayout->addWidget(_glView);
+
+	// Populate tool bar
+	QAction * action = new QAction(QIcon(":/images/toggleAxis.png"), tr("Toggle &Axis"), this);
+	action->setCheckable(true);
+	action->setChecked(true);
+	action->setToolTip(tr("Toggle the display of the axis in the scene viewer"));
+	_toolBar->addAction(action);
+	connect(action, &QAction::triggered, _glView, &GLWidget::setDrawAxis);
+	
 
 	setLayout(mainLayout);
 }

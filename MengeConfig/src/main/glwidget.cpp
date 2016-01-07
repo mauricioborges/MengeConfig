@@ -173,6 +173,13 @@ void GLWidget::newGLContext() {
 
 ///////////////////////////////////////////////////////////////////////////
 
+void GLWidget::setDrawAxis(bool state) {
+	_drawWorldAxis = state;
+	update();
+}
+
+///////////////////////////////////////////////////////////////////////////
+
 void GLWidget::initLighting() {
 	glEnable(GL_LIGHTING);
 	for (size_t i = 0; i < _lights.size(); ++i) {

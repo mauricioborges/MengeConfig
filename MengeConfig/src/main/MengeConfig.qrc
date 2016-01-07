@@ -1,6 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
     <file>images/delete.png</file>
+    <file>images/toggleAxis.png</file>
 </qresource>
 </RCC>
 
