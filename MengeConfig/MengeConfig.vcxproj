@@ -140,7 +140,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(QTDir)\include;E:\work\projects\menge_release\src\Menge\MengeCore;E:\work\projects\menge_release\src\Menge\MengeCore\Runtime</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(QTDir)\include;$(MengeDir)\MengeCore;$(MengeDir)\MengeCore\Runtime;$(MengeDir)\MengeCore\viewer;$(MengeDir)\MengeCore\SceneGraph;$(MengeDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -187,7 +187,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(QTDir)\include;E:\work\projects\menge_release\src\Menge\MengeCore;E:\work\projects\menge_release\src\Menge\MengeCore\Runtime</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(QTDir)\include;$(MengeDir)\MengeCore;$(MengeDir)\MengeCore\Runtime;$(MengeDir)\MengeCore\viewer;$(MengeDir)\MengeCore\SceneGraph;$(MengeDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

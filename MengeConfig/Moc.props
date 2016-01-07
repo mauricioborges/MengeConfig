@@ -13,6 +13,7 @@
     <MocExe>$(QtDir)/bin/moc.exe</MocExe>
 	<QrcExt>qrc</QrcExt>
 	<RccExe>$(QtDir)/bin/rcc.exe</RccExe>
+	<MengeDir>E:\work\projects\menge_release\src\Menge\MengeCore;E:\work\projects\menge_release\src\Menge</MengeDir>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
