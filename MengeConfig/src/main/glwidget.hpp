@@ -9,6 +9,14 @@
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
+namespace Menge {
+	namespace SceneGraph {
+		class GLScene;
+		class GLCamera;
+		class GLLight;
+	}
+}
+
 /*!
  *	@brief		The view that contains the open gl context.
  */
@@ -17,42 +25,145 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
     Q_OBJECT
 
 public:
+	/*!
+	 *	@biref		Constructor.
+	 *
+	 *	@param		parent		The optional parent widget.
+	 */
     GLWidget(QWidget *parent = 0);
+
+	/*!
+	 *	@brief		Destructor.
+	 */
     ~GLWidget();
 
+	/*!
+	 *	@brief		Override defining the minimum size for the window.
+	 *
+	 *	@returns	The minimum size for this view.
+	 */
     QSize minimumSizeHint() const Q_DECL_OVERRIDE;
-    QSize sizeHint() const Q_DECL_OVERRIDE;
+
+	/*!
+	 *	@brief		The hint for the size of this widget.
+	 *
+	 *	@returns	The hinted size for this widget.
+	 */
+	QSize sizeHint() const Q_DECL_OVERRIDE;
+
+	/*!
+	*	@brief		Sets the GLScene to be drawn.
+	*				A viewer can only draw a single scene; all drawn
+	*				elements belong either to the GLScene or a GLContext.
+	*
+	*	@param		scene	The GLScene to be rendered and temporally advanced.
+	*/
+	void setScene(Menge::SceneGraph::GLScene * scene);
+
+	/*!
+	*	@brief		Sets the horizontal field of view for the ith camera.
+	*
+	*	@param		i		The index of the camera - index value is NOT checked.
+	*	@param		fov		The horizontal field of view for the indicated camera.
+	*						Value is not validated.
+	*/
+	void setCameraFOV(int i, float fov);
+
+	/*!
+	*	@brief		Sets the distance to the camera's far clipping plane.
+	*
+	*	@param		i		The index of the camera - index value is NOT checked.
+	*	@param		dist	The distance, from the camera, to its far clipping plane.
+	*						Value is not validated.
+	*/
+	void setCameraFarPlane(int i, float dist);// { _cameras[i].setFarPlane(dist); }
 
 public slots:
+	/*!
+	 *	@brief		Cleans up the OpenGL state when the OpenGL context is lost.
+	 */
     void cleanup();
 
 protected:
+	/*!
+	 *	@brief		Initializes the OpenGL state
+	 */
     void initializeGL() Q_DECL_OVERRIDE;
+
+	/*!
+	 *	@brief		Draws the scene to the OpenGL window.
+	 */
     void paintGL() Q_DECL_OVERRIDE;
+
+	/*!
+	 *	@brief		Provides the new size of the GL window.
+	 *
+	 *	@param		width		The width of the window (in pixels).
+	 *	@param		height		The height of the window (in pixels).
+	 */
     void resizeGL(int width, int height) Q_DECL_OVERRIDE;
+
+	/*!
+	 *	@brief		The callback for when a mouse is pressed.
+	 *
+	 *	@param		event		The event parameters.
+	 */
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
-private:
-#ifdef GL_WIDGET_PROGRAM
-    void setupVertexAttribs();
-#endif
+	/*!
+	*	@brief		The callback for when the mouse is moved.
+	*
+	*	@param		event		The event parameters.
+	*/
+	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
-	float m_yRot;
-	QPoint m_lastPos;
+	/*!
+	*	@brief		Causes the viewer to recognize that a new OpenGL context has been
+	*				created (such as window resizes).
+	*/
+	void newGLContext();
 
-#ifdef GL_WIDGET_PROGRAM
-	QOpenGLVertexArrayObject m_vao;
-    QOpenGLBuffer m_logoVbo;
-    QOpenGLShaderProgram *m_program;
-#endif
-    int m_projMatrixLoc;
-    int m_mvMatrixLoc;
-    int m_normalMatrixLoc;
-    int m_lightPosLoc;
-    QMatrix4x4 m_proj;
-    QMatrix4x4 m_camera;
-    QMatrix4x4 m_world;
+protected:
+	/*!
+	*	@brief		The GLScene to draw.
+	*/
+	Menge::SceneGraph::GLScene *	_scene;
+
+	/*!
+	*	@brief		A set of cameras from which to draw the scene.
+	*/
+	std::vector< Menge::SceneGraph::GLCamera > _cameras;
+
+	/*!
+	*	@brief		The index of camera currently being used to draw the scene.
+	*/
+	size_t		_currCam;
+
+	/*!
+	*	@brief		The position of the mouse when the button was depressed (in screen space).
+	*/
+	QPoint _downPos;
+
+	/*!
+	*	@brief		The set of lights to use in rendering.
+	*/
+	std::vector< Menge::SceneGraph::GLLight > _lights;
+
+	/*!
+	*	@brief		Determines whether a world-aligned axis is drawn
+	*/
+	bool	_drawWorldAxis;
+
+	/*!
+	*	@brief		Initizlies the OpenGL lighting based on the set of lights.
+	*/
+	void initLighting();
+
+	/*!
+	*	@brief		Draws a simple, three-color world axis at the origin of world space.
+	*/
+	void drawWorldAxis();
+
 };
 
 #endif

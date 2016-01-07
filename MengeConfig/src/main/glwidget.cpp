@@ -5,28 +5,65 @@
 #include <QtCore/QCoreApplication>
 #include <math.h>
 #include <gl/GL.h>
+#include "GLCamera.h"
+#include "GLScene.h"
+#include "GLLight.h"
 
 #include <iostream>
 
+///////////////////////////////////////////////////////////////////////////
+//				IMPLEMENTATION FOR GLWidget
+///////////////////////////////////////////////////////////////////////////
+
 GLWidget::GLWidget(QWidget *parent)
-	: QOpenGLWidget(parent), m_yRot(0)
+	: QOpenGLWidget(parent),
+	_scene(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true)
 {
 }
+
+///////////////////////////////////////////////////////////////////////////
 
 GLWidget::~GLWidget()
 {
     cleanup();
 }
 
+///////////////////////////////////////////////////////////////////////////
+
 QSize GLWidget::minimumSizeHint() const
 {
     return QSize(50, 50);
 }
 
+///////////////////////////////////////////////////////////////////////////
+
 QSize GLWidget::sizeHint() const
 {
     return QSize(400, 400);
 }
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::setScene(Menge::SceneGraph::GLScene * scene) {
+	if (_scene && scene != _scene) {
+		delete _scene;
+	}
+	_scene = scene;
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::setCameraFOV(int i, float fov) { 
+	_cameras[i].setFOV(fov); 
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::setCameraFarPlane(int i, float dist) {
+	_cameras[i].setFarPlane(dist); 
+}
+
+///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::cleanup()
 {
@@ -34,6 +71,8 @@ void GLWidget::cleanup()
 	// TODO: Notify the scene that the window is being destroyed.
     doneCurrent();
 }
+
+///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::initializeGL()
 {
@@ -48,121 +87,119 @@ void GLWidget::initializeGL()
     connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &GLWidget::cleanup);
 
     initializeOpenGLFunctions();
-    glClearColor(0, 0, 0, 1);
 
-#ifdef GL_WIDGET_PROGRAM
-    m_program = new QOpenGLShaderProgram;
-    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, m_core ? vertexShaderSourceCore : vertexShaderSource);
-    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, m_core ? fragmentShaderSourceCore : fragmentShaderSource);
-    m_program->bindAttributeLocation("vertex", 0);
-    m_program->bindAttributeLocation("normal", 1);
-    m_program->link();
+	glEnable(GL_NORMALIZE);
+	glShadeModel( GL_SMOOTH );
+	glClearColor(0, 0, 0, 1);
+	//glClearColor( _bgColor.x(), _bgColor.y(), _bgColor.z(), 0.f );
+	glClearDepth( 1.f );
+	glEnable(GL_DEPTH_TEST);
+	if ( _lights.size() > 0 ) {
+		initLighting();
+	} else {
+		glDisable( GL_LIGHTING );
+	}
 
-    m_program->bind();
-    m_projMatrixLoc = m_program->uniformLocation("projMatrix");
-    m_mvMatrixLoc = m_program->uniformLocation("mvMatrix");
-    m_normalMatrixLoc = m_program->uniformLocation("normalMatrix");
-    m_lightPosLoc = m_program->uniformLocation("lightPos");
+	glEnable( GL_COLOR_MATERIAL );
 
-    // Create a vertex array object. In OpenGL ES 2.0 and OpenGL 2.x
-    // implementations this is optional and support may not be present
-    // at all. Nonetheless the below code works in all cases and makes
-    // sure there is a VAO when one is needed.
-    m_vao.create();
-    QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
-
-    // Setup our vertex buffer object.
-    m_logoVbo.create();
-    m_logoVbo.bind();
-    m_logoVbo.allocate(m_logo.constData(), m_logo.count() * sizeof(GLfloat));
-
-    // Store the vertex attribute bindings for the program.
-    setupVertexAttribs();
-
-    // Light position is fixed.
-    m_program->setUniformValue(m_lightPosLoc, QVector3D(0, 0, 70));
-
-	m_program->release();
-#endif GL_WIDGET_PROGRAM
-
-	// Our camera never changes in this example.
-	m_camera.setToIdentity();
-	m_camera.translate(0, 0, -10);
 }
 
-#ifdef GL_WIDGET_PROGRAM
-void GLWidget::setupVertexAttribs()
-{
-    m_logoVbo.bind();
-    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
-    f->glEnableVertexAttribArray(0);
-    f->glEnableVertexAttribArray(1);
-    f->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
-    f->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), reinterpret_cast<void *>(3 * sizeof(GLfloat)));
-    m_logoVbo.release();
-}
-#endif
+///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
 
-    m_world.setToIdentity();
-	m_world.rotate(m_yRot, 0, 1, 0);
-	glLoadMatrixf((m_camera * m_world).constData());
-
-	// TODO: Draw stuff here!
-	glPushMatrix();
-	glScalef(0.5f, 0.5f, 0.5f);
-	glBegin(GL_TRIANGLES);
-	glVertex3f(-1.f, -1.f, 0.f);
-	glVertex3f(1.f, -1.f, 0.f);
-	glVertex3f(0.f, 1.f, 0.f);
-	glEnd();
-	glPopMatrix();
-
-#ifdef GL_WIDGET_PROGRAM
-    QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
-    m_program->bind();
-    m_program->setUniformValue(m_projMatrixLoc, m_proj);
-    m_program->setUniformValue(m_mvMatrixLoc, m_camera * m_world);
-    QMatrix3x3 normalMatrix = m_world.normalMatrix();
-    m_program->setUniformValue(m_normalMatrixLoc, normalMatrix);
-
-    glDrawArrays(GL_TRIANGLES, 0, m_logo.vertexCount());
-	//glDrawArrays(GL_POINTS, 0, m_logo.vertexCount());
-
-    m_program->release();
-#endif
+	if (_scene) {
+		_scene->drawGL(_cameras[_currCam], _lights, width(), height());
+	}
+	// various view decorations
+	// world axis
+	if (_drawWorldAxis) drawWorldAxis();
 
 }
+
+///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::resizeGL(int w, int h)
 {
-    m_proj.setToIdentity();
-    m_proj.perspective(45.0f, GLfloat(w) / h, 0.01f, 200.0f);
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(m_proj.constData());
-
-	glMatrixMode(GL_MODELVIEW);
+	newGLContext();
 }
+
+///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
-    m_lastPos = event->pos();
+	_downPos = event->pos();
 }
+
+///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    int dx = event->x() - m_lastPos.x();
-    int dy = event->y() - m_lastPos.y();
+	int dx = event->x() - _downPos.x();
+	int dy = event->y() - _downPos.y();
 
     if (event->buttons() & Qt::LeftButton) {
-		m_yRot += dx;
-		update();
     } else if (event->buttons() & Qt::RightButton) {
     }
-    m_lastPos = event->pos();
+	_downPos = event->pos();
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::newGLContext() {
+	int w = width();
+	int h = height();
+	// TODO: in QT resizing does *not* invalidate the context.
+	//	I need to see which of this is actually necessary.
+	//	In fact, context manager should be called in initializeGL
+	// I need to determine what the text writer needs to do when things resize
+	//		do I need to actually call newGLContext on it?
+	// TODO: If new gl context is not necessary for a resize, then I should
+	//	move the resizing stuff to resize, and the new gl to initializeGL.
+	//Menge::SceneGraph::TextWriter::Instance()->resize(w, h);
+	//Menge::SceneGraph::TextWriter::Instance()->newGLContext();
+	//initializeGL();
+	//Menge::GLContextManager::newGLContext();
+	if (_scene) {
+		_scene->newGLContext();
+	}
+	// Re-initialize the cameras
+	for (size_t i = 0; i < _cameras.size(); ++i) {
+		_cameras[i].setViewport(w, h);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::initLighting() {
+	glEnable(GL_LIGHTING);
+	for (size_t i = 0; i < _lights.size(); ++i) {
+		_lights[i].initGL((int)i, Menge::SceneGraph::GLLight::CAMERA);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::drawWorldAxis() {
+	// NOTE: This doesn't GUARANTEE that it's being drawn in the correct space
+	//		It assumes that the modelview matrix is the camera matrix
+	glPushAttrib(GL_LINE_BIT | GL_ENABLE_BIT | GL_CURRENT_BIT);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glLineWidth(2.0f);
+	const float AXIS_SCALE = 4.f;
+	glBegin(GL_LINES);
+	glColor3f(1.f, 0.f, 0.f);
+	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(AXIS_SCALE, 0.f, 0.f);
+	glColor3f(0.f, 1.f, 0.f);
+	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(0.f, AXIS_SCALE, 0.f);
+	glColor3f(0.f, 0.f, 1.f);
+	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(0.f, 0.f, AXIS_SCALE);
+	glEnd();
+	glPopAttrib();
 }
