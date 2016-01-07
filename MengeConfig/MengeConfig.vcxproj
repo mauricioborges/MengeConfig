@@ -118,13 +118,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(QTDir)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(QTDir)\include;$(MengeDir)\MengeCore;$(MengeDir)\MengeCore\Runtime;$(MengeDir)\MengeCore\viewer;$(MengeDir)\MengeCore\SceneGraph;$(MengeDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QTDir)/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;Qt5OpenGL.lib;QT5Widgets.lib;QT5Core.lib;QT5Gui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDir)/lib;$(MengeLibDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MengeCore_d.lib;opengl32.lib;Qt5OpenGL.lib;QT5Widgets.lib;QT5Core.lib;QT5Gui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>echo $(QTDir)</Command>
@@ -145,7 +145,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QTDir)/lib;E:\work\projects\menge_release\projects\VS2013\Menge\build\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDir)/lib;$(MengeLibDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>MengeCore_d.lib;opengl32.lib;Qt5OpenGL.lib;QT5Widgets.lib;QT5Core.lib;QT5Gui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
@@ -164,18 +164,22 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(QTDir)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(QTDir)\include;$(MengeDir)\MengeCore;$(MengeDir)\MengeCore\Runtime;$(MengeDir)\MengeCore\viewer;$(MengeDir)\MengeCore\SceneGraph;$(MengeDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(QTDir)/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;Qt5OpenGL.lib;QT5Widgets.lib;QT5Core.lib;QT5Gui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDir)/lib;$(MengeLibDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MengeCore.lib;opengl32.lib;Qt5OpenGL.lib;QT5Widgets.lib;QT5Core.lib;QT5Gui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)exe_rsrc\*" "$(TargetDir)" /y /d</Command>
+      <Command>xcopy "$(QtDir)\bin\Qt5Core.dll" "$(TargetDir)" /y /d
+xcopy "$(QtDir)\bin\Qt5Gui.dll" "$(TargetDir)" /y /d
+xcopy "$(QtDir)\bin\Qt5Widgets.dll" "$(TargetDir)" /y /d
+xcopy "$(MengeLibDir)MengeCore.dll" "$(TargetDir)" /y /d
+xcopy "$(MengeDepDll)*.dll" "$(TargetDir)" /y /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -194,8 +198,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(QTDir)/lib;E:\work\projects\menge_release\projects\VS2013\Menge\build\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDir)/lib;$(MengeLibDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>MengeCore.lib;opengl32.lib;Qt5OpenGL.lib;QT5Widgets.lib;QT5Core.lib;QT5Gui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>LinkVerboseLib</ShowProgress>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)exe_rsrc\*" "$(TargetDir)" /y /d</Command>

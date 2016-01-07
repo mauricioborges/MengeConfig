@@ -8,12 +8,15 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <QtDir>C:\Qt\5.5\msvc2013_64</QtDir>
+    <QtDir>C:\Qt\5.5\msvc2013</QtDir>
     <MocExt>hpp</MocExt>
     <MocExe>$(QtDir)/bin/moc.exe</MocExe>
 	<QrcExt>qrc</QrcExt>
 	<RccExe>$(QtDir)/bin/rcc.exe</RccExe>
-	<MengeDir>E:\work\projects\menge_release\src\Menge\MengeCore;E:\work\projects\menge_release\src\Menge</MengeDir>
+	<MengeRoot>E:\work\projects\menge_release</MengeRoot>
+	<MengeDir>$(MengeRoot)\src\Menge</MengeDir>
+	<MengeLibDir>$(MengeRoot)\projects\VS2013\Menge\build\lib\</MengeLibDir>
+	<MengeDepDll>$(MengeRoot)\projects\resources\win\</MengeDepDll>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
