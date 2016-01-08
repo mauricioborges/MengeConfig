@@ -83,7 +83,7 @@ private:
 
 	/*!
 	 *	@brief		Slot for when the state of the scene viewer visibility changes.
-	  *
+	 *
 	 *	@param		state		The visibility state of the widget.
 	 */
 	void toggleSceneViewer(bool state);
@@ -92,7 +92,7 @@ private:
 	 *	@brief		Slot for when the state of the fsm viewer visibility changes.
 	 *
 	 *	@param		state		The visibility state of the widget.
-	  */
+	 */
 	void toggleFSMViewer(bool state);
 
 };

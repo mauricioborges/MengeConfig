@@ -54,30 +54,30 @@ public:
 	QSize sizeHint() const Q_DECL_OVERRIDE;
 
 	/*!
-	*	@brief		Sets the GLScene to be drawn.
-	*				A viewer can only draw a single scene; all drawn
-	*				elements belong either to the GLScene or a GLContext.
-	*
-	*	@param		scene	The GLScene to be rendered and temporally advanced.
-	*/
+	 *	@brief		Sets the GLScene to be drawn.
+	 *				A viewer can only draw a single scene; all drawn
+	 *				elements belong either to the GLScene or a GLContext.
+	 *
+	 *	@param		scene	The GLScene to be rendered and temporally advanced.
+	 */
 	void setScene(Menge::SceneGraph::GLScene * scene);
 
 	/*!
-	*	@brief		Sets the horizontal field of view for the ith camera.
-	*
-	*	@param		i		The index of the camera - index value is NOT checked.
-	*	@param		fov		The horizontal field of view for the indicated camera.
-	*						Value is not validated.
-	*/
+	 *	@brief		Sets the horizontal field of view for the ith camera.
+	 *
+	 *	@param		i		The index of the camera - index value is NOT checked.
+	 *	@param		fov		The horizontal field of view for the indicated camera.
+	 *						Value is not validated.
+	 */
 	void setCameraFOV(int i, float fov);
 
 	/*!
-	*	@brief		Sets the distance to the camera's far clipping plane.
-	*
-	*	@param		i		The index of the camera - index value is NOT checked.
-	*	@param		dist	The distance, from the camera, to its far clipping plane.
-	*						Value is not validated.
-	*/
+	 *	@brief		Sets the distance to the camera's far clipping plane.
+	 *
+	 *	@param		i		The index of the camera - index value is NOT checked.
+	 *	@param		dist	The distance, from the camera, to its far clipping plane.
+	 *						Value is not validated.
+	 */
 	void setCameraFarPlane(int i, float dist);// { _cameras[i].setFarPlane(dist); }
 
 	friend class SceneViewer;
@@ -122,10 +122,10 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 	/*!
-	*	@brief		The callback for when mouse wheel is turned.
-	*
-	*	@param		event		The event parameters.
-	*/
+	 *	@brief		The callback for when mouse wheel is turned.
+	 *
+	 *	@param		event		The event parameters.
+	 */
 	void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 
 	/*!
@@ -148,38 +148,38 @@ protected:
 	Menge::SceneGraph::GLScene *	_scene;
 
 	/*!
-	*	@brief		A set of cameras from which to draw the scene.
-	*/
+	 *	@brief		A set of cameras from which to draw the scene.
+	 */
 	std::vector< Menge::SceneGraph::GLCamera > _cameras;
 
 	/*!
-	*	@brief		The index of camera currently being used to draw the scene.
-	*/
+	 *	@brief		The index of camera currently being used to draw the scene.
+	 */
 	size_t		_currCam;
 
 	/*!
-	*	@brief		The position of the mouse when the button was depressed (in screen space).
-	*/
+	 *	@brief		The position of the mouse when the button was depressed (in screen space).
+	 */
 	QPoint _downPos;
 
 	/*!
-	*	@brief		The set of lights to use in rendering.
-	*/
+	 *	@brief		The set of lights to use in rendering.
+	 */
 	std::vector< Menge::SceneGraph::GLLight > _lights;
 
 	/*!
-	*	@brief		Determines whether a world-aligned axis is drawn
-	*/
+	 *	@brief		Determines whether a world-aligned axis is drawn
+	 */
 	bool	_drawWorldAxis;
 
 	/*!
-	*	@brief		Initizlies the OpenGL lighting based on the set of lights.
-	*/
+	 *	@brief		Initizlies the OpenGL lighting based on the set of lights.
+	 */
 	void initLighting();
 
 	/*!
-	*	@brief		Draws a simple, three-color world axis at the origin of world space.
-	*/
+	 *	@brief		Draws a simple, three-color world axis at the origin of world space.
+	 */
 	void drawWorldAxis();
 
 };

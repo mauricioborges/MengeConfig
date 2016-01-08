@@ -13,22 +13,22 @@ class FSMViewer : public QWidget {
 
 public:
 	/*!
-	*	@brief		Constructor.
-	*
-	*	@param		parent		The optional parent
-	*/
+	 *	@brief		Constructor.
+	 *
+	 *	@param		parent		The optional parent
+	 */
 	FSMViewer(QWidget * parent = 0x0);
 
 private:
 
 	/*!
-	*	@brief		The tool bar for this window.
-	*/
+	 *	@brief		The tool bar for this window.
+	 */
 	QToolBar * _toolBar;
 
 	/*!
-	*	@brief		A child widget.
-	*/
+	 *	@brief		A child widget.
+	 */
 	QGraphicsView * _view;
 };
 

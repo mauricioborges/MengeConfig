@@ -27,8 +27,8 @@ private:
 	QToolBar * _toolBar;
 
 	/*!
-	*	@brief		The Open GL viewer.
-	*/
+	 *	@brief		The Open GL viewer.
+	 */
 	GLWidget * _glView;
 };
 

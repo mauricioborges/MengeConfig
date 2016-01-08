@@ -88,19 +88,19 @@ public:
 	}
 
 	/*!
-	*	@brief		Returns the nearest grid point to the input point.
-	*
-	*	@param		point		The 2D query point.
-	*	@returns	The point on the grid nearest the query point.
-	*/
+	 *	@brief		Returns the nearest grid point to the input point.
+	 *
+	 *	@param		point		The 2D query point.
+	 *	@returns	The point on the grid nearest the query point.
+	 */
 	Vector2 snap(const Vector2 & point);
 
 	/*!
-	*	@brief		"Snaps" the query point to a line along the grid's x-axis (preserving the y-value).
-	*
-	*	@param		point		The 2D query point.
-	*	@returns	The point with the same y, but with the x-value of the nearest vertical grid line.
-	*/
+	 *	@brief		"Snaps" the query point to a line along the grid's x-axis (preserving the y-value).
+	 *
+	 *	@param		point		The 2D query point.
+	 *	@returns	The point with the same y, but with the x-value of the nearest vertical grid line.
+	 */
 	Vector2 snapX(const Vector2 & point);
 
 	/*!
