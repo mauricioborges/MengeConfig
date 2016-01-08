@@ -2,6 +2,7 @@
 <qresource>
     <file>images/delete.png</file>
     <file>images/toggleAxis.png</file>
+  <file>images/togglePersp.png</file>
 </qresource>
 </RCC>
 

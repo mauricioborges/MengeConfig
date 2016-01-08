@@ -20,12 +20,19 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	mainLayout->addWidget(_glView);
 
 	// Populate tool bar
-	QAction * action = new QAction(QIcon(":/images/toggleAxis.png"), tr("Toggle &Axis"), this);
-	action->setCheckable(true);
-	action->setChecked(true);
-	action->setToolTip(tr("Toggle the display of the axis in the scene viewer"));
-	_toolBar->addAction(action);
-	connect(action, &QAction::triggered, _glView, &GLWidget::setDrawAxis);
+	QAction * togAxisAct = new QAction(QIcon(":/images/toggleAxis.png"), tr("Toggle &Axis"), this);
+	togAxisAct->setCheckable(true);
+	togAxisAct->setChecked(true);
+	togAxisAct->setToolTip(tr("Toggle the display of the axis in the scene viewer"));
+	_toolBar->addAction(togAxisAct);
+	connect(togAxisAct, &QAction::triggered, _glView, &GLWidget::setDrawAxis);
+
+	QAction * togPerspAct = new QAction(QIcon(":/images/togglePersp.png"), tr("Toggle &Perspective"), this);
+	togPerspAct->setCheckable(true);
+	togPerspAct->setChecked(true);
+	togPerspAct->setToolTip(tr("Toggle the current camera's projection between perspective and orthographic"));
+	_toolBar->addAction(togPerspAct);
+	connect(togPerspAct, &QAction::triggered, _glView, &GLWidget::toggleProjection);
 	
 
 	setLayout(mainLayout);

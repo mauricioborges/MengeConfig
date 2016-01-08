@@ -141,6 +141,13 @@ protected:
 	 */
 	void setDrawAxis(bool state);
 
+	/*!
+	 *	@brief		Toggles current camera between perspective and orthographic projection.
+	 *
+	 *	@param		state		True to set to perspective, false to set to orthographic.
+	 */
+	void toggleProjection(bool isPerspective);
+
 protected:
 	/*!
 	 *	@brief		The GLScene to draw.

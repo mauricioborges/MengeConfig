@@ -240,6 +240,19 @@ void GLWidget::setDrawAxis(bool state) {
 	update();
 }
 
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::toggleProjection(bool isPerspective) {
+	if (isPerspective) {
+		_cameras[_currCam].setPersp();
+	}
+	else {
+		_cameras[_currCam].setOrtho();
+	}
+	update();
+}
+
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::initLighting() {
