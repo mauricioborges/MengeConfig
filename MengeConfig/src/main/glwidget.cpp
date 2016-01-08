@@ -19,6 +19,17 @@ GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent),
 	_scene(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true)
 {
+	// TODO: Handle cameras in some other way
+	Menge::SceneGraph::GLCamera camera;
+	camera.setPosition(0.f, 0.f, 10.f);
+	camera.setTarget(0.f, 0.f, 0.f);
+	camera.setFarPlane(100.f);
+	camera.setNearPlane(0.1f);
+	camera.setFOV(45.f);
+	camera.setPersp();
+	_cameras.push_back(camera);
+
+	_scene = new Menge::SceneGraph::GLScene();
 }
 
 ///////////////////////////////////////////////////////////////////////////
