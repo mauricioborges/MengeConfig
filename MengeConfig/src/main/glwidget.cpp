@@ -141,20 +141,56 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
-	_downPos = event->pos();
+	Qt::KeyboardModifiers mods = event->modifiers();
+	bool hasCtrl = (mods & Qt::CTRL) > 0;
+	bool hasAlt = (mods & Qt::ALT) > 0;
+	bool hasShift = (mods & Qt::SHIFT) > 0;
+
+	Qt::MouseButton btn = event->button();
+	if (btn == Qt::LeftButton) {
+		_downPos = event->pos();
+		if (!(hasCtrl || hasAlt || hasShift) && _scene != 0x0) {
+			std::cout << "Selection is not implemented yet!\n";
+		}
+	} 
+	
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	int dx = event->x() - _downPos.x();
-	int dy = event->y() - _downPos.y();
+	Qt::KeyboardModifiers mods = event->modifiers();
+	bool hasCtrl = (mods & Qt::CTRL) > 0;
+	bool hasAlt = (mods & Qt::ALT) > 0;
+	bool hasShift = (mods & Qt::SHIFT) > 0;
 
-    if (event->buttons() & Qt::LeftButton) {
-    } else if (event->buttons() & Qt::RightButton) {
-    }
-	_downPos = event->pos();
+	bool rotate = hasCtrl && !(hasAlt || hasShift);
+	bool pan = !hasAlt && hasCtrl && hasShift;
+	bool zoom = hasShift && !(hasAlt || hasCtrl);
+
+	Qt::MouseButtons btn = event->buttons();
+	if (btn == Qt::LeftButton) {
+		QPoint delta = event->pos() - _downPos;
+		bool cameraMoved = false;
+		if (rotate) {
+			_cameras[_currCam].orbitHorizontalAxis(delta.y() * 0.0075f);
+			_cameras[_currCam].orbitVerticalAxis(-delta.x() * 0.0075f);
+			cameraMoved = true;
+		}
+		else if (pan) {
+			_cameras[_currCam].truck(-delta.x() * 0.0025f);
+			_cameras[_currCam].crane(delta.y() * 0.0025f);
+			cameraMoved = true;
+		}
+		else if (zoom) {
+			const float scale = 1.f / 5.0f;
+			_cameras[_currCam].zoom(-delta.y() * scale);
+			cameraMoved = true;
+		}
+		_downPos = event->pos();
+		if (cameraMoved) update();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////
