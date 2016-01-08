@@ -255,6 +255,32 @@ void GLWidget::toggleProjection(bool isPerspective) {
 
 ///////////////////////////////////////////////////////////////////////////
 
+void GLWidget::setViewDirection(int direction){
+	switch (direction) {
+	case 0:	// +x
+		_cameras[_currCam].viewXAxis();
+		break;
+	case 1: // -x
+		_cameras[_currCam].viewXAxis(false);
+		break;
+	case 2:	// +y
+		_cameras[_currCam].viewYAxis();
+		break;
+	case 3:	// -y
+		_cameras[_currCam].viewYAxis(false);
+		break;
+	case 4: // +z
+		_cameras[_currCam].viewZAxis();
+		break;
+	case 5: // -z
+		_cameras[_currCam].viewZAxis(false);
+		break;
+	}
+	update();
+}
+
+///////////////////////////////////////////////////////////////////////////
+
 void GLWidget::initLighting() {
 	glEnable(GL_LIGHTING);
 	for (size_t i = 0; i < _lights.size(); ++i) {

@@ -148,6 +148,14 @@ protected:
 	 */
 	void toggleProjection(bool isPerspective);
 
+public slots:
+	/*!
+	 *	@brief		Re-orients the camera to look down a specific axis.
+	 *
+	 *	@param		direction	An encoded direction: 0-5: [x, -x, y, -y, z, -z]
+	 */
+	void setViewDirection(int direction);
+
 protected:
 	/*!
 	 *	@brief		The GLScene to draw.
