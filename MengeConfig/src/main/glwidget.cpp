@@ -159,6 +159,21 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 
 ///////////////////////////////////////////////////////////////////////////
 
+void GLWidget::wheelEvent(QWheelEvent *event) {
+	Qt::KeyboardModifiers mods = event->modifiers();
+	bool hasCtrl = (mods & Qt::CTRL) > 0;
+	bool hasAlt = (mods & Qt::ALT) > 0;
+	bool hasShift = (mods & Qt::SHIFT) > 0;
+	float amount = event->delta() / 10.f;
+	if (hasCtrl) amount *= 2;
+	if (hasAlt) amount *= 2;
+	if (hasShift) amount *= 2;
+	_cameras[_currCam].zoom(amount);
+	update();
+}
+
+///////////////////////////////////////////////////////////////////////////
+
 void GLWidget::newGLContext() {
 	int w = width();
 	int h = height();

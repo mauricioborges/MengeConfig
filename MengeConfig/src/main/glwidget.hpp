@@ -122,6 +122,13 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 	/*!
+	*	@brief		The callback for when mouse wheel is turned.
+	*
+	*	@param		event		The event parameters.
+	*/
+	void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+
+	/*!
 	 *	@brief		Causes the viewer to recognize that a new OpenGL context has been
 	 *				created (such as window resizes).
 	 */
