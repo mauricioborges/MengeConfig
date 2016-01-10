@@ -147,9 +147,17 @@ protected:
 	/*!
 	 *	@brief		Toggles current camera between perspective and orthographic projection.
 	 *
-	 *	@param		state		True to set to perspective, false to set to orthographic.
+	 *	@param		isPerspective		True to set to perspective, false to set to orthographic.
 	 */
 	void toggleProjection(bool isPerspective);
+
+	/*!
+	 *	@brief		Toggles whether or not the grid is drawn in the scene.
+	 *				A grid that is not visible cannot be used for snapping.
+	 *
+	 *	@param		isActive		True to enable grid drawing, false to disable.
+	 */
+	void toggleReferenceGrid(bool isActive);
 
 public slots:
 	/*!
@@ -189,6 +197,11 @@ protected:
 	 *	@brief		Determines whether a world-aligned axis is drawn
 	 */
 	bool	_drawWorldAxis;
+
+	/*!
+	 *	@brief		Determines if the reference grid is active.
+	 */
+	bool	_activeGrid;
 
 	/*!
 	 *	@brief		Initizlies the OpenGL lighting based on the set of lights.

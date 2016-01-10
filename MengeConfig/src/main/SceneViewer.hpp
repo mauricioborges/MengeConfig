@@ -30,6 +30,14 @@ private:
 	 *	@brief		The Open GL viewer.
 	 */
 	GLWidget * _glView;
+
+	/*!
+	*	@brief		Toggles whether or not the grid is drawn in the scene.
+	*				A grid that is not visible cannot be used for snapping.
+	*
+	*	@param		state		True to enable grid drawing, false to disable.
+	*/
+	void toggleGrid(bool state);
 };
 
 #endif	// __SCENE_VIEWER_H__

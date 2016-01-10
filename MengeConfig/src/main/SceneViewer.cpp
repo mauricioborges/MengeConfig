@@ -44,9 +44,24 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	dirComboBox->setCurrentIndex(5);
 	_toolBar->addSeparator();
 	_toolBar->addWidget(dirComboBox);
+	_toolBar->addSeparator();
 	// TODO: Figure out why the function pointer version didn't work and I had to use the old slot/signal crap.
 	//connect(dirComboBox, &QComboBox::currentIndexChanged, _glView, &GLWidget::setViewDirection);
 	connect(dirComboBox, SIGNAL(activated(int)), _glView, SLOT(setViewDirection(int)));
 
+	QAction * togGridAct = new QAction(QIcon(":/images/toggleGrid.png"), tr("Toggle &Grid"), this);
+	togGridAct->setCheckable(true);
+	togGridAct->setChecked(true);
+	togGridAct->setToolTip(tr("Toggle the reference grid; an inactive grid cannot be used for snapping."));
+	_toolBar->addAction(togGridAct);
+	connect(togGridAct, &QAction::triggered, this, &SceneViewer::toggleGrid);
+
 	setLayout(mainLayout);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::toggleGrid(bool state) {
+	_glView->toggleReferenceGrid(state);
+	// TODO: Disable snapping buttons
 }

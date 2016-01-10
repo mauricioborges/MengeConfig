@@ -17,7 +17,7 @@ GridNode::~GridNode() {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void GridNode::drawGL(bool select) {
-	if (!select) {
+	if (!select && _visible) {
 		glPushAttrib(GL_LIGHTING_BIT);
 
 		// boundary

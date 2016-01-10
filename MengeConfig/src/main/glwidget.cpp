@@ -18,7 +18,7 @@
 
 GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent),
-	_scene(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true)
+	_scene(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true), _activeGrid(true)
 {
 	// TODO: Handle cameras in some other way
 	Menge::SceneGraph::GLCamera camera;
@@ -108,7 +108,7 @@ void GLWidget::initializeGL()
 
 	glEnable(GL_NORMALIZE);
 	glShadeModel( GL_SMOOTH );
-	glClearColor(0.91, 0.91, 0.9, 1);
+	glClearColor(0.91f, 0.91f, 0.9f, 1);
 	glClearDepth( 1.f );
 	glEnable(GL_DEPTH_TEST);
 	if ( _lights.size() > 0 ) {
@@ -242,14 +242,17 @@ void GLWidget::newGLContext() {
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::setDrawAxis(bool state) {
-	_drawWorldAxis = state;
-	update();
+	if (state != _drawWorldAxis) {
+		_drawWorldAxis = state;
+		update();
+	}
 }
 
 
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::toggleProjection(bool isPerspective) {
+	// this assumes that the boolean argument actually represents a change.
 	if (isPerspective) {
 		_cameras[_currCam].setPersp();
 	}
@@ -257,6 +260,16 @@ void GLWidget::toggleProjection(bool isPerspective) {
 		_cameras[_currCam].setOrtho();
 	}
 	update();
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::toggleReferenceGrid(bool isActive) {
+	if (_activeGrid != isActive) {
+		_grid->setVisible(isActive);
+		_activeGrid = isActive;
+		update();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////
