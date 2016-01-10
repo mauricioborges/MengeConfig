@@ -6,6 +6,7 @@
 QT_BEGIN_NAMESPACE
 class QToolBar;
 class QLabel;
+class QComboBox;
 QT_END_NAMESPACE
 class GLWidget;
 
@@ -28,12 +29,17 @@ private:
 	void updateStatus();
 
 	/*!
-	*	@brief		Toggles whether or not the grid is drawn in the scene.
-	*				A grid that is not visible cannot be used for snapping.
-	*
-	*	@param		state		True to enable grid drawing, false to disable.
-	*/
+	 *	@brief		Toggles whether or not the grid is drawn in the scene.
+	 *				A grid that is not visible cannot be used for snapping.
+	 *
+	 *	@param		state		True to enable grid drawing, false to disable.
+	 */
 	void toggleGrid(bool state);
+
+	/*!
+	 *	@brief		Responds to users rotating the camera to aribtrary angles.
+	 */
+	void userRotated();
 	
 	/*!
 	 *	@brief		The tool bar for this window.
@@ -46,9 +52,16 @@ private:
 	GLWidget * _glView;
 
 	/*!
+	 *	@brief		The combox box indicating camera axis orientation.
+	 */
+	QComboBox * _dirComboBox;
+
+	/*!
 	 *	@brief		The status text for the viewer.
 	 */
 	QLabel * _statusLabel;
+
+
 };
 
 #endif	// __SCENE_VIEWER_H__

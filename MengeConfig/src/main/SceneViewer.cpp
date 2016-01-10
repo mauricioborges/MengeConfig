@@ -43,18 +43,18 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	_toolBar->addAction(togPerspAct);
 	connect(togPerspAct, &QAction::triggered, _glView, &GLWidget::toggleProjection);
 
-	QComboBox * dirComboBox = new QComboBox();
-	dirComboBox->setEditable(false);
+	_dirComboBox = new QComboBox();
+	_dirComboBox->setEditable(false);
 	QStringList directions;
-	directions << "x" << "-x" << "y" << "-y" << "z" << "-z";
-	dirComboBox->addItems(directions);
-	dirComboBox->setCurrentIndex(5);
+	directions << "user-defined" << "x" << "-x" << "y" << "-y" << "z" << "-z";
+	_dirComboBox->addItems(directions);
+	_dirComboBox->setCurrentIndex(5);
 	_toolBar->addSeparator();
-	_toolBar->addWidget(dirComboBox);
+	_toolBar->addWidget(_dirComboBox);
 	_toolBar->addSeparator();
 	// TODO: Figure out why the function pointer version didn't work and I had to use the old slot/signal crap.
 	//connect(dirComboBox, &QComboBox::currentIndexChanged, _glView, &GLWidget::setViewDirection);
-	connect(dirComboBox, SIGNAL(activated(int)), _glView, SLOT(setViewDirection(int)));
+	connect(_dirComboBox, SIGNAL(activated(int)), _glView, SLOT(setViewDirection(int)));
 
 	QAction * togGridAct = new QAction(QIcon(":/images/toggleGrid.png"), tr("Toggle &Grid"), this);
 	togGridAct->setCheckable(true);
@@ -67,6 +67,8 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	gridPropAct->setToolTip(tr("Edit the reference grid's properties."));
 	_toolBar->addAction(gridPropAct);
 	connect(gridPropAct, &QAction::triggered, _glView, &GLWidget::editGridProperties);
+
+	connect(_glView, &GLWidget::userRotated, this, &SceneViewer::userRotated);
 
 	setLayout(mainLayout);
 }
@@ -86,4 +88,10 @@ void SceneViewer::updateStatus() {
 	QString str("Scene Viewer - ");
 
 	_statusLabel->setText(str);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::userRotated() {
+	_dirComboBox->setCurrentIndex(0);
 }

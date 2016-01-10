@@ -91,6 +91,12 @@ public slots:
 	 */
     void cleanup();
 
+signals:
+	/*!
+	 *	@brief		Indicates that the camera has been rotated arbitrarily.
+	 */
+	void userRotated();
+
 protected:
 	/*!
 	 *	@brief		Initializes the OpenGL state
