@@ -5,6 +5,7 @@
 #include <QtWidgets/qaction.h>
 #include <QtWidgets/QBoxLayout.h>
 #include <QtWidgets/qcombobox.h>
+#include <QtWidgets/QLabel.h>
 #include <QtWidgets/qToolbar.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,11 +16,17 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	QVBoxLayout * mainLayout = new QVBoxLayout();
 
 	_toolBar = new QToolBar();
-	mainLayout->addWidget(_toolBar);
+	mainLayout->addWidget(_toolBar, 0);
 	mainLayout->setMargin(0);
 
 	_glView = new GLWidget();
-	mainLayout->addWidget(_glView);
+	mainLayout->addWidget(_glView, 1);
+
+	_statusLabel = new QLabel("Scene Viewer:");
+	QHBoxLayout * statusLayout = new QHBoxLayout();
+	statusLayout->setContentsMargins(5, 1, 5, 1);
+	statusLayout->addWidget(_statusLabel, 0);
+	mainLayout->addLayout(statusLayout);
 
 	// Populate tool bar
 	QAction * togAxisAct = new QAction(QIcon(":/images/toggleAxis.png"), tr("Toggle &Axis"), this);
@@ -69,4 +76,14 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 void SceneViewer::toggleGrid(bool state) {
 	_glView->toggleReferenceGrid(state);
 	// TODO: Disable snapping buttons
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::updateStatus() {
+	// TODO: Write out various state to this line -- e.g., what is selected, etc.
+	// TODO: This functionality should ultimately be shared by each of the dialogs.
+	QString str("Scene Viewer - ");
+
+	_statusLabel->setText(str);
 }

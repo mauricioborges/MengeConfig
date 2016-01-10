@@ -5,6 +5,7 @@
 
 QT_BEGIN_NAMESPACE
 class QToolBar;
+class QLabel;
 QT_END_NAMESPACE
 class GLWidget;
 
@@ -20,6 +21,19 @@ public:
 	SceneViewer(QWidget * parent = 0x0);
 
 private:
+
+	/*!
+	 *	@brief		Updates the status text on the viewer.
+	 */
+	void updateStatus();
+
+	/*!
+	*	@brief		Toggles whether or not the grid is drawn in the scene.
+	*				A grid that is not visible cannot be used for snapping.
+	*
+	*	@param		state		True to enable grid drawing, false to disable.
+	*/
+	void toggleGrid(bool state);
 	
 	/*!
 	 *	@brief		The tool bar for this window.
@@ -32,12 +46,9 @@ private:
 	GLWidget * _glView;
 
 	/*!
-	*	@brief		Toggles whether or not the grid is drawn in the scene.
-	*				A grid that is not visible cannot be used for snapping.
-	*
-	*	@param		state		True to enable grid drawing, false to disable.
-	*/
-	void toggleGrid(bool state);
+	 *	@brief		The status text for the viewer.
+	 */
+	QLabel * _statusLabel;
 };
 
 #endif	// __SCENE_VIEWER_H__
