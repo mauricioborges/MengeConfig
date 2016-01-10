@@ -177,11 +177,39 @@ protected:
 	 */
 	void toggleReferenceGrid(bool isActive);
 
-	public slots:
+	/*!
+	 *	@brief		Toggles whether selection points are snapped to the horizontal
+	 *				lines of the *active* grid.
+	 *
+	 *	@param		isActive		True enables snapping, false disabled.
+	 */
+	void toggleHorizontalSnap(bool isActive);
 
 	/*!
-	*	@brief		Open the dialog to edit the reference grid's properties.
-	*/
+	 *	@brief		Toggles whether selection points are snapped to the vertical
+	 *				lines of the *active* grid.
+	 *
+	 *	@param		isActive		True enables snapping, false disabled.
+	 */
+	void toggleVerticalSnap(bool isActive);
+
+	/*!
+	 *	@brief		Returns the position under the mouse on the ground plane in
+	 *				world space.  
+	 *
+	 *	@param		screenPos		The position of the mouse in screen space.
+	 *	@param		worldPos		The point on the world x-y plane under the mouse.
+	 *	@returns	True if worldPos has been set (i.e., the value can be computed, false
+	 *				otherwise.)
+	 */
+	bool getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worldPos);
+
+
+public slots:
+
+	/*!
+	 *	@brief		Open the dialog to edit the reference grid's properties.
+	 */
 	void editGridProperties();
 
 	/*!
@@ -228,14 +256,16 @@ protected:
 	bool	_activeGrid;
 
 	/*!
-	 *	@brief		Initizlies the OpenGL lighting based on the set of lights.
+	 *	@brief		Reports if the selection point should be snapped to the
+	 *				*active* grid's horizontal lines.
 	 */
-	void initLighting();
+	bool	_hSnap;
 
 	/*!
-	 *	@brief		Draws a simple, three-color world axis at the origin of world space.
+	 *	@brief		Reports if the selection point should be snapped to the
+	 *				*active* grid's vertical lines.
 	 */
-	void drawWorldAxis();
+	bool	_vSnap;
 
 	/*!
 	 *	@brief		Reports if the camera is in a top-view configuration.
@@ -248,6 +278,16 @@ protected:
 	 *				reference.
 	 */
 	GridNode * _grid;
+
+	/*!
+	 *	@brief		Initizlies the OpenGL lighting based on the set of lights.
+	 */
+	void initLighting();
+
+	/*!
+	 *	@brief		Draws a simple, three-color world axis at the origin of world space.
+	 */
+	void drawWorldAxis();
 
 };
 

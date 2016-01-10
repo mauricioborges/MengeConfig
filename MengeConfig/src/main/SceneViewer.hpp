@@ -74,6 +74,17 @@ private:
 	*/
 	QLabel * _posLabel;
 
+	/*!
+	 *	@brief		The action to toggle the grid's horizontal snap functiaonlity.
+	 */
+	QAction * _gridHSnap;
+
+	/*!
+	*	@brief		The action to toggle the grid's vertical snap functiaonlity.
+	*/
+	QAction * _gridVSnap;
+
+
 };
 
 #endif	// __SCENE_VIEWER_H__

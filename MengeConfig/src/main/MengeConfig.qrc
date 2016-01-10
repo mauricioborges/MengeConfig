@@ -5,6 +5,8 @@
   <file>images/togglePersp.png</file>
   <file>images/toggleGrid.png</file>
   <file>images/gridProperties.png</file>
+  <file>images/gridSnapHorizontal.png</file>
+  <file>images/gridSnapVertical.png</file>
 </qresource>
 </RCC>
 

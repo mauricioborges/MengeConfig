@@ -1,5 +1,7 @@
 #include "ReferenceGrid.h"
 
+#include <iostream>
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 //						Implementation of ReferenceGrid
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,19 +50,33 @@ void ReferenceGrid::setMajorDist(float dist) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 Vector2 ReferenceGrid::snap(const Vector2 & point) {
-	return Vector2();
+	Vector2 O(_originX, _originY);
+	Vector2 offset = point - O;
+	float cellSize = _majorDist / (_minorCount + 1);
+	Vector2 mapped = offset / cellSize;
+	float x = round(mapped.x()) * cellSize + _originX;
+	float y = round(mapped.y()) * cellSize + _originY;
+	return Vector2(x, y);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-Vector2 ReferenceGrid::snapX(const Vector2 & point) {
-	return Vector2();
+Vector2 ReferenceGrid::snapVertical(const Vector2 & point) {
+	float offset = point.x() - _originX;
+	float cellSize = _majorDist / (_minorCount + 1);
+	float mapped = offset / cellSize;
+	float x = round(mapped) * cellSize + _originX;
+	return Vector2(x, point.y());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-Vector2 ReferenceGrid::snapY(const Vector2 & point) {
-	return Vector2();
+Vector2 ReferenceGrid::snapHorizontal(const Vector2 & point) {
+	float offset = point.y() - _originY;
+	float cellSize = _majorDist / (_minorCount + 1);
+	float mapped = offset / cellSize;
+	float y = round(mapped) * cellSize + _originY;
+	return Vector2(point.x(), y);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

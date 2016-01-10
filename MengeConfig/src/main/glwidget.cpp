@@ -110,7 +110,7 @@ protected:
 
 GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent),
-	_scene(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true), _activeGrid(true)
+	_scene(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true), _activeGrid(true), _hSnap(false), _vSnap(false), _isTopView(true)
 {
 	setMouseTracking(true);
 	// TODO: Handle cameras in some other way
@@ -375,6 +375,18 @@ void GLWidget::toggleReferenceGrid(bool isActive) {
 
 ///////////////////////////////////////////////////////////////////////////
 
+void GLWidget::toggleHorizontalSnap(bool isActive) {
+	_hSnap = isActive;
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::toggleVerticalSnap(bool isActive) {
+	_vSnap = isActive;
+}
+
+///////////////////////////////////////////////////////////////////////////
+
 void GLWidget::editGridProperties() {
 	RefGridPropDialog dlg(_grid);
 	if (dlg.exec() == QDialog::Accepted) {
@@ -420,6 +432,18 @@ bool GLWidget::getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worl
 		float x = pos.x() - wHalfWidth + (u * wHalfWidth * 2.f);
 		float y = pos.y() - wHalfHeight + (v * wHalfHeight * 2.f);
 		worldPos.set(x, y);
+
+		if (_activeGrid) {
+			if (_hSnap && _vSnap) {
+				worldPos = _grid->snap(worldPos);
+			}
+			else if (_hSnap) {
+				worldPos = _grid->snapHorizontal(worldPos);
+			}
+			else if (_vSnap) {
+				worldPos = _grid->snapVertical(worldPos);
+			}
+		}
 		return true;
 	} 
 	return false;

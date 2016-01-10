@@ -96,20 +96,20 @@ public:
 	Vector2 snap(const Vector2 & point);
 
 	/*!
-	 *	@brief		"Snaps" the query point to a line along the grid's x-axis (preserving the y-value).
+	 *	@brief		"Snaps" the query point to a line parallel with grid's y-axis (preserving the y-value).
 	 *
 	 *	@param		point		The 2D query point.
 	 *	@returns	The point with the same y, but with the x-value of the nearest vertical grid line.
 	 */
-	Vector2 snapX(const Vector2 & point);
+	Vector2 snapVertical(const Vector2 & point);
 
 	/*!
-	 *	@brief		"Snaps" the query point to a line along the grid's y-axis (preserving the y-value).
+	 *	@brief		"Snaps" the query point to a line parallel with the grid's x-axis (preserving the x-value).
 	 *
 	 *	@param		point		The 2D query point.
 	 *	@returns	The point with the same x, but with the y-value of the nearest horizontal grid line.
 	 */
-	Vector2 snapY(const Vector2 & point);
+	Vector2 snapHorizontal(const Vector2 & point);
 
 	/*!
 	 *	@brief		Streaming operator to write a reference grid out to a stream.

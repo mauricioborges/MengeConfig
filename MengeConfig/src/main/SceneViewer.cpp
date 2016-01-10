@@ -72,7 +72,22 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	_toolBar->addAction(gridPropAct);
 	connect(gridPropAct, &QAction::triggered, _glView, &GLWidget::editGridProperties);
 
+	_gridHSnap = new QAction(QIcon(":/images/gridSnapHorizontal.png"), tr("&Horizontal Snap"), this);
+	_gridHSnap->setCheckable(true);
+	_gridHSnap->setChecked(false);
+	_gridHSnap->setToolTip(tr("Causes mouse selection points to snap to horizontal grid lines."));
+	_toolBar->addAction(_gridHSnap);
+	connect(_gridHSnap, &QAction::triggered, _glView, &GLWidget::toggleHorizontalSnap);
+
+	_gridVSnap = new QAction(QIcon(":/images/gridSnapVertical.png"), tr("&Vertical Snap"), this);
+	_gridVSnap->setCheckable(true);
+	_gridVSnap->setChecked(false);
+	_gridVSnap->setToolTip(tr("Causes mouse selection points to snap to vertical grid lines."));
+	_toolBar->addAction(_gridVSnap);
+	connect(_gridVSnap, &QAction::triggered, _glView, &GLWidget::toggleVerticalSnap);
+
 	connect(_glView, &GLWidget::userRotated, this, &SceneViewer::userRotated);
+	connect(_glView, &GLWidget::currWorldPos, this, &SceneViewer::setCurrentWorldPos);
 
 	setLayout(mainLayout);
 }
@@ -81,7 +96,8 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 
 void SceneViewer::toggleGrid(bool state) {
 	_glView->toggleReferenceGrid(state);
-	// TODO: Disable snapping buttons
+	_gridHSnap->setEnabled(state);
+	_gridVSnap->setEnabled(state);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
