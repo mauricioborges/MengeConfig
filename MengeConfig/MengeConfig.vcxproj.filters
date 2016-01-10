@@ -36,17 +36,11 @@
     <ClCompile Include="src\main\SceneViewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\gen\cpp\moc_QReferenceGrid.cpp">
-      <Filter>Source Files\moc</Filter>
-    </ClCompile>
     <ClCompile Include="src\gen\cpp\moc_SceneViewer.cpp">
       <Filter>Source Files\moc</Filter>
     </ClCompile>
     <ClCompile Include="src\gen\cpp\qrc_MengeConfig.cpp">
       <Filter>Source Files\moc</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main\QReferenceGrid.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\main\ReferenceGrid.cpp">
       <Filter>Source Files</Filter>
@@ -72,6 +66,9 @@
     <ClCompile Include="src\main\BaseLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\main\GridNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\glwidget.hpp">
@@ -81,9 +78,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\SceneViewer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\main\QReferenceGrid.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\ReferenceGrid.h">
@@ -99,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\AppLogger.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\GridNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

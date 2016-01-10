@@ -8,6 +8,7 @@
 #include "GLCamera.h"
 #include "GLScene.h"
 #include "GLLight.h"
+#include "GridNode.h"
 
 #include <iostream>
 
@@ -30,13 +31,19 @@ GLWidget::GLWidget(QWidget *parent)
 	_cameras.push_back(camera);
 
 	_scene = new Menge::SceneGraph::GLScene();
+
+	_grid = new GridNode();
+	_grid->setSize(100.f, 100.f);
+	_grid->setMajorDist(5.f);
+	_grid->setMinorCount(4);
+	_scene->addNode(_grid);
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 GLWidget::~GLWidget()
 {
-    cleanup();
+	cleanup();
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -101,8 +108,7 @@ void GLWidget::initializeGL()
 
 	glEnable(GL_NORMALIZE);
 	glShadeModel( GL_SMOOTH );
-	glClearColor(0, 0, 0, 1);
-	//glClearColor( _bgColor.x(), _bgColor.y(), _bgColor.z(), 0.f );
+	glClearColor(0.91, 0.91, 0.9, 1);
 	glClearDepth( 1.f );
 	glEnable(GL_DEPTH_TEST);
 	if ( _lights.size() > 0 ) {

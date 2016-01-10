@@ -7,7 +7,7 @@
 ReferenceGrid::ReferenceGrid()
 {
 	_originX = _originY = 0.f;
-	_width = _height = 0.f;
+	_width = _height = 1.f;
 	_minorCount = 0;
 	_majorDist = 0;
 }

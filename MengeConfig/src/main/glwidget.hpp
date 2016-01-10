@@ -7,6 +7,8 @@
 #include <QtGui/QOpenGLBuffer>
 #include <QtGui/QMatrix4x4>
 
+#include <memory>
+
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
 namespace Menge {
@@ -18,6 +20,7 @@ namespace Menge {
 }
 
 class SceneViewer;
+class GridNode;
 
 /*!
  *	@brief		The view that contains the open gl context.
@@ -196,6 +199,13 @@ protected:
 	 *	@brief		Draws a simple, three-color world axis at the origin of world space.
 	 */
 	void drawWorldAxis();
+
+	/*!
+	 *	@brief		The reference grid for the scene.  The viewer does *not* own this pointer.
+	 *				It is added to the scene and managed by the scene.  This is merely a convenience
+	 *				reference.
+	 */
+	GridNode * _grid;
 
 };
 

@@ -23,7 +23,6 @@
     <ClCompile Include="src\gen\cpp\moc_FSMViewer.cpp" />
     <ClCompile Include="src\gen\cpp\moc_glwidget.cpp" />
     <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp" />
-    <ClCompile Include="src\gen\cpp\moc_QReferenceGrid.cpp" />
     <ClCompile Include="src\gen\cpp\moc_SceneHierarchy.cpp" />
     <ClCompile Include="src\gen\cpp\moc_SceneViewer.cpp" />
     <ClCompile Include="src\gen\cpp\qrc_MengeConfig.cpp" />
@@ -31,9 +30,9 @@
     <ClCompile Include="src\main\FSMViewer.cpp" />
     <ClCompile Include="src\main\glwidget.cpp" />
     <ClCompile Include="src\main\BaseLogger.cpp" />
+    <ClCompile Include="src\main\GridNode.cpp" />
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\mainwindow.cpp" />
-    <ClCompile Include="src\main\QReferenceGrid.cpp" />
     <ClCompile Include="src\main\ReferenceGrid.cpp" />
     <ClCompile Include="src\main\SceneHierarchy.cpp" />
     <ClCompile Include="src\main\SceneViewer.cpp" />
@@ -43,8 +42,8 @@
     <ClInclude Include="src\main\BaseLogger.h" />
     <ClInclude Include="src\main\FSMViewer.hpp" />
     <ClInclude Include="src\main\glwidget.hpp" />
+    <ClInclude Include="src\main\GridNode.h" />
     <ClInclude Include="src\main\mainwindow.hpp" />
-    <ClInclude Include="src\main\QReferenceGrid.hpp" />
     <ClInclude Include="src\main\ReferenceGrid.h" />
     <ClInclude Include="src\main\SceneHierarchy.hpp" />
     <ClInclude Include="src\main\SceneViewer.hpp" />

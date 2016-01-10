@@ -111,7 +111,7 @@ public:
 	 */
 	Vector2 snapY(const Vector2 & point);
 
-private:
+protected:
 
 	/*!
 	 *	@brief	The minimum value along the x-axis spanned by this grid.
