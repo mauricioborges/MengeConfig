@@ -120,5 +120,5 @@ void SceneViewer::userRotated() {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void SceneViewer::setCurrentWorldPos(float x, float y) {
-	_posLabel->setText(QString("(%1, %2)").arg(x).arg(y));
+	_posLabel->setText(QString("(%1, %2)").arg(x, 0, 'f', 2).arg(y, 0, 'f', 2));
 }
