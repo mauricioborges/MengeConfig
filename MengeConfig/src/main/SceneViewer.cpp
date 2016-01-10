@@ -16,6 +16,7 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 
 	_toolBar = new QToolBar();
 	mainLayout->addWidget(_toolBar);
+	mainLayout->setMargin(0);
 
 	_glView = new GLWidget();
 	mainLayout->addWidget(_glView);

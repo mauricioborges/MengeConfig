@@ -10,6 +10,7 @@
 
 FSMViewer::FSMViewer(QWidget * parent) : QWidget(parent) {
 	QVBoxLayout * mainLayout = new QVBoxLayout();
+	mainLayout->setMargin(0);
 	_toolBar = new QToolBar();
 	QAction * action = new QAction(QIcon(":/images/delete.png"), tr("&Delete"), this);
 	_toolBar->addAction(action);
