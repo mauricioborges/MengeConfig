@@ -6,6 +6,7 @@
 class SceneHierarchy;
 class SceneViewer;
 class FSMViewer;
+class AppLogger;
 
 /*!
  *	@brief		The main window of the application -- all GUI runs through this.
@@ -48,6 +49,11 @@ private:
 	 */
 	FSMViewer * _fsmViewer;
 
+	/*!
+	 *	@brief		A reference to the logging window.
+	 */
+	AppLogger * _logger;
+
 	///////////////////////////////////////////////////////////////////////////
 	//				Menu items
 	///////////////////////////////////////////////////////////////////////////
@@ -66,6 +72,11 @@ private:
 	 *	@brief		The toggle for showing/hiding the behavior fsm viewer.
 	 */
 	QAction *	_toggleFsmVis;
+
+	/*!
+	 *	@brief		The toggle for showing/hiding the logger window.
+	 */
+	QAction *	_toggleLogVis;
 
 	/*!
 	 *	@brief		Causes the hierarchy visibility to be toggled.
@@ -89,11 +100,18 @@ private:
 	void toggleSceneViewer(bool state);
 
 	/*!
-	 *	@brief		Slot for when the state of the fsm viewer visibility changes.
-	 *
-	 *	@param		state		The visibility state of the widget.
-	 */
+	*	@brief		Slot for when the state of the fsm viewer visibility changes.
+	*
+	*	@param		state		The visibility state of the widget.
+	*/
 	void toggleFSMViewer(bool state);
+
+	/*!
+	*	@brief		Slot for when the state of the log widget changes.
+	*
+	*	@param		state		The visibility state of the widget.
+	*/
+	void toggleLog(bool state);
 
 };
 

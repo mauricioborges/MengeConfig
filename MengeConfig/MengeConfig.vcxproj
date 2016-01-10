@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\gen\cpp\moc_AppLogger.cpp" />
     <ClCompile Include="src\gen\cpp\moc_FSMViewer.cpp" />
     <ClCompile Include="src\gen\cpp\moc_glwidget.cpp" />
     <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp" />
@@ -26,8 +27,10 @@
     <ClCompile Include="src\gen\cpp\moc_SceneHierarchy.cpp" />
     <ClCompile Include="src\gen\cpp\moc_SceneViewer.cpp" />
     <ClCompile Include="src\gen\cpp\qrc_MengeConfig.cpp" />
+    <ClCompile Include="src\main\AppLogger.cpp" />
     <ClCompile Include="src\main\FSMViewer.cpp" />
     <ClCompile Include="src\main\glwidget.cpp" />
+    <ClCompile Include="src\main\BaseLogger.cpp" />
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\mainwindow.cpp" />
     <ClCompile Include="src\main\QReferenceGrid.cpp" />
@@ -36,6 +39,8 @@
     <ClCompile Include="src\main\SceneViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\main\AppLogger.hpp" />
+    <ClInclude Include="src\main\BaseLogger.h" />
     <ClInclude Include="src\main\FSMViewer.hpp" />
     <ClInclude Include="src\main\glwidget.hpp" />
     <ClInclude Include="src\main\mainwindow.hpp" />

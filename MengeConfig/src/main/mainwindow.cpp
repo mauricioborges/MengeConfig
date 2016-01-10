@@ -1,9 +1,12 @@
 #include "mainwindow.hpp"
+
+#include "AppLogger.hpp"
 #include "FSMViewer.hpp"
 #include "SceneHierarchy.hpp"
 #include "SceneViewer.hpp"
 #include "SceneHierarchy.hpp"
 
+#include <QtWidgets\qboxlayout.h>
 #include <QtWidgets/qdockwidget.h>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMenu>
@@ -18,7 +21,12 @@
 MainWindow::MainWindow()
 {
 	// The major gui components
+	QWidget * widget = new QWidget();
+	QSplitter * vSplitter = new QSplitter();
+	vSplitter->setOrientation(Qt::Vertical);
+	
 	QSplitter * splitter = new QSplitter();
+	splitter->setContentsMargins(0, 0, 0, 0);
 
 	_sceneViewer = new SceneViewer();
 	splitter->addWidget(_sceneViewer);
@@ -26,8 +34,9 @@ MainWindow::MainWindow()
 	_fsmViewer = new FSMViewer();
 	splitter->addWidget(_fsmViewer);
 
-	setCentralWidget(splitter);
-
+	vSplitter->addWidget(splitter);
+	setCentralWidget(vSplitter);
+	
 	// Set up the main window
     QMenuBar *menuBar = new QMenuBar;
 	QMenu *menuView = menuBar->addMenu(tr("&View"));
@@ -53,6 +62,13 @@ MainWindow::MainWindow()
 	menuView->addAction(_toggleFsmVis);
 	connect(_toggleFsmVis, &QAction::triggered, this, &MainWindow::toggleFSMViewer);
 
+	_toggleLogVis = new QAction(menuView);
+	_toggleLogVis->setText(tr("Activity Log"));
+	_toggleLogVis->setCheckable(true);
+	_toggleLogVis->setChecked(false);
+	menuView->addAction(_toggleLogVis);
+	connect(_toggleLogVis, &QAction::triggered, this, &MainWindow::toggleLog);
+
 	setMenuBar(menuBar);
 
 	// Docked elements
@@ -61,8 +77,14 @@ MainWindow::MainWindow()
 	_hierarchyDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	_hierarchyDock->setWidget(_hierarchy);
 	addDockWidget(Qt::RightDockWidgetArea, _hierarchyDock);
-	connect(_hierarchyDock, &QDockWidget::visibilityChanged, this, &MainWindow::hierarchyVisibilityChanged);
+	connect(_hierarchyDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleHierarchy);
 	
+	// Set up the logger
+	_logger = new AppLogger(this);
+	_logger->setVisible(false);
+	BaseLogger::setLogger(_logger);
+	vSplitter->addWidget(_logger);
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,4 +113,10 @@ void MainWindow::toggleSceneViewer(bool state) {
 
 void MainWindow::toggleFSMViewer(bool state) {
 	_fsmViewer->setVisible(state);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void MainWindow::toggleLog(bool state) {
+	_logger->setVisible(state);
 }
