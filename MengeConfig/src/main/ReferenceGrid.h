@@ -111,6 +111,15 @@ public:
 	 */
 	Vector2 snapY(const Vector2 & point);
 
+	/*!
+	 *	@brief		Streaming operator to write a reference grid out to a stream.
+	 *
+	 *	@param		out			The stream to write to.
+	 *	@param		grid		The grid to write.
+	 *	@returns	A reference to the stream.
+	 */
+	friend std::ostream & operator<<(std::ostream & out, const ReferenceGrid & grid);
+
 protected:
 
 	/*!

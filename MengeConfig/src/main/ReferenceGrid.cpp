@@ -64,3 +64,13 @@ Vector2 ReferenceGrid::snapY(const Vector2 & point) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+std::ostream & operator<<(std::ostream & out, const ReferenceGrid & grid) {
+	out << "X origin:         " << grid._originX << "\n";
+	out << "Y origin:         " << grid._originY << "\n";
+	out << "Width:            " << grid._width << "\n";
+	out << "Height:           " << grid._height << "\n";
+	out << "Major distance:   " << grid._majorDist << "\n";
+	out << "Minor line count: " << grid._minorCount;
+	return out;
+}
