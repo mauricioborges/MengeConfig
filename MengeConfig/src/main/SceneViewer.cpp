@@ -56,6 +56,11 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	_toolBar->addAction(togGridAct);
 	connect(togGridAct, &QAction::triggered, this, &SceneViewer::toggleGrid);
 
+	QAction * gridPropAct = new QAction(QIcon(":/images/gridProperties.png"), tr("Grid &Properties"), this);
+	gridPropAct->setToolTip(tr("Edit the reference grid's properties."));
+	_toolBar->addAction(gridPropAct);
+	connect(gridPropAct, &QAction::triggered, _glView, &GLWidget::editGridProperties);
+
 	setLayout(mainLayout);
 }
 

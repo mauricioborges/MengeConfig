@@ -159,7 +159,13 @@ protected:
 	 */
 	void toggleReferenceGrid(bool isActive);
 
-public slots:
+	public slots:
+
+	/*!
+	*	@brief		Open the dialog to edit the reference grid's properties.
+	*/
+	void editGridProperties();
+
 	/*!
 	 *	@brief		Re-orients the camera to look down a specific axis.
 	 *

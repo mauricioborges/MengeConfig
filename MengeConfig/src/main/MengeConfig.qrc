@@ -4,6 +4,7 @@
   <file>images/toggleAxis.png</file>
   <file>images/togglePersp.png</file>
   <file>images/toggleGrid.png</file>
+  <file>images/gridProperties.png</file>
 </qresource>
 </RCC>
 

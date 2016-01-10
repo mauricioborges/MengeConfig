@@ -1,16 +1,108 @@
 
 #include "glwidget.hpp"
+#include <QtWidgets\qdialog.h>
+#include <QtWidgets\qdialogButtonBox.h>
+#include <QtGui/QDoubleValidator>
+#include <QtWidgets/qgridlayout.h>
+#include <QtGui/QIntValidator>
+#include <QtWidgets/qlabel.h>
+#include <QtWidgets/qlineedit.h>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QOpenGLShaderProgram>
 #include <QtCore/QCoreApplication>
 #include <math.h>
 #include <gl/GL.h>
+#include "BaseLogger.h"
 #include "GLCamera.h"
 #include "GLScene.h"
 #include "GLLight.h"
 #include "GridNode.h"
 
 #include <iostream>
+#include <sstream>
+
+///////////////////////////////////////////////////////////////////////////
+//				IMPLEMENTATION FOR ReferenceGridProperties
+///////////////////////////////////////////////////////////////////////////
+
+/*!
+ *	@brief		The dialog for editing the properties of the reference grid.
+ */
+class RefGridPropDialog : public QDialog {
+public:
+	RefGridPropDialog(const ReferenceGrid * grid, QWidget * parent=0x0) : QDialog(parent) {
+		setModal(false);
+		setWindowTitle(tr("Edit Reference Grid Properties"));
+		QGridLayout * layout = new QGridLayout();
+
+		Menge::Math::Vector2 o = grid->getOrigin();
+		_xO = makeNumEditor(0, "X Origin", layout, new QDoubleValidator(), QString::number(o.x()));
+		_yO = makeNumEditor(1, "Y Origin", layout, new QDoubleValidator(), QString::number(o.y()));
+		Menge::Math::Vector2 size = grid->getSize();
+		_w = makeNumEditor(2, "Width", layout, new QDoubleValidator(), QString::number(size.x()));
+		_h = makeNumEditor(3, "Height", layout, new QDoubleValidator(), QString::number(size.y()));
+		_majorDist = makeNumEditor(4, "Major Distance", layout, new QDoubleValidator(), QString::number(grid->getMajorDist()));
+		_minorCount = makeNumEditor(5, "Number of Minor Lines", layout, new QIntValidator(0, 1000), QString::number(grid->getMinorCount()));
+
+		QDialogButtonBox * bBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+		layout->addWidget(bBox, 6, 0, 1, 2);
+
+		connect(bBox, &QDialogButtonBox::accepted, this, &RefGridPropDialog::accept);
+		connect(bBox, &QDialogButtonBox::rejected, this, &RefGridPropDialog::reject);
+
+		setLayout(layout);
+	}
+
+	friend class GLWidget;
+protected:
+	/*!
+	 *	@brief		Utility function to add a number editor into the dialog.
+	 *
+	 *	@param		row			The row on the grid layout to entry the property.
+	 *	@param		name		The name of the property.
+	 *	@param		layout		The layout to insert the property.
+	 *	@param		valid		The validator to use.
+	 *	@param		initValue	The initial value.
+	 */
+	QLineEdit * makeNumEditor(int row, const std::string & name, QGridLayout * layout,  QValidator * valid, QString initValue) {
+		layout->addWidget(new QLabel(tr(name.c_str())), row, 0, Qt::AlignRight);
+		QLineEdit * edit = new QLineEdit();
+		edit->setValidator(valid);
+		edit->setText(initValue);
+		layout->addWidget(edit, row, 1);
+		return edit;
+	}
+
+	/*!
+	 *	@brief		The editor for the x-origin value.
+	 */
+	QLineEdit * _xO;
+	
+	/*!
+	*	@brief		The editor for the y-origin value.
+	*/
+	QLineEdit * _yO;
+	
+	/*!
+	*	@brief		The editor for the width value.
+	*/
+	QLineEdit * _w;
+	
+	/*!
+	*	@brief		The editor for the height value.
+	*/
+	QLineEdit * _h;
+	
+	/*!
+	*	@brief		The editor for the major line distance value.
+	*/
+	QLineEdit * _majorDist;
+	
+	/*!
+	*	@brief		The editor for the minor line count value.
+	*/
+	QLineEdit * _minorCount;
+};
 
 ///////////////////////////////////////////////////////////////////////////
 //				IMPLEMENTATION FOR GLWidget
@@ -270,6 +362,24 @@ void GLWidget::toggleReferenceGrid(bool isActive) {
 		_activeGrid = isActive;
 		update();
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::editGridProperties() {
+	RefGridPropDialog dlg(_grid);
+	if (dlg.exec() == QDialog::Accepted) {
+		_grid->setOrigin(dlg._xO->text().toFloat(), dlg._yO->text().toFloat());
+		_grid->setSize(dlg._w->text().toFloat(), dlg._h->text().toFloat());
+		_grid->setMajorDist(dlg._majorDist->text().toFloat());
+		_grid->setMinorCount(dlg._minorCount->text().toInt());
+		std::stringstream ss;
+		ss << "Modifying reference grid properties:\n";
+		ss << (*_grid) << "\n";
+		BaseLogger::Singleton()->info(ss.str());
+		update();
+	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////
