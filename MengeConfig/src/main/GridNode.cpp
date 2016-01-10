@@ -43,20 +43,20 @@ void GridNode::drawGL(bool select) {
 		float y = _originY;
 		int i = 0;
 		while (y < Y) {
-			y = _originY + i * delta;
 			glVertex3f(_originX, y, 0.f);
 			glVertex3f(X, y, 0.f);
 			++i;
+			y = _originY + i * delta;
 		}
 
 		//parallel to y-axis
 		float x = _originX;
 		i = 0;
 		while (x < X) {
-			x = _originX + i * delta;
 			glVertex3f(x, _originY, 0.f);
 			glVertex3f(x, Y, 0.f);
 			++i;
+			x = _originX + i * delta;
 		}
 		glEnd();
 
@@ -67,20 +67,20 @@ void GridNode::drawGL(bool select) {
 		y = _originY;
 		i = 0;
 		while (y < Y) {
-			y = _originY + i * _majorDist;
 			glVertex3f(_originX, y, 0.f);
 			glVertex3f(X, y, 0.f);
 			++i;
+			y = _originY + i * _majorDist;
 		}
 
 		//parallel to y-axis
 		x = _originX;
 		i = 0;
 		while (x < X) {
-			x = _originX + i * _majorDist;
 			glVertex3f(x, _originY, 0.f);
 			glVertex3f(x, Y, 0.f);
 			++i;
+			x = _originX + i * _majorDist;
 		}
 
 		glEnd();
