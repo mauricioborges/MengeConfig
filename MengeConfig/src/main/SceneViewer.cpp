@@ -25,8 +25,12 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	_statusLabel = new QLabel("Scene Viewer:");
 	QHBoxLayout * statusLayout = new QHBoxLayout();
 	statusLayout->setContentsMargins(5, 1, 5, 1);
-	statusLayout->addWidget(_statusLabel, 0);
-	mainLayout->addLayout(statusLayout);
+	statusLayout->addWidget(_statusLabel, 1);
+
+	_posLabel = new QLabel("no point");
+	statusLayout->addWidget(_posLabel, 0, Qt::AlignRight);
+
+	mainLayout->addLayout(statusLayout, 0);
 
 	// Populate tool bar
 	QAction * togAxisAct = new QAction(QIcon(":/images/toggleAxis.png"), tr("Toggle &Axis"), this);
@@ -94,4 +98,11 @@ void SceneViewer::updateStatus() {
 
 void SceneViewer::userRotated() {
 	_dirComboBox->setCurrentIndex(0);
+	_posLabel->setText("no point");
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::setCurrentWorldPos(float x, float y) {
+	_posLabel->setText(QString("(%1, %2)").arg(x).arg(y));
 }

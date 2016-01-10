@@ -112,6 +112,7 @@ GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent),
 	_scene(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true), _activeGrid(true)
 {
+	setMouseTracking(true);
 	// TODO: Handle cameras in some other way
 	Menge::SceneGraph::GLCamera camera;
 	camera.setPosition(0.f, 0.f, 10.f);
@@ -275,6 +276,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 			_cameras[_currCam].orbitHorizontalAxis(delta.y() * 0.0075f);
 			_cameras[_currCam].orbitVerticalAxis(-delta.x() * 0.0075f);
 			cameraMoved = true;
+			_isTopView = false;
 			emit userRotated();
 		}
 		else if (pan) {
@@ -289,6 +291,12 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 		}
 		_downPos = event->pos();
 		if (cameraMoved) update();
+	}
+	else if (btn == Qt::NoButton) {
+		Menge::Math::Vector2 worldPos;
+		if (getWorldPos(event->pos(), worldPos)) {
+			emit currWorldPos(worldPos.x(), worldPos.y());
+		}
 	}
 }
 
@@ -385,7 +393,42 @@ void GLWidget::editGridProperties() {
 
 ///////////////////////////////////////////////////////////////////////////
 
+bool GLWidget::getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worldPos) {
+	if (_isTopView) {
+		// THIS IS A TOTAL HACK
+		//	There should be a 4-byte enumeration at the beginning of the camera which reports
+		//	if it is perspective or orthographic
+		//  Replace this hack with proper calls into the camera when the interface is extended to
+		//	report projection type.
+		int persp = *(int*)(&_cameras[_currCam]);
+
+		float w = (float)width();
+		float h = (float)height();
+		float u = screenPos.x() / w;
+		float v = (h - screenPos.y()) / h;
+		float wHalfWidth, wHalfHeight;
+		
+		Menge::Math::Vector3 pos = _cameras[_currCam].getPosition();
+		if (persp == 0) {	// orthographic
+			wHalfWidth = 0.5f / _cameras[_currCam].getOrthoScaleFactor() * _cameras[_currCam].targetDistance();
+			wHalfHeight = wHalfWidth * h / w;
+		}
+		else {		// perspective
+			wHalfHeight = pos.z() * tan(_cameras[_currCam].getFOV() * 0.5f / 180.f * 3.141597f);
+			wHalfWidth = wHalfHeight * w / h;
+		}
+		float x = pos.x() - wHalfWidth + (u * wHalfWidth * 2.f);
+		float y = pos.y() - wHalfHeight + (v * wHalfHeight * 2.f);
+		worldPos.set(x, y);
+		return true;
+	} 
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////
+
 void GLWidget::setViewDirection(int direction){
+	_isTopView = false;
 	if (direction > 0) {
 		switch (direction) {
 		case 1:	// +x
@@ -405,6 +448,7 @@ void GLWidget::setViewDirection(int direction){
 			break;
 		case 6: // -z
 			_cameras[_currCam].viewZAxis(false);
+			_isTopView = true;
 			break;
 		}
 		update();

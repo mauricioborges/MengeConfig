@@ -7,6 +7,8 @@
 #include <QtGui/QOpenGLBuffer>
 #include <QtGui/QMatrix4x4>
 
+#include <Math/Vector2.h>
+
 #include <memory>
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
@@ -96,6 +98,16 @@ signals:
 	 *	@brief		Indicates that the camera has been rotated arbitrarily.
 	 */
 	void userRotated();
+
+	/*!
+	 *	@brief		Reports the "current" world position of the point under the mouse.
+	 *
+	 *	The world position lies on the simulation's x-y plane. 
+	 *	
+	 *	@param		x		The x-value of the position.
+	 *	@param		y		The y-value of the position.
+	 */
+	void currWorldPos(float x, float y);
 
 protected:
 	/*!
@@ -224,6 +236,11 @@ protected:
 	 *	@brief		Draws a simple, three-color world axis at the origin of world space.
 	 */
 	void drawWorldAxis();
+
+	/*!
+	 *	@brief		Reports if the camera is in a top-view configuration.
+	 */
+	bool	_isTopView;
 
 	/*!
 	 *	@brief		The reference grid for the scene.  The viewer does *not* own this pointer.

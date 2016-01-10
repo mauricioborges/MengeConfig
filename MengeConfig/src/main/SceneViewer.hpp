@@ -40,6 +40,14 @@ private:
 	 *	@brief		Responds to users rotating the camera to aribtrary angles.
 	 */
 	void userRotated();
+
+	/*!
+	 *	@brief		Reports the current world position in the viewer.
+	 *
+	 *	@param		x		The x-value of the current position.
+	 *	@param		y		The y-value of the current position.
+	 */
+	void setCurrentWorldPos(float x, float y);
 	
 	/*!
 	 *	@brief		The tool bar for this window.
@@ -57,10 +65,14 @@ private:
 	QComboBox * _dirComboBox;
 
 	/*!
-	 *	@brief		The status text for the viewer.
-	 */
+	*	@brief		The status text for the viewer.
+	*/
 	QLabel * _statusLabel;
 
+	/*!
+	*	@brief		The current world position under the mouse
+	*/
+	QLabel * _posLabel;
 
 };
 
