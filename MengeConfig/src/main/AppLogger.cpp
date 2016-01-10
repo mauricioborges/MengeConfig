@@ -55,10 +55,10 @@ void AppLogger::error(const std::string & msg) {
 void AppLogger::message(const std::string & msg) {
 	QDateTime now(QDate::currentDate(), QTime::currentTime());
 	if (msg[msg.size() - 1] == '\n') {
-		_editor->append(QString("%1: %2\n").arg(now.toString("dd.MM.yyyy hh:mm:ss.zzz"), QString(msg.substr(0, msg.size() - 1).c_str())));
+		_editor->append(QString("%1: %2\n").arg(now.toString("dd.MM.yyyy hh:mm:ss"), QString(msg.substr(0, msg.size() - 1).c_str())));
 	}
 	else {
-		_editor->append(QString("%1: %2").arg(now.toString("dd.MM.yyyy hh:mm:ss.zzz"), QString(msg.c_str())));
+		_editor->append(QString("%1: %2").arg(now.toString("dd.MM.yyyy hh:mm:ss"), QString(msg.c_str())));
 	}
 }
 
