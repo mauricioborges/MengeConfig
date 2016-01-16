@@ -44,6 +44,7 @@
     <ClInclude Include="src\main\glwidget.hpp" />
     <ClInclude Include="src\main\GridNode.h" />
     <ClInclude Include="src\main\mainwindow.hpp" />
+    <ClInclude Include="src\main\QtContext.h" />
     <ClInclude Include="src\main\ReferenceGrid.h" />
     <ClInclude Include="src\main\SceneHierarchy.hpp" />
     <ClInclude Include="src\main\SceneViewer.hpp" />
