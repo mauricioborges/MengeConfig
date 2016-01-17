@@ -27,23 +27,28 @@
     <ClCompile Include="src\gen\cpp\moc_SceneViewer.cpp" />
     <ClCompile Include="src\gen\cpp\qrc_MengeConfig.cpp" />
     <ClCompile Include="src\main\AppLogger.cpp" />
+    <ClCompile Include="src\main\DrawPolygonContext.cpp" />
     <ClCompile Include="src\main\FSMViewer.cpp" />
     <ClCompile Include="src\main\glwidget.cpp" />
     <ClCompile Include="src\main\BaseLogger.cpp" />
     <ClCompile Include="src\main\GridNode.cpp" />
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\mainwindow.cpp" />
+    <ClCompile Include="src\main\GLPolygon.cpp" />
+    <ClCompile Include="src\main\QtContext.cpp" />
     <ClCompile Include="src\main\ReferenceGrid.cpp" />
     <ClCompile Include="src\main\SceneHierarchy.cpp" />
     <ClCompile Include="src\main\SceneViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\AppLogger.hpp" />
+    <ClInclude Include="src\main\DrawPolygonContext.h" />
     <ClInclude Include="src\main\BaseLogger.h" />
     <ClInclude Include="src\main\FSMViewer.hpp" />
     <ClInclude Include="src\main\glwidget.hpp" />
     <ClInclude Include="src\main\GridNode.h" />
     <ClInclude Include="src\main\mainwindow.hpp" />
+    <ClInclude Include="src\main\GLPolygon.h" />
     <ClInclude Include="src\main\QtContext.h" />
     <ClInclude Include="src\main\ReferenceGrid.h" />
     <ClInclude Include="src\main\SceneHierarchy.hpp" />

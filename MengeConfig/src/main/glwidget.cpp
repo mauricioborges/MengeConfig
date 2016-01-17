@@ -1,5 +1,7 @@
 
 #include "glwidget.hpp"
+#include "QtContext.h"
+
 #include <QtWidgets\qdialog.h>
 #include <QtWidgets\qdialogButtonBox.h>
 #include <QtGui/QDoubleValidator>
@@ -10,6 +12,7 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QOpenGLShaderProgram>
 #include <QtCore/QCoreApplication>
+
 #include <math.h>
 #include <gl/GL.h>
 #include "BaseLogger.h"
@@ -20,6 +23,9 @@
 
 #include <iostream>
 #include <sstream>
+
+// temporary
+#include "DrawPolygonContext.h"
 
 ///////////////////////////////////////////////////////////////////////////
 //				IMPLEMENTATION FOR ReferenceGridProperties
@@ -110,8 +116,9 @@ protected:
 
 GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent),
-	_scene(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true), _activeGrid(true), _hSnap(false), _vSnap(false), _isTopView(true)
+	_scene(0x0), _context(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true), _activeGrid(true), _hSnap(false), _vSnap(false), _isTopView(true)
 {
+	setFocusPolicy(Qt::StrongFocus);
 	setMouseTracking(true);
 	// TODO: Handle cameras in some other way
 	Menge::SceneGraph::GLCamera camera;
@@ -124,6 +131,7 @@ GLWidget::GLWidget(QWidget *parent)
 	_cameras.push_back(camera);
 
 	_scene = new Menge::SceneGraph::GLScene();
+	_context = new DrawPolygonContext();
 
 	_grid = new GridNode();
 	_grid->setSize(100.f, 100.f);
@@ -227,6 +235,10 @@ void GLWidget::paintGL()
 	// world axis
 	if (_drawWorldAxis) drawWorldAxis();
 
+	if (_context) {
+		_context->drawGL(width(), height());
+	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -240,6 +252,14 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
+	if (_context) {
+		Menge::SceneGraph::ContextResult result = _context->handleMouse(event, this);
+		if (result.needsRedraw()) {
+			update();
+		}
+		if (result.isHandled()) return;
+	}
+
 	Qt::KeyboardModifiers mods = event->modifiers();
 	bool hasCtrl = (mods & Qt::CTRL) > 0;
 	bool hasAlt = (mods & Qt::ALT) > 0;
@@ -251,14 +271,35 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 		if (!(hasCtrl || hasAlt || hasShift) && _scene != 0x0) {
 			std::cout << "Selection is not implemented yet!\n";
 		}
-	} 
-	
+	}
+
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+	if (_context) {
+		Menge::SceneGraph::ContextResult result = _context->handleMouse(event, this);
+		if (result.needsRedraw()) {
+			update();
+		}
+		if (result.isHandled()) return;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
+	if (_context) {
+		Menge::SceneGraph::ContextResult result = _context->handleMouse(event, this);
+		if (result.needsRedraw()) {
+			update();
+		}
+		if (result.isHandled()) return;
+	}
+
 	Qt::KeyboardModifiers mods = event->modifiers();
 	bool hasCtrl = (mods & Qt::CTRL) > 0;
 	bool hasAlt = (mods & Qt::ALT) > 0;
@@ -303,6 +344,14 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::wheelEvent(QWheelEvent *event) {
+	if (_context) {
+		Menge::SceneGraph::ContextResult result = _context->handleWheel(event, this);
+		if (result.needsRedraw()) {
+			update();
+		}
+		if (result.isHandled()) return;
+	}
+
 	Qt::KeyboardModifiers mods = event->modifiers();
 	bool hasCtrl = (mods & Qt::CTRL) > 0;
 	bool hasAlt = (mods & Qt::ALT) > 0;
@@ -313,6 +362,32 @@ void GLWidget::wheelEvent(QWheelEvent *event) {
 	if (hasShift) amount *= 2;
 	_cameras[_currCam].zoom(amount);
 	update();
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::keyPressEvent(QKeyEvent *event) {
+	if (_context) {
+		Menge::SceneGraph::ContextResult result = _context->handleKeyboard(event, this);
+		if (result.needsRedraw()) {
+			update();
+		}
+		if (result.isHandled()) return;
+	}
+	QOpenGLWidget::keyPressEvent(event);
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::keyReleaseEvent(QKeyEvent *event) {
+	if (_context) {
+		Menge::SceneGraph::ContextResult result = _context->handleKeyboard(event, this);
+		if (result.needsRedraw()) {
+			update();
+		}
+		if (result.isHandled()) return;
+	}
+	QOpenGLWidget::keyReleaseEvent(event);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -406,6 +481,7 @@ void GLWidget::editGridProperties() {
 ///////////////////////////////////////////////////////////////////////////
 
 bool GLWidget::getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worldPos) {
+	// TODO: worldPos should be in R3
 	if (_isTopView) {
 		// THIS IS A TOTAL HACK
 		//	There should be a 4-byte enumeration at the beginning of the camera which reports

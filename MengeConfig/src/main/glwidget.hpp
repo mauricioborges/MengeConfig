@@ -23,6 +23,7 @@ namespace Menge {
 
 class SceneViewer;
 class GridNode;
+class QtContext;
 
 /*!
  *	@brief		The view that contains the open gl context.
@@ -126,14 +127,21 @@ protected:
 	 *	@param		width		The width of the window (in pixels).
 	 *	@param		height		The height of the window (in pixels).
 	 */
-    void resizeGL(int width, int height) Q_DECL_OVERRIDE;
+	void resizeGL(int width, int height) Q_DECL_OVERRIDE;
 
 	/*!
-	 *	@brief		The callback for when a mouse is pressed.
-	 *
-	 *	@param		event		The event parameters.
-	 */
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	*	@brief		The callback for when a mouse is pressed.
+	*
+	*	@param		event		The event parameters.
+	*/
+	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+
+	/*!
+	*	@brief		The callback for when a mouse is pressed.
+	*
+	*	@param		event		The event parameters.
+	*/
+	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 	/*!
 	 *	@brief		The callback for when the mouse is moved.
@@ -143,11 +151,25 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 	/*!
-	 *	@brief		The callback for when mouse wheel is turned.
-	 *
-	 *	@param		event		The event parameters.
-	 */
+	*	@brief		The callback for when mouse wheel is turned.
+	*
+	*	@param		event		The event parameters.
+	*/
 	void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+
+	/*!
+	*	@brief		The callback for when a key is pressed.
+	*
+	*	@param		event		The event parameters.
+	*/
+	void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
+
+	/*!
+	*	@brief		The callback for when a key is released.
+	*
+	*	@param		event		The event parameters.
+	*/
+	void keyReleaseEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 	/*!
 	 *	@brief		Causes the viewer to recognize that a new OpenGL context has been
@@ -193,6 +215,8 @@ protected:
 	 */
 	void toggleVerticalSnap(bool isActive);
 
+public:
+
 	/*!
 	 *	@brief		Returns the position under the mouse on the ground plane in
 	 *				world space.  
@@ -224,6 +248,11 @@ protected:
 	 *	@brief		The GLScene to draw.
 	 */
 	Menge::SceneGraph::GLScene *	_scene;
+
+	/*!
+	 *	@brief		The active context on the scene.  The view does *not* own the context.
+	 */
+	QtContext * _context;
 
 	/*!
 	 *	@brief		A set of cameras from which to draw the scene.
