@@ -1,6 +1,6 @@
 #include "DrawPolygonContext.h"
 
-#include "BaseLogger.h"
+#include "AppLogger.hpp"
 #include "GLPolygon.h"
 #include "glwidget.hpp"
 
@@ -31,7 +31,6 @@ DrawPolygonContext::~DrawPolygonContext() {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 Menge::SceneGraph::ContextResult DrawPolygonContext::handleMouse(QMouseEvent * evt, GLWidget * view) {
-	BaseLogger * logger = BaseLogger::Singleton();
 	Menge::SceneGraph::ContextResult result = QtContext::handleMouse(evt, view);
 
 	if (!result.isHandled()) {

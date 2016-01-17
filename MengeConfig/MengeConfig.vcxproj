@@ -30,7 +30,6 @@
     <ClCompile Include="src\main\DrawPolygonContext.cpp" />
     <ClCompile Include="src\main\FSMViewer.cpp" />
     <ClCompile Include="src\main\glwidget.cpp" />
-    <ClCompile Include="src\main\BaseLogger.cpp" />
     <ClCompile Include="src\main\GridNode.cpp" />
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\mainwindow.cpp" />
@@ -43,7 +42,6 @@
   <ItemGroup>
     <ClInclude Include="src\main\AppLogger.hpp" />
     <ClInclude Include="src\main\DrawPolygonContext.h" />
-    <ClInclude Include="src\main\BaseLogger.h" />
     <ClInclude Include="src\main\FSMViewer.hpp" />
     <ClInclude Include="src\main\glwidget.hpp" />
     <ClInclude Include="src\main\GridNode.h" />

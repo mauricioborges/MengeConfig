@@ -4,12 +4,23 @@
 #include <QtWidgets/Qtextedit.h>
 #include <QtWidgets/qboxlayout.h>
 
+
+
 ///////////////////////////////////////////////////////////////////////////////
 //                    Implementation of AppLogger
 ///////////////////////////////////////////////////////////////////////////////
 
+char AppLogger::INFO_MSG = 1;
+char AppLogger::WARN_MSG = 2;
+char AppLogger::ERROR_MSG = 3;
+char AppLogger::END_MSG = 0;
+std::ostream AppLogger::logStream(0x0);
+
+///////////////////////////////////////////////////////////////////////////////
+
+
 AppLogger::AppLogger(QWidget * parent) : QWidget(parent) {
-	//setWindowTitle(tr("Motion Log"));
+	logStream.rdbuf(new LogBuffer(this));
 	QVBoxLayout * lyt = new QVBoxLayout(this);
 	lyt->setMargin(0);
 	_editor = new QTextEdit();
@@ -62,3 +73,52 @@ void AppLogger::message(const std::string & msg) {
 	}
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+//                    Implementation of LogBuffer
+///////////////////////////////////////////////////////////////////////////////
+
+LogBuffer::LogBuffer(AppLogger * logger) : _logger(logger), _currType(AppLogger::END_MSG), _ss() {
+
+}
+///////////////////////////////////////////////////////////////////////////////
+
+int LogBuffer::overflow(int ch) {
+	int result(EOF);
+	if (ch == EOF) result = sync();
+	else result = process(ch);
+	return result;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+int LogBuffer::process(int ch){
+	if (ch == AppLogger::INFO_MSG) {
+		_currType = AppLogger::INFO_MSG;
+	}
+	else if (ch == AppLogger::WARN_MSG) {
+		_currType = AppLogger::WARN_MSG;
+	}
+	else if (ch == AppLogger::ERROR_MSG) {
+		_currType = AppLogger::ERROR_MSG;
+	}
+	else if (ch == AppLogger::END_MSG) {
+		if (_currType == AppLogger::INFO_MSG) {
+			_logger->info(_ss.str());
+		}
+		else if (_currType == AppLogger::WARN_MSG) {
+			_logger->warning(_ss.str());
+
+		}
+		else if (_currType == AppLogger::ERROR_MSG) {
+			_logger->error(_ss.str());
+
+		}
+		_currType = AppLogger::END_MSG;
+		_ss.str("");
+	}
+	else {
+		_ss.put((char)ch);
+	}
+	return ch;
+}

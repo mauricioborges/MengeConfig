@@ -82,7 +82,6 @@ MainWindow::MainWindow()
 	// Set up the logger
 	_logger = new AppLogger(this);
 	_logger->setVisible(false);
-	BaseLogger::setLogger(_logger);
 	vSplitter->addWidget(_logger);
 
 }

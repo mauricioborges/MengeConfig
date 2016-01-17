@@ -15,7 +15,7 @@
 
 #include <math.h>
 #include <gl/GL.h>
-#include "BaseLogger.h"
+#include "AppLogger.hpp"
 #include "GLCamera.h"
 #include "GLScene.h"
 #include "GLLight.h"
@@ -469,10 +469,8 @@ void GLWidget::editGridProperties() {
 		_grid->setSize(dlg._w->text().toFloat(), dlg._h->text().toFloat());
 		_grid->setMajorDist(dlg._majorDist->text().toFloat());
 		_grid->setMinorCount(dlg._minorCount->text().toInt());
-		std::stringstream ss;
-		ss << "Modifying reference grid properties:\n";
-		ss << (*_grid) << "\n";
-		BaseLogger::Singleton()->info(ss.str());
+		AppLogger::logStream << AppLogger::INFO_MSG << "Modifying reference grid properties:\n";
+		AppLogger::logStream << (*_grid) << "\n" << AppLogger::END_MSG;
 		update();
 	}
 
