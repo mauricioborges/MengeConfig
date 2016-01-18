@@ -3,6 +3,7 @@
 #include "AppLogger.hpp"
 #include "GLPolygon.h"
 #include "glwidget.hpp"
+#include "MCException.h"
 
 #include <QtCore/qpoint.h>
 
@@ -16,7 +17,7 @@ using namespace Menge::Math;
 //						Implementation of DrawPolygonContext
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-DrawPolygonContext::DrawPolygonContext() : QtContext(), _state(WAITING), _polygon(0x0), _dragging(false){
+DrawPolygonContext::DrawPolygonContext() : QtContext(), _state(WAITING), _polygon(0x0), _dragging(false), _newPolyCB(0x0) {
 
 }
 
@@ -54,7 +55,9 @@ Menge::SceneGraph::ContextResult DrawPolygonContext::handleMouse(QMouseEvent * e
 					if (_polygon->_vertices.size() > 3) {
 						deleteActive();
 					}
-					// TODO: Communicate that the obstacle has been created!
+					if (_newPolyCB == 0x0 || !_newPolyCB->newPolygon(_polygon)) {
+						deleteActive();
+					}
 					result.set(true, true);
 				}
 			}
@@ -156,6 +159,32 @@ bool DrawPolygonContext::deleteActive() {
 		_polygon = 0x0;
 		_state = WAITING;
 		_dragging = false;
+		return true;
+	}
+	return false;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void DrawPolygonContext::registerNewPolyCallback(PolygonCreatedCB * callback, bool force) {
+	if (_newPolyCB) {
+		if (force) {
+			_newPolyCB = callback;
+		}
+		else {
+			throw MCException("Context already has callback.");
+		}
+	}
+	else {
+		_newPolyCB = callback;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+bool DrawPolygonContext::unregisterNewPolyCallback(PolygonCreatedCB * callback) {
+	if (_newPolyCB == callback) {
+		_newPolyCB = 0x0;
 		return true;
 	}
 	return false;

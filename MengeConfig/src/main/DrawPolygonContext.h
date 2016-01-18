@@ -9,6 +9,26 @@
 class GLPolygon;
 
 /*!
+ *	@brief		A functor for serving as the call back fo the DrawPolygonContext
+ *				when a polygon has been created.
+ */
+class PolygonCreatedCB {
+public:
+
+	/*!
+	 *	@brief		The callback when a polygon has been created.
+	 *				
+	 *	It is the responsibility of the functor to take posession (or serve
+	 *	as the means of transmission) of the polygon and then report on success.  
+	 *	
+	 *	@param		poly		The new polygon made available.
+	 *	@returns	True if ownership of the polygon is taken, false if not.
+	 *				If false is returned, the polygon will be destroyed.
+	 */
+	virtual bool newPolygon(GLPolygon * poly) = 0;
+};
+
+/*!
  *	@brief		Provides a context for drawing polygons.
  */
 class DrawPolygonContext : public QtContext {
@@ -95,6 +115,32 @@ public:
 	 */
 	bool deleteActive();
 
+	/*!
+	 *	@brief		Registers the callback functor to the context.
+	 *
+	 *	If the context already has a context, an error will be thrown.  The context
+	 *	will not allow the callback to be "hijacked" (under normal circumstances.)
+	 *	Although, this behavior can be forced.
+	 *
+	 *	@param		callback		A pointer to the callback.  The context does not
+	 *								take ownership of this.
+	 *	@param		force			If true, the callback will be set, even if there
+	 *								is already a registered callback.  False will
+	 *								cause an exception if already set.
+	 *	@throws		MCException thrown if the context already has a callback (and force is false).
+	 */
+	void registerNewPolyCallback(PolygonCreatedCB * callack, bool force = false);
+
+	/*!
+	 *	@brief		Removes the given callback from the context -- if it is
+	 *				registered.
+	 *
+	 *	@brief		callback		The callback to unregister.
+	 *	@returns	Indicates whether the callback was successfully unregistered.
+	 *				true if the given callback was previously registered.  False if not
+	 */
+	bool unregisterNewPolyCallback(PolygonCreatedCB * callback);
+
 protected:
 	/*!
 	 *	@brief		Draw context elements into the 3D world.
@@ -116,7 +162,12 @@ private:
 	GLPolygon * _polygon;
 
 	/*!
-	 *	@breif		Indicates that a point is being drawn and moved at the same time.
+	 *	@brief		Indicates that a point is being drawn and moved at the same time.
 	 */
 	bool _dragging;
+
+	/*!
+	 *	@brief		The callback for polygon creation.
+	 */
+	PolygonCreatedCB * _newPolyCB;
 };
