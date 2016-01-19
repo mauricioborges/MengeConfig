@@ -33,7 +33,7 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 		Qt::KeyboardModifiers mods = evt->modifiers();
 		if (mods == Qt::NoModifier) {
 			Vector2 world;
-			view->getWorldPos(evt->pos(), world);
+			view->getWorldPos(evt->pos(), world, true);
 			float worldDist = view->getWorldScale(15);	// 15 pixel minimum distance to be selectable
 
 			if (evt->type() == QEvent::MouseButtonPress) {
@@ -41,7 +41,7 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 					_downPos.set(world);
 					if (_mode == VERTEX) {
 						if (_activeVert) {
-							_downOrigin.set(_activeVert->x(), _activeVert->y());
+							_downOrigin.set(world.x(), world.y());
 							_dragging = true;
 						}
 						result.setHandled(true);
@@ -64,6 +64,7 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 				if (_dragging) {
 					if (_mode == VERTEX) {
 						assert(_activeVert && "Somehow dragging in vertex mode without an active vertex");
+						world = view->snap(world);
 						Vector2 newPos(_downOrigin + (world - _downPos));
 						_activeVert->set(newPos.x(), newPos.y(), _activeVert->z());
 						result.set(true, true);
