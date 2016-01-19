@@ -52,12 +52,14 @@ Menge::SceneGraph::ContextResult DrawPolygonContext::handleMouse(QMouseEvent * e
 				}
 				else if (_state == DRAWING && evt->button() == Qt::RightButton) {
 					// Log the creation/destrution of active polygon
-					if (_polygon->_vertices.size() > 3) {
+					if (_polygon->_vertices.size() < 3) {
 						deleteActive();
 					}
 					if (_newPolyCB == 0x0 || !_newPolyCB->newPolygon(_polygon)) {
 						deleteActive();
 					}
+					_polygon = 0x0;
+					_state = WAITING;
 					result.set(true, true);
 				}
 			}
