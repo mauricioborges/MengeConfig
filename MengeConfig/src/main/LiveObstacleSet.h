@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "Math/Vector3.h"
+#include "Math/Vector.h"
 using namespace Menge::Math;
 
 class GLPolygon;
@@ -39,6 +39,17 @@ public:
 	 *	@brief		Draws the polygon set to the OpenGL context.
 	 */
 	void drawGL();
+
+	/*!
+	 *	@brief		Selects the nearest vertex to the given position (up to the
+	 *				specified maximum distance.
+	 *
+	 *	@param		worldPos		The query point (in world space).
+	 *	@param		maxDist			The maximum distance to consider a candidate (in
+	 *								world space.)
+	 *	@returns	A pointer to the nearest.  If none are sufficiently close, null.
+	 */
+	Vector3 * nearestVertex(const Vector2 & worldPos, float maxDist);
 	
 protected:
 

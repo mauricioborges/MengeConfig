@@ -55,3 +55,38 @@ void LiveObstacleSet::drawGL() {
 
 	glPopAttrib();
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+Vector3 * LiveObstacleSet::nearestVertex(const Vector2 & worldPos, float maxDist) {
+	float d2 = maxDist * maxDist;
+	Vector3 * nearest = 0x0;
+	float bestDistSq = 1e6f;
+	for (GLPolygon * p : _polygons) {
+		for (size_t i = 0; i < p->_vertices.size(); ++i) {
+			Vector3 & v = p->_vertices[i];
+		//for (Vector3 & v : p->_vertices) {
+			float dx = worldPos._x - v._x;
+			float dy = worldPos._y - v._y;
+			// omitting z because I'm assuming everything is on the ground plane.
+			float distSq = dx *dx + dy * dy;
+			if (distSq < bestDistSq) {
+				bestDistSq = distSq;
+				nearest = &p->_vertices[i];
+			}
+		}
+	}
+
+	return bestDistSq <= d2 ? nearest : 0x0;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////

@@ -84,6 +84,9 @@
     <ClCompile Include="src\main\ObstacleContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\main\EditPolygonContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\glwidget.hpp">
@@ -120,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\GLPolygon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\EditPolygonContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\DrawPolygonContext.h">

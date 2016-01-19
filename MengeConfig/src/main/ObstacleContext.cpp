@@ -1,7 +1,9 @@
 #include "ObstacleContext.hpp"
 
-#include "LiveObstacleSet.h"
+#include "AppLogger.hpp"
 #include "DrawPolygonContext.h"
+#include "EditPolygonContext.h"
+#include "LiveObstacleSet.h"
 
 #include "Agents/ObstacleSets/ExplicitObstacleSet.h"
 
@@ -59,6 +61,8 @@ ObstacleContext::ObstacleContext() : _obstacleSet(0x0), _operationContexts(0x0),
 	_operationContexts.push_back(drawContext);
 
 	// edit polygon context
+	EditPolygonContext * editContext = new EditPolygonContext(_obstacleSet);
+	_operationContexts.push_back(editContext);
 
 	// set state
 	_state = NEW_OBSTACLE;
@@ -80,6 +84,11 @@ Menge::SceneGraph::ContextResult ObstacleContext::handleMouse(QMouseEvent * evt,
 	if (_state != NONE) {
 		result = _operationContexts[_state]->handleMouse(evt, view);
 	}
+	if (!result.isHandled()) {
+		// The key event is accepted by default -- ignore must be called explicitly to pass it up.
+		//	http://doc.qt.io/qt-5/qkeyevent.html#details
+		evt->ignore();
+	}
 	return result;
 }
 
@@ -89,6 +98,29 @@ Menge::SceneGraph::ContextResult ObstacleContext::handleKeyboard(QKeyEvent * evt
 	Menge::SceneGraph::ContextResult result(false, false);
 	if (_state != NONE) {
 		result = _operationContexts[_state]->handleKeyboard(evt, view);
+	}
+	if (!result.isHandled()) {
+		Qt::KeyboardModifiers mods = evt->modifiers();
+		if (evt->type() == QEvent::KeyPress) {
+			if (mods == Qt::NoModifier && evt->key() == Qt::Key_1) {
+				AppLogger::logStream << AppLogger::INFO_MSG << "Setting to new polygon" << AppLogger::END_MSG;
+				result.set(true, _state != NEW_OBSTACLE);
+				_state = NEW_OBSTACLE;
+			}
+			else if (mods == Qt::NoModifier && evt->key() == Qt::Key_2) {
+				AppLogger::logStream << AppLogger::INFO_MSG << "Setting to edit polygon" << AppLogger::END_MSG;
+				result.set(true, _state == NEW_OBSTACLE);
+				if (_state == NEW_OBSTACLE) {
+					// I need to do something with the current obstalce -- commit it or some such thing.
+				}
+				_state = EDIT_OBSTACLE;
+			}
+		}
+	}
+	if (!result.isHandled()) {
+		// The key event is accepted by default -- ignore must be called explicitly to pass it up.
+		//	http://doc.qt.io/qt-5/qkeyevent.html#details
+		evt->ignore();
 	}
 	return result;
 }

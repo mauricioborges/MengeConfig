@@ -142,6 +142,7 @@ public:
 	bool unregisterNewPolyCallback(PolygonCreatedCB * callback);
 
 protected:
+
 	/*!
 	 *	@brief		Draw context elements into the 3D world.
 	 *
