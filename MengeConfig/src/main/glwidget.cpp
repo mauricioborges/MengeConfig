@@ -523,6 +523,34 @@ bool GLWidget::getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worl
 	return false;
 }
 
+
+///////////////////////////////////////////////////////////////////////////
+
+float GLWidget::getWorldScale(float len) {
+	float length = len;
+	if (_isTopView) {
+		// THIS IS A TOTAL HACK
+		//	There should be a 4-byte enumeration at the beginning of the camera which reports
+		//	if it is perspective or orthographic
+		//  Replace this hack with proper calls into the camera when the interface is extended to
+		//	report projection type.
+		int persp = *(int*)(&_cameras[_currCam]);
+
+		float scale = 1.f;
+		if (persp == 0) {	// orthographic
+			float wWidth = _cameras[_currCam].targetDistance() / _cameras[_currCam].getOrthoScaleFactor();
+			scale = wWidth / width();
+		}
+		else {		// perspective
+			Menge::Math::Vector3 pos = _cameras[_currCam].getPosition();
+			float wHeight = 2.f * pos.z() * tan(_cameras[_currCam].getFOV() * 0.5f / 180.f * 3.141597f);
+			scale = wHeight / height();
+		}
+		length *= scale;
+	}
+	return length;
+}
+
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::setViewDirection(int direction){

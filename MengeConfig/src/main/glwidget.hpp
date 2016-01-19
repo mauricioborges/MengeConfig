@@ -228,6 +228,14 @@ public:
 	 */
 	bool getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worldPos);
 
+	/*!
+	 *	@brief		Given a length in screen space, returns the world space
+	 *				length based on current view parameters on the ground plane.
+	 *
+	 *	@param		len		The length to scale.
+	 *	@returns	The len scaled to world space.
+	 */
+	float getWorldScale(float len);
 
 public slots:
 
