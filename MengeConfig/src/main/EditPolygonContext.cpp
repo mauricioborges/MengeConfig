@@ -115,7 +115,7 @@ void EditPolygonContext::draw3DGL(bool select) {
 
 	if (_mode == VERTEX) {
 		if (_activeVert != 0x0) {
-			const float PT_SIZE = 4.f;
+			const float PT_SIZE = 6.f;
 			glColor3f(0.f, 0.f, 0.f);
 			glPointSize(PT_SIZE + 2.f);
 			glBegin(GL_POINTS);
