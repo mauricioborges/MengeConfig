@@ -223,10 +223,23 @@ public:
 	 *
 	 *	@param		screenPos		The position of the mouse in screen space.
 	 *	@param		worldPos		The point on the world x-y plane under the mouse.
+	 *	@param		ignoreSnap		If set to true, the world position will ignore the
+	 *								snap-to-grid settings.
 	 *	@returns	True if worldPos has been set (i.e., the value can be computed, false
 	 *				otherwise.)
 	 */
-	bool getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worldPos);
+	bool getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worldPos, bool ignoreSnap = false);
+
+	/*!
+	 *	@brief		Snaps the given world position to the grid (according to settings).
+	 *				
+	 *	If the settings have all snap settings turned off, the returned values will be
+	 *	equal to the input.
+	 *
+	 *	@param		pos		The position to snap (conditionally).
+	 *	@returns	The snapped position.
+	 */
+	Menge::Math::Vector2 snap(const Menge::Math::Vector2 & pos);
 
 	/*!
 	 *	@brief		Given a length in screen space, returns the world space

@@ -478,7 +478,7 @@ void GLWidget::editGridProperties() {
 
 ///////////////////////////////////////////////////////////////////////////
 
-bool GLWidget::getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worldPos) {
+bool GLWidget::getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worldPos, bool ignoreSnap) {
 	// TODO: worldPos should be in R3
 	if (_isTopView) {
 		// THIS IS A TOTAL HACK
@@ -507,22 +507,30 @@ bool GLWidget::getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worl
 		float y = pos.y() - wHalfHeight + (v * wHalfHeight * 2.f);
 		worldPos.set(x, y);
 
-		if (_activeGrid) {
-			if (_hSnap && _vSnap) {
-				worldPos = _grid->snap(worldPos);
-			}
-			else if (_hSnap) {
-				worldPos = _grid->snapHorizontal(worldPos);
-			}
-			else if (_vSnap) {
-				worldPos = _grid->snapVertical(worldPos);
-			}
+		if (!ignoreSnap ) {
+			worldPos = snap(worldPos);
 		}
 		return true;
 	} 
 	return false;
 }
 
+///////////////////////////////////////////////////////////////////////////
+
+Menge::Math::Vector2 GLWidget::snap(const Menge::Math::Vector2 & pos) {
+	if ( _activeGrid) {
+		if (_hSnap && _vSnap) {
+			return _grid->snap(pos);
+		}
+		else if (_hSnap) {
+			return _grid->snapHorizontal(pos);
+		}
+		else if (_vSnap) {
+			return _grid->snapVertical(pos);
+		}
+	}
+	return pos;
+}
 
 ///////////////////////////////////////////////////////////////////////////
 
