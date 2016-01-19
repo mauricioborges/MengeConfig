@@ -69,10 +69,19 @@
     <ClCompile Include="src\main\GLPolygon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\gen\cpp\moc_ObstacleContext.cpp">
+      <Filter>Source Files\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\LiveObstacleSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\main\DrawPolygonContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\main\QtContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\ObstacleContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,10 +113,19 @@
     <ClInclude Include="src\main\QtContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\main\ObstacleContext.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\LiveObstacleSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\main\GLPolygon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\DrawPolygonContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\MCException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

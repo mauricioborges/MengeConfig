@@ -25,7 +25,7 @@
 #include <sstream>
 
 // temporary
-#include "DrawPolygonContext.h"
+#include "ObstacleContext.hpp"
 
 ///////////////////////////////////////////////////////////////////////////
 //				IMPLEMENTATION FOR ReferenceGridProperties
@@ -131,7 +131,7 @@ GLWidget::GLWidget(QWidget *parent)
 	_cameras.push_back(camera);
 
 	_scene = new Menge::SceneGraph::GLScene();
-	_context = new DrawPolygonContext();
+	_context = new ObstacleContext();
 
 	_grid = new GridNode();
 	_grid->setSize(100.f, 100.f);

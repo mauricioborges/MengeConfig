@@ -13,6 +13,7 @@ using namespace Menge::Math;
 
 // forward declarations
 class DrawPolygonContext;
+class LiveObstacleSet;
 
 /*!
  *	@brief		A simple closed polygon -- a sequence of points.
@@ -63,6 +64,7 @@ public:
 	void makeCCW();
 
 	friend class DrawPolygonContext;
+	friend class LiveObstacleSet;
 
 protected:
 

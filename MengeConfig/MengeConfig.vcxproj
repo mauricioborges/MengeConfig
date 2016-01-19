@@ -23,11 +23,14 @@
     <ClCompile Include="src\gen\cpp\moc_FSMViewer.cpp" />
     <ClCompile Include="src\gen\cpp\moc_glwidget.cpp" />
     <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp" />
+    <ClCompile Include="src\gen\cpp\moc_ObstacleContext.cpp" />
     <ClCompile Include="src\gen\cpp\moc_SceneHierarchy.cpp" />
     <ClCompile Include="src\gen\cpp\moc_SceneViewer.cpp" />
     <ClCompile Include="src\gen\cpp\qrc_MengeConfig.cpp" />
     <ClCompile Include="src\main\AppLogger.cpp" />
     <ClCompile Include="src\main\DrawPolygonContext.cpp" />
+    <ClCompile Include="src\main\LiveObstacleSet.cpp" />
+    <ClCompile Include="src\main\ObstacleContext.cpp" />
     <ClCompile Include="src\main\FSMViewer.cpp" />
     <ClCompile Include="src\main\glwidget.cpp" />
     <ClCompile Include="src\main\GridNode.cpp" />
@@ -42,6 +45,9 @@
   <ItemGroup>
     <ClInclude Include="src\main\AppLogger.hpp" />
     <ClInclude Include="src\main\DrawPolygonContext.h" />
+    <ClInclude Include="src\main\LiveObstacleSet.h" />
+    <ClInclude Include="src\main\MCException.h" />
+    <ClInclude Include="src\main\ObstacleContext.hpp" />
     <ClInclude Include="src\main\FSMViewer.hpp" />
     <ClInclude Include="src\main\glwidget.hpp" />
     <ClInclude Include="src\main\GridNode.h" />
@@ -126,7 +132,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(QTDir)\include;$(MengeDir)\MengeCore;$(MengeDir)\MengeCore\Runtime;$(MengeDir)\MengeCore\viewer;$(MengeDir)\MengeCore\SceneGraph;$(MengeDir)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(QTDir)\include;$(MengeDir)\MengeCore;$(MengeDir)\MengeCore\Runtime;$(MengeDir)\MengeCore\viewer;$(MengeDir)\MengeCore\SceneGraph;$(MengeDir)\include;$(MengeDir)\MengeCore\Agents;$(MengeDir)\MengeCore\PluginEngine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -176,7 +182,7 @@ xcopy "$(MengeDepDll)*.dll" "$(TargetDir)" /y /d</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(QTDir)\include;$(MengeDir)\MengeCore;$(MengeDir)\MengeCore\Runtime;$(MengeDir)\MengeCore\viewer;$(MengeDir)\MengeCore\SceneGraph;$(MengeDir)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(QTDir)\include;$(MengeDir)\MengeCore;$(MengeDir)\MengeCore\Runtime;$(MengeDir)\MengeCore\viewer;$(MengeDir)\MengeCore\SceneGraph;$(MengeDir)\include;$(MengeDir)\MengeCore\Agents;$(MengeDir)\MengeCore\PluginEngine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
