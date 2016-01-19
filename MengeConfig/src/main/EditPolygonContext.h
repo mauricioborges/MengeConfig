@@ -7,9 +7,9 @@
 #define __EDIT_POLYGON_CONTEXT_H__
 
 #include "QtCOntext.h"
+#include "LiveObstacleSet.h"
 
 // forward declarations
-class LiveObstacleSet;
 class GLPolygon;
 
 /*!
@@ -105,7 +105,7 @@ protected:
 	/*!
 	 *	@brief		The active vertex.
 	 */
-	Vector3 * _activeVert;
+	SelectVertex _activeVert;
 
 	/*!
 	 *	@brief		Indicates if a feature is currently being moved (true).

@@ -58,35 +58,72 @@ void LiveObstacleSet::drawGL() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-Vector3 * LiveObstacleSet::nearestVertex(const Vector2 & worldPos, float maxDist) {
+SelectVertex LiveObstacleSet::nearestVertex(const Vector2 & worldPos, float maxDist) {
+	SelectVertex sv;
 	float d2 = maxDist * maxDist;
-	Vector3 * nearest = 0x0;
 	float bestDistSq = 1e6f;
 	for (GLPolygon * p : _polygons) {
 		for (size_t i = 0; i < p->_vertices.size(); ++i) {
 			Vector3 & v = p->_vertices[i];
-		//for (Vector3 & v : p->_vertices) {
 			float dx = worldPos._x - v._x;
 			float dy = worldPos._y - v._y;
 			// omitting z because I'm assuming everything is on the ground plane.
 			float distSq = dx *dx + dy * dy;
-			if (distSq < bestDistSq) {
+			if (distSq < bestDistSq && distSq < d2) {
 				bestDistSq = distSq;
-				nearest = &p->_vertices[i];
+				sv._vert = &p->_vertices[i];
+				sv._poly = p;
 			}
 		}
 	}
 
-	return bestDistSq <= d2 ? nearest : 0x0;
+	return sv;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-
 ///////////////////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////////////////
+//                    Implementation of SelectVertex
+///////////////////////////////////////////////////////////////////////////////
 
+SelectVertex::SelectVertex(const SelectVertex & sv) : _vert(sv._vert), _poly(sv._poly) {
+}
 
 ///////////////////////////////////////////////////////////////////////////////
+
+SelectVertex::SelectVertex() : _vert(0x0), _poly(0x0) {
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+SelectVertex::SelectVertex(Vector3 * v, GLPolygon * p) : _vert(v), _poly(p) {
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void SelectVertex::set(float x, float y, float z) {
+	_vert->set(x, y, z);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool SelectVertex::operator==(const SelectVertex &sv) {
+	return _vert == sv._vert;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+SelectVertex & SelectVertex::operator=(const SelectVertex &sv) {
+	_vert = sv._vert;
+	_poly = sv._poly;
+	return (*this);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool SelectVertex::operator!=(const SelectVertex &sv) {
+	return _vert != sv._vert;
+}

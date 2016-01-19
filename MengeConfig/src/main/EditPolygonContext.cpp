@@ -15,7 +15,7 @@ using namespace Menge::Math;
 //						Implementation of EditPolygonContext
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-EditPolygonContext::EditPolygonContext(LiveObstacleSet * polygons) : _obstacleSet(polygons), _activePoly(0x0), _activeVert(0x0), _dragging(false), _mode(VERTEX) {
+EditPolygonContext::EditPolygonContext(LiveObstacleSet * polygons) : _obstacleSet(polygons), _activePoly(0x0), _activeVert(), _dragging(false), _mode(VERTEX) {
 
 }
 
@@ -40,7 +40,7 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 				if (evt->button() == Qt::LeftButton) {
 					_downPos.set(world);
 					if (_mode == VERTEX) {
-						if (_activeVert) {
+						if (_activeVert.isValid()) {
 							_downOrigin.set(world.x(), world.y());
 							_dragging = true;
 						}
@@ -49,7 +49,7 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 				}
 				else if (evt->button() == Qt::RightButton && _dragging) {
 					if (_mode == VERTEX && _dragging) {
-						_activeVert->set(_downOrigin.x(), _downOrigin.y(), _activeVert->z());
+						_activeVert.set(_downOrigin.x(), _downOrigin.y(), _activeVert.z());
 						_dragging = false;
 						result.set(true, true);
 					}
@@ -63,17 +63,17 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 			else if (evt->type() == QEvent::MouseMove) {
 				if (_dragging) {
 					if (_mode == VERTEX) {
-						assert(_activeVert && "Somehow dragging in vertex mode without an active vertex");
+						assert(_activeVert.isValid() && "Somehow dragging in vertex mode without an active vertex");
 						world = view->snap(world);
 						Vector2 newPos(_downOrigin + (world - _downPos));
-						_activeVert->set(newPos.x(), newPos.y(), _activeVert->z());
+						_activeVert.set(newPos.x(), newPos.y(), _activeVert.z());
 						result.set(true, true);
 					}
 				}
 				else if (_mode != NO_EDIT) { 
 					if (_mode == VERTEX) {
 						AppLogger::logStream << AppLogger::INFO_MSG << "Querying vertices at " << world << ", max dist: " << worldDist << AppLogger::END_MSG;
-						Vector3 * v = _obstacleSet->nearestVertex(world, worldDist);
+						SelectVertex v = _obstacleSet->nearestVertex(world, worldDist);
 						result.set(true, v != _activeVert);
 						_activeVert = v;
 					}
@@ -114,19 +114,19 @@ void EditPolygonContext::draw3DGL(bool select) {
 	glDisable(GL_DEPTH_TEST);
 
 	if (_mode == VERTEX) {
-		if (_activeVert != 0x0) {
+		if (_activeVert.isValid()) {
 			const float PT_SIZE = 6.f;
 			glColor3f(0.f, 0.f, 0.f);
 			glPointSize(PT_SIZE + 2.f);
 			glBegin(GL_POINTS);
-			glVertex3f(_activeVert->x(), _activeVert->y(), _activeVert->z());
+			glVertex3f(_activeVert.x(), _activeVert.y(), _activeVert.z());
 			glEnd();
 
 			// draw points
 			glColor3f(1.f, 0.9f, 0.f);
 			glPointSize(PT_SIZE);
 			glBegin(GL_POINTS);
-			glVertex3f(_activeVert->x(), _activeVert->y(), _activeVert->z());
+			glVertex3f(_activeVert.x(), _activeVert.y(), _activeVert.z());
 			glEnd();
 		}
 	}
