@@ -15,8 +15,8 @@ class GLPolygon;
 
 
 /*!
-*	@brief		A vertex drawn from the obstacle set.
-*/
+ *	@brief		A vertex drawn from the obstacle set.
+ */
 class SelectVertex {
 public:
 	
@@ -143,6 +143,7 @@ public:
 	 */
 	void addPolygon(GLPolygon * poly);
 
+	void removePolygon(GLPolygon * poly);
 
 	/*!
 	 *	@brief		Removes the selected vertex from its polygon -- if the polygon
@@ -158,15 +159,27 @@ public:
 	void drawGL();
 
 	/*!
-	 *	@brief		Selects the nearest vertex to the given position (up to the
-	 *				specified maximum distance.
-	 *
-	 *	@param		worldPos		The query point (in world space).
-	 *	@param		maxDist			The maximum distance to consider a candidate (in
-	 *								world space.)
-	 *	@returns	A pointer to the nearest.  If none are sufficiently close, null.
-	 */
+	*	@brief		Selects the nearest vertex to the given position (up to the
+	*				specified maximum distance.
+	*
+	*	@param		worldPos		The query point (in world space).
+	*	@param		maxDist			The maximum distance to consider a candidate (in
+	*								world space.)
+	*	@returns	A SelectVertex representing the nearest vertex.  If none are sufficiently
+	*				close, the instance will report as "invalid".
+	*/
 	SelectVertex nearestVertex(const Vector2 & worldPos, float maxDist);
+
+	/*!
+	*	@brief		Selects the nearest polygon to the given position (up to the
+	*				specified maximum distance.
+	*
+	*	@param		worldPos		The query point (in world space).
+	*	@param		maxDist			The maximum distance to consider a candidate (in
+	*								world space.)
+	*	@returns	A pointer to the nearest polygon.  If none are sufficiently close, null.
+	*/
+	GLPolygon * nearestPolygon(const Vector2 & worldPos, float maxDist);
 	
 protected:
 

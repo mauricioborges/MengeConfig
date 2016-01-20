@@ -8,12 +8,153 @@
 
 #include <vector>
 
-#include "Math/Vector3.h"
+#include "Math/Vector.h"
 using namespace Menge::Math;
 
 // forward declarations
 class DrawPolygonContext;
 class LiveObstacleSet;
+class EditPolygonContext;
+class GLPolygon;
+
+/*!
+*	@brief		An edge drawn from the obstacle set.
+*/
+class SelectEdge {
+public:
+
+	/*!
+	 *	Constructor.
+	 */
+	SelectEdge();
+
+	/*!
+	 *	@brief		Copy constructor.
+	 *
+	 *	@param		sv		The select vertex to copy.
+	 */
+	SelectEdge(const SelectEdge & sv);
+
+	/*!
+	 *	@brief		Reports if a vertex was actually selected.
+	 *
+	 *	@returns	True if this contains a vertex, false if not.
+	 */
+	inline bool isValid() const { return _v0 != 0x0; }
+
+	/*!
+	 *	@brief		Clears the selected vertex.
+	 */
+	inline void clear() {
+		_v0 = 0x0;
+		_v1 = 0x0;
+		_poly = 0x0;
+	}
+
+	/*!
+	 *	@brief		Sets the x and y values of the underlying vertex.
+	 *
+	 *	@param		x		The vertex's x value.
+	 *	@param		y		The vertex's y value.
+	 *	@param		z		The vertex's y value.
+	 */
+	void set0(float x, float y, float z);
+
+	/*!
+	 *	@brief		Retrieves the x-component of the underlying vertex.
+	 */
+	inline float x0() const { return _v0->x(); }
+
+	/*!
+	 *	@brief		Retrieves the y-component of the underlying vertex.
+	 */
+	inline float y0() const { return _v0->y(); }
+
+	/*!
+	 *	@brief		Retrieves the z-component of the underlying vertex.
+	 */
+	inline float z0() const { return _v0->z(); }
+
+	/*!
+	*	@brief		Sets the x and y values of the underlying vertex.
+	*
+	*	@param		x		The vertex's x value.
+	*	@param		y		The vertex's y value.
+	*	@param		z		The vertex's y value.
+	*/
+	void set1(float x, float y, float z);
+
+	/*!
+	*	@brief		Retrieves the x-component of the underlying vertex.
+	*/
+	inline float x1() const { return _v1->x(); }
+
+	/*!
+	*	@brief		Retrieves the y-component of the underlying vertex.
+	*/
+	inline float y1() const { return _v1->y(); }
+
+	/*!
+	*	@brief		Retrieves the z-component of the underlying vertex.
+	*/
+	inline float z1() const { return _v1->z(); }
+
+	/*!
+	*	@brief		Assignment operator.
+	*
+	*	@param		sv		The select vertex to copy.
+	*/
+	SelectEdge & operator=(const SelectEdge &sv);
+
+	/*!
+	*	@brief		Reports if the two select vertices match.
+	*
+	*	@param		sv		The vertex to compare with this one.
+	*	@returns	True if they reference the same underlying vertex.
+	*				False otherwise -- even if they *contain* the same
+	*				numerical values.
+	*/
+	bool operator==(const SelectEdge &sv);
+
+	/*!
+	*	@brief		Reports if the two select vertices are different.
+	*
+	*	@param		sv		The vertex to compare with this one.
+	*	@returns	True if they reference the different underlying vertices.
+	*/
+	bool operator!=(const SelectEdge &sv);
+
+	// Only live obstacle set can create new instances.
+	friend class LiveObstacleSet;
+	friend class GLPolygon;
+
+private:
+
+	/*!
+	*	Constructor.
+	*
+	*	@param		v0		The first vertex referenced.
+	*	@param		v1		The second vertex referenced.
+	*	@param		p		The polygon to which this belongs.
+	*/
+	SelectEdge(Vector3 * v0, Vector3 * v1, GLPolygon * p);
+
+	/*!
+	*	The first vertex in the edge.
+	*/
+	Vector3 *	_v0;
+
+	/*!
+	*	The second vertex in the edge.
+	*/
+	Vector3 *	_v1;
+
+	/*!
+	*	The polygon the vertex belongs to.
+	*/
+	GLPolygon * _poly;
+
+};
 
 /*!
  *	@brief		A simple closed polygon -- a sequence of points.
@@ -71,8 +212,27 @@ public:
 	 */
 	size_t removeVertex(Vector3 * v);
 
+	/*!
+	 *	@brief		Computes the smallest distance between the query point and
+	 *				the polygon (as projected on the x-y plane.
+	 *
+	 *	@param		v		The query point on the x-y plane.
+	 *	@returns	The squared distance between v and the polygon.
+	 */
+	float distSquaredXY(const Vector2 & v);
+
+	/*!
+	 *	@brief		Finds the nearest edge to the query point (projected onto the x-y plane.
+	 *
+	 *	@param		v		The query point.
+	 *	@param		edge	The edge data will be populated into this edge.
+	 *	@returns	The squared distance to this edge.
+	 */
+	float nearestEdgeXY(const Vector2 & v, SelectEdge & edge);
+
 	friend class DrawPolygonContext;
 	friend class LiveObstacleSet;
+	friend class EditPolygonContext;
 
 protected:
 

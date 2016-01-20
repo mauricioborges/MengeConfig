@@ -3,13 +3,50 @@
 #include <cassert>
 
 ///////////////////////////////////////////////////////////////////////////////
+//                    Implementation of Helper method
+///////////////////////////////////////////////////////////////////////////////
+
+/*!
+ *	@brief		Computes the distance to the edge defined by v0 and v1 to the
+ *				query point q projected on the x-y plane.
+ *
+ *	@param		v0		The first point of the edge.
+ *	@param		v2		The second point of the edge.
+ *	@param		q		The query point.
+ */
+float distSqXY(const Vector3 & v0, const Vector3 & v1, const Vector2 & q) {
+	Vector2 u0(v0.x(), v0.y());
+	Vector2 u1(v1.x(), v1.y());
+	Vector2 dir(u1 - u0);
+	Vector2 p(q - u0);
+	float len = dir.Length();
+	if (len > 0.0001f) {
+		dir /= len;	// normalize
+		float dp = p * dir;
+		if (dp < 0) {
+			return p * p;
+		}
+		else if (dp > len) {
+			p.set(q - u1);
+			return p * p;
+		}
+		else {
+			float dist = det(dir, p);
+			return dist * dist;
+		}
+	}
+	else {
+		return p * p;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////
 //                    Implementation of GLGLPolygon
 ///////////////////////////////////////////////////////////////////////////////
 
 const Vector3 GLPolygon::PLANE_NORMAL(0.f, 0.f, 1.f);
 
 ///////////////////////////////////////////////////////////////////////////////
-
 
 GLPolygon::GLPolygon() : _vertices(), _winding(NO_WINDING){
 
@@ -90,7 +127,6 @@ GLPolygon::Winding GLPolygon::computeWinding(const Vector3 & upDir) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-
 size_t GLPolygon::removeVertex(Vector3 * v) {
 	std::vector<Vector3>::iterator itr = _vertices.begin();
 	for (; itr != _vertices.end(); ++itr) {
@@ -101,4 +137,81 @@ size_t GLPolygon::removeVertex(Vector3 * v) {
 		}
 	}
 	return _vertices.size();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+float GLPolygon::distSquaredXY(const Vector2 & v) {
+	SelectEdge nearest;
+	return nearestEdgeXY(v, nearest);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+float GLPolygon::nearestEdgeXY(const Vector2 & v, SelectEdge & edge) {
+	int j = _vertices.size() - 1;
+	float bestDistSq = distSqXY(_vertices[j], _vertices[0], v);
+	edge = SelectEdge(&(_vertices[j]), &(_vertices[0]), this);
+	SelectEdge temp;
+	for (size_t i = 0; i < _vertices.size() - 1; ++i) {
+		const Vector3 & v0 = _vertices[i];
+		const Vector3 & v1 = _vertices[i + 1];
+		float distSq = distSqXY(v0, v1, v);
+		if (distSq < bestDistSq) {
+			bestDistSq = distSq;
+			edge = SelectEdge(&(_vertices[i]), &(_vertices[i+1]), this);
+		}
+	}
+	return bestDistSq;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//                    Implementation of SelectEdge
+///////////////////////////////////////////////////////////////////////////////
+
+SelectEdge::SelectEdge(const SelectEdge & se) : _v0(se._v0), _v1(se._v1), _poly(se._poly) {
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+SelectEdge::SelectEdge() : _v0(0x0), _v1(0x0), _poly(0x0) {
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+SelectEdge::SelectEdge(Vector3 * v0, Vector3 * v1, GLPolygon * p) : _v0(v0), _v1(v1), _poly(p) {
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void SelectEdge::set0(float x, float y, float z) {
+	_v0->set(x, y, z);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void SelectEdge::set1(float x, float y, float z) {
+	_v1->set(x, y, z);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool SelectEdge::operator==(const SelectEdge &sv) {
+	// this is sufficent because it should serve as a unique identifier.
+	return _v0 == sv._v0;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+SelectEdge & SelectEdge::operator=(const SelectEdge &se) {
+	_v0 = se._v0;
+	_v1 = se._v1;
+	_poly = se._poly;
+	return (*this);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool SelectEdge::operator!=(const SelectEdge &sv) {
+	return _v0 != sv._v1;
 }

@@ -29,7 +29,6 @@ class EditPolygonContext : public QtContext {
 
 public:
 
-
 	/*!
 	 *	@brief		Constructor.
 	 *
@@ -74,6 +73,13 @@ public:
 	 */
 	virtual void deactivate();
 
+	/*!
+	 *	@brief		Sets the mode of the context.
+	 *
+	 *	@param		mode		The mode to change to.
+	 */
+	void setState(EditMode mode);
+
 
 protected:
 
@@ -101,6 +107,11 @@ protected:
 	 *	@brief		The polygon currently being edited.  The class does *not* own this polygon.
 	 */
 	GLPolygon * _activePoly;
+
+	/*!
+	 *	@brief		Cached vertex positions of the active polygon.
+	 */
+	std::vector<Vector2> _polyVertices;
 
 	/*!
 	 *	@brief		The active vertex.
