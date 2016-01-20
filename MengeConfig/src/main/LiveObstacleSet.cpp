@@ -82,6 +82,22 @@ SelectVertex LiveObstacleSet::nearestVertex(const Vector2 & worldPos, float maxD
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void LiveObstacleSet::removeVertex(const SelectVertex & vertex) {
+	size_t vCount = vertex._poly->removeVertex(vertex._vert);
+	if (vCount < 3) {
+		std::vector<GLPolygon *>::iterator itr = _polygons.begin();
+		for (; itr != _polygons.end(); ++itr) {
+			if (*itr == vertex._poly) {
+				_polygons.erase(itr);
+				return;
+			}
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 

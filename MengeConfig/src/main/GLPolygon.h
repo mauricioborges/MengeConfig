@@ -63,6 +63,14 @@ public:
 	 */
 	void makeCCW();
 
+	/*!
+	 *	@brief		Removes the given vertex from this polygon.
+	 *
+	 *	@param		v		A pointer to the vertex to remove.
+	 *	@returns	The number of vertices remaining.
+	 */
+	size_t removeVertex(Vector3 * v);
+
 	friend class DrawPolygonContext;
 	friend class LiveObstacleSet;
 

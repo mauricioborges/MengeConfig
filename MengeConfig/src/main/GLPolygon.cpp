@@ -87,3 +87,18 @@ GLPolygon::Winding GLPolygon::computeWinding(const Vector3 & upDir) {
 	}
 	return turning < 0.f ? CW : CCW;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+size_t GLPolygon::removeVertex(Vector3 * v) {
+	std::vector<Vector3>::iterator itr = _vertices.begin();
+	for (; itr != _vertices.end(); ++itr) {
+		if (&(*itr) == v) {
+			_vertices.erase(itr);
+			if (_vertices.size() >= 3) _winding = computeWinding(PLANE_NORMAL);
+			break;
+		}
+	}
+	return _vertices.size();
+}

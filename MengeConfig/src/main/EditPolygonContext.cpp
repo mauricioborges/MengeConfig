@@ -90,7 +90,26 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 Menge::SceneGraph::ContextResult EditPolygonContext::handleKeyboard(QKeyEvent * evt, GLWidget * view) {
-	Menge::SceneGraph::ContextResult result(false, false);
+	Menge::SceneGraph::ContextResult result = QtContext::handleKeyboard(evt, view);
+
+	if (!result.isHandled()) {
+		Qt::KeyboardModifiers mods = evt->modifiers();
+		bool noMods = mods == Qt::NoModifier;
+		if (evt->type() == QEvent::KeyPress) {
+				if (noMods && evt->key() == Qt::Key_C) {
+					if (_activeVert.isValid()) {
+					_obstacleSet->removeVertex(_activeVert);
+					_activeVert.clear();
+					result.set(true, true);
+				} // else if _activeEdge
+			}
+		}
+	}
+	if (!result.isHandled()) {
+		// The key event is accepted by default -- ignore must be called explicitly to pass it up.
+		//	http://doc.qt.io/qt-5/qkeyevent.html#details
+		evt->ignore();
+	}
 	return result;
 }
 

@@ -143,6 +143,15 @@ public:
 	 */
 	void addPolygon(GLPolygon * poly);
 
+
+	/*!
+	 *	@brief		Removes the selected vertex from its polygon -- if the polygon
+	 *				ends up with 2 vertices, the polygon in turn is deleted.
+	 *
+	 *	@param		vertex		The selected vertex to delete.
+	 */
+	void removeVertex(const SelectVertex & vertex);
+
 	/*!
 	 *	@brief		Draws the polygon set to the OpenGL context.
 	 */
