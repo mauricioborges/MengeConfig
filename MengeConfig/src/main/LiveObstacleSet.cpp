@@ -100,7 +100,13 @@ GLPolygon * LiveObstacleSet::nearestPolygon(const Vector2 & worldPos, float maxD
 ///////////////////////////////////////////////////////////////////////////////
 
 void LiveObstacleSet::removePolygon(GLPolygon * poly) {
-	// TODO: Implement this
+	std::vector<GLPolygon *>::iterator itr = _polygons.begin();
+	for (; itr != _polygons.end(); ++itr) {
+		if (*itr == poly) {
+			_polygons.erase(itr);
+			return;
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -108,13 +114,7 @@ void LiveObstacleSet::removePolygon(GLPolygon * poly) {
 void LiveObstacleSet::removeVertex(const SelectVertex & vertex) {
 	size_t vCount = vertex._poly->removeVertex(vertex._vert);
 	if (vCount < 3) {
-		std::vector<GLPolygon *>::iterator itr = _polygons.begin();
-		for (; itr != _polygons.end(); ++itr) {
-			if (*itr == vertex._poly) {
-				_polygons.erase(itr);
-				return;
-			}
-		}
+		removePolygon(vertex._poly);
 	}
 }
 

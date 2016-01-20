@@ -143,6 +143,11 @@ public:
 	 */
 	void addPolygon(GLPolygon * poly);
 
+	/*!
+	 *	@brief		Remvoes the given polygon from the obstacle set.
+	 *
+	 *	@param		poly		The polygon to remove.
+	 */
 	void removePolygon(GLPolygon * poly);
 
 	/*!
