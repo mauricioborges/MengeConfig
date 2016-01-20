@@ -8,9 +8,7 @@
 
 #include "QtCOntext.h"
 #include "LiveObstacleSet.h"
-
-// forward declarations
-class GLPolygon;
+#include "GLPolygon.h"
 
 /*!
  *	@brief		Context for editing existing polygons.
@@ -77,8 +75,9 @@ public:
 	 *	@brief		Sets the mode of the context.
 	 *
 	 *	@param		mode		The mode to change to.
+	 *	@param		Returns true if the state actually changed.
 	 */
-	void setState(EditMode mode);
+	bool setState(EditMode mode);
 
 
 protected:
@@ -117,6 +116,16 @@ protected:
 	 *	@brief		The active vertex.
 	 */
 	SelectVertex _activeVert;
+
+	/*!
+	 *	@brief		The offset from the first vertex to the second vertex of the active edge.
+	 */
+	Vector2	_edgeOffset;
+
+	/*!
+	 *	@brief		The edge currently being edited.
+	 */
+	SelectEdge _activeEdge;
 
 	/*!
 	 *	@brief		Indicates if a feature is currently being moved (true).

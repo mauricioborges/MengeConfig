@@ -1,5 +1,4 @@
 #include "LiveObstacleSet.h"
-#include "GLPolygon.h"
 #include "glwidget.hpp"
 
 #include <gl/GL.h>
@@ -91,6 +90,23 @@ GLPolygon * LiveObstacleSet::nearestPolygon(const Vector2 & worldPos, float maxD
 		float distSq = p->distSquaredXY(worldPos);
 		if (distSq < bestDistSq && distSq < d2) {
 			nearest = p;
+			bestDistSq = distSq;
+		}
+	}
+	return nearest;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+SelectEdge LiveObstacleSet::nearestEdge(const Vector2 & worldPos, float maxDist) {
+	float d2 = maxDist * maxDist;
+	SelectEdge nearest;
+	float bestDistSq = 1e6f;
+	SelectEdge e;
+	for (GLPolygon * p : _polygons) {
+		float distSq = p->nearestEdgeXY(worldPos, e);
+		if (distSq < bestDistSq && distSq < d2) {
+			nearest = e;
 			bestDistSq = distSq;
 		}
 	}

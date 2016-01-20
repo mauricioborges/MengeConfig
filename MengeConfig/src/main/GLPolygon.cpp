@@ -184,14 +184,14 @@ SelectEdge::SelectEdge(Vector3 * v0, Vector3 * v1, GLPolygon * p) : _v0(v0), _v1
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SelectEdge::set0(float x, float y, float z) {
-	_v0->set(x, y, z);
+void SelectEdge::set0(const Vector2 & v) {
+	_v0->set(v.x(), v.y(), _v0->z());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SelectEdge::set1(float x, float y, float z) {
-	_v1->set(x, y, z);
+void SelectEdge::set1(const Vector2 & v) {
+	_v1->set(v.x(), v.y(), _v1->z());
 }
 
 ///////////////////////////////////////////////////////////////////////////////

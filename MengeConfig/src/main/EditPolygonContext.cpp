@@ -50,10 +50,16 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 							_downOrigin.set(_activePoly->_vertices[0].x(), _activePoly->_vertices[0].y());
 							_polyVertices.resize(_activePoly->_vertices.size() );
 							for (size_t i = 0; i < _activePoly->_vertices.size(); ++i) {
-								_polyVertices[i] = Vector2(_activePoly->_vertices[i].x() - _downOrigin.x(), _activePoly->_vertices[i].y() - _downOrigin.y());
+								_polyVertices[i].set(_activePoly->_vertices[i].x() - _downOrigin.x(), _activePoly->_vertices[i].y() - _downOrigin.y());
 							}
 							_dragging = true;
 						}
+					}
+					else if (_mode == EDGE) {
+						_downOrigin.set(_activeEdge._v0->x(), _activeEdge._v0->y());
+						_edgeOffset.set(_activeEdge._v1->x() - _activeEdge._v0->x(),
+							_activeEdge._v1->y() - _activeEdge._v0->y());
+						_dragging = true;
 					}
 					result.setHandled(true);
 				}
@@ -67,6 +73,10 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 								_downOrigin.y() + _polyVertices[i].y(), 
 								_activePoly->_vertices[i].z());
 						}
+					}
+					else if (_mode == EDGE) {
+						_activeEdge.set0(_downOrigin);
+						_activeEdge.set1(_downOrigin + _edgeOffset);
 					}
 					_dragging = false;
 					result.set(true, true);
@@ -93,6 +103,10 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 								_activePoly->_vertices[i].z());
 						}
 					}
+					else if (_mode == EDGE) {
+						_activeEdge.set0(newPos);
+						_activeEdge.set1(newPos + _edgeOffset);
+					}
 					result.set(true, true);
 				}
 				else if (_mode != NO_EDIT) { 
@@ -108,6 +122,12 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 						result.set(true, poly != _activePoly);
 						_activePoly = poly;
 						AppLogger::logStream << AppLogger::INFO_MSG << "Polygon: " << _activePoly << AppLogger::END_MSG;
+					}
+					else if (_mode == EDGE) {
+						AppLogger::logStream << AppLogger::INFO_MSG << "Querying edges at " << world << ", max dist: " << worldDist << AppLogger::END_MSG;
+						SelectEdge e = _obstacleSet->nearestEdge(world, worldDist);
+						result.set(true, e != _activeEdge);
+						_activeEdge = e;
 					}
 					else {
 						AppLogger::logStream << AppLogger::INFO_MSG << "No support for edge or polygon yet." << AppLogger::END_MSG;
@@ -129,24 +149,36 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleKeyboard(QKeyEvent * 
 		bool noMods = mods == Qt::NoModifier;
 		if (evt->type() == QEvent::KeyPress) {
 			if (noMods && evt->key() == Qt::Key_V) {
-				result.set(true, _mode != VERTEX);
-				_mode = VERTEX;
+				result.set(true, setState(VERTEX));
+				
+			}
+			else if (noMods && evt->key() == Qt::Key_E) {
+				result.set(true, setState(EDGE));
+				
 			}
 			else if (noMods && evt->key() == Qt::Key_P) {
-				result.set(true, _mode != POLY);
-				_mode = POLY;
+				result.set(true, setState(_mode = POLY));
 			}
 			else if (noMods && evt->key() == Qt::Key_R && _activePoly) {
 				_activePoly->reverseWinding();
 				result.set(true, true);
 			}
-			else 
-				if (noMods && evt->key() == Qt::Key_C) {
-					if (_activeVert.isValid()) {
+			else if (noMods && evt->key() == Qt::Key_C) {
+				if (_activePoly) {
+					_obstacleSet->removePolygon(_activePoly);
+					_activePoly = 0x0;
+					result.set(true, true);
+				}
+				else if (_activeVert.isValid()) {
 					_obstacleSet->removeVertex(_activeVert);
 					_activeVert.clear();
 					result.set(true, true);
-				} // else if _activeEdge
+				}
+				else if (_activeEdge.isValid()) {
+					//_obstacleSet->removeEdge(_activeEdge);
+					_activeEdge.clear();
+					result.set(true, true);
+				}
 			}
 		}
 	}
@@ -172,13 +204,16 @@ void EditPolygonContext::deactivate() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void EditPolygonContext::setState(EditMode mode) {
+bool EditPolygonContext::setState(EditMode mode) {
 	if (mode != _mode) {
 		_mode = mode;
 		_dragging = false;
 		_activePoly = 0x0;
 		_activeVert.clear();
+		_activeEdge.clear();
+		return true;
 	}
+	return false;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -223,6 +258,23 @@ void EditPolygonContext::draw3DGL(bool select) {
 				glVertex3f(v.x(), v.y(), v.z());
 			}
 			glVertex3f(_activePoly->_vertices[0].x(), _activePoly->_vertices[0].y(), _activePoly->_vertices[0].z());
+			glEnd();
+		}
+	}
+	else if (_mode == EDGE) {
+		if (_activeEdge.isValid()) {
+			glColor3f(0.f, 0.f, 0.0f);
+			glLineWidth(5.f);
+			glBegin(GL_LINE_LOOP);
+			glVertex3f(_activeEdge._v0->x(), _activeEdge._v0->y(), _activeEdge._v0->z());
+			glVertex3f(_activeEdge._v1->x(), _activeEdge._v1->y(), _activeEdge._v1->z());
+			glEnd();
+
+			glColor3f(0.9f, 0.9f, 0.0f);
+			glLineWidth(3.f);
+			glBegin(GL_LINE_LOOP);
+			glVertex3f(_activeEdge._v0->x(), _activeEdge._v0->y(), _activeEdge._v0->z());
+			glVertex3f(_activeEdge._v1->x(), _activeEdge._v1->y(), _activeEdge._v1->z());
 			glEnd();
 		}
 	}

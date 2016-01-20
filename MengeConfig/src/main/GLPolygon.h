@@ -54,11 +54,9 @@ public:
 	/*!
 	 *	@brief		Sets the x and y values of the underlying vertex.
 	 *
-	 *	@param		x		The vertex's x value.
-	 *	@param		y		The vertex's y value.
-	 *	@param		z		The vertex's y value.
+	 *	@param		v		The 2D vector to get the x-y values from.
 	 */
-	void set0(float x, float y, float z);
+	void set0(const Vector2 & v);
 
 	/*!
 	 *	@brief		Retrieves the x-component of the underlying vertex.
@@ -78,11 +76,9 @@ public:
 	/*!
 	*	@brief		Sets the x and y values of the underlying vertex.
 	*
-	*	@param		x		The vertex's x value.
-	*	@param		y		The vertex's y value.
-	*	@param		z		The vertex's y value.
+	*	@param		v		The 2D vector to get the x-y values from.
 	*/
-	void set1(float x, float y, float z);
+	void set1(const Vector2 & v);
 
 	/*!
 	*	@brief		Retrieves the x-component of the underlying vertex.
@@ -127,6 +123,7 @@ public:
 	// Only live obstacle set can create new instances.
 	friend class LiveObstacleSet;
 	friend class GLPolygon;
+	friend class EditPolygonContext;
 
 private:
 
