@@ -181,7 +181,7 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleKeyboard(QKeyEvent * 
 					result.set(true, true);
 				}
 				else if (_activeEdge.isValid()) {
-					//_obstacleSet->removeEdge(_activeEdge);
+					_obstacleSet->collapseEdge(_activeEdge);
 					_activeEdge.clear();
 					result.set(true, true);
 				}

@@ -141,6 +141,29 @@ size_t GLPolygon::removeVertex(Vector3 * v) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+size_t GLPolygon::collapseEdge(Vector3 * v) {
+	Vector3 * start = &_vertices[0];
+	size_t delta = v - start;
+	if (delta == _vertices.size() - 1) {
+		Vector3 midPt((*v + _vertices[0]) * 0.5f);
+		_vertices[0] = midPt;
+		_vertices.pop_back();
+	}
+	else {
+		// insert in the middle
+		std::vector<Vector3>::iterator itr = _vertices.begin();
+		itr += delta + 1;
+		Vector3 midPt((*v + *itr) * 0.5f);
+		_vertices[delta] = midPt;
+		_vertices.erase(itr);
+	}
+	// I can't just do v0 + 1, because the vector may end up putting
+	//	the data in some alternative location.
+	return _vertices.size();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 float GLPolygon::distSquaredXY(const Vector2 & v) {
 	SelectEdge nearest;
 	return nearestEdgeXY(v, nearest);

@@ -143,6 +143,12 @@ void LiveObstacleSet::removeVertex(const SelectVertex & vertex) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void LiveObstacleSet::collapseEdge(const SelectEdge & edge) {
+	size_t vCount = edge._poly->collapseEdge(edge._v0);
+	if (vCount < 3) {
+		removePolygon(edge._poly);
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 

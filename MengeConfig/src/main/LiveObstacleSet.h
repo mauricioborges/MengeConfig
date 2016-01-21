@@ -159,6 +159,14 @@ public:
 	void removeVertex(const SelectVertex & vertex);
 
 	/*!
+	 *	@brief		Collapses the edge to the edge's mid-point. If the resulting polygon
+	 *				ends up with 2 vertices, the polygon in turn is deleted.
+	 *
+	 *	@param		edge		The selected edge to collapse.
+	 */
+	void collapseEdge(const SelectEdge & edge);
+
+	/*!
 	 *	@brief		Draws the polygon set to the OpenGL context.
 	 */
 	void drawGL();

@@ -210,6 +210,14 @@ public:
 	size_t removeVertex(Vector3 * v);
 
 	/*!
+	 *	@brief		Collapses the edge beginning with the indicated vertex.
+	 *
+	 *	@param		v		The leading point of the edge to collapse.
+	 *	@returns	The number of vertices remaining.
+	 */
+	size_t collapseEdge(Vector3 * v);
+
+	/*!
 	 *	@brief		Computes the smallest distance between the query point and
 	 *				the polygon (as projected on the x-y plane.
 	 *
