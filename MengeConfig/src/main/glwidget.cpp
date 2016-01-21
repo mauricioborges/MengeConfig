@@ -292,6 +292,11 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
+	Menge::Math::Vector2 worldPos;
+	if (getWorldPos(event->pos(), worldPos)) {
+		emit currWorldPos(worldPos.x(), worldPos.y());
+	}
+
 	if (_context) {
 		Menge::SceneGraph::ContextResult result = _context->handleMouse(event, this);
 		if (result.needsRedraw()) {
@@ -332,12 +337,6 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 		}
 		_downPos = event->pos();
 		if (cameraMoved) update();
-	}
-	else if (btn == Qt::NoButton) {
-		Menge::Math::Vector2 worldPos;
-		if (getWorldPos(event->pos(), worldPos)) {
-			emit currWorldPos(worldPos.x(), worldPos.y());
-		}
 	}
 }
 
