@@ -196,6 +196,16 @@ public:
 	 *	@returns	A pointer to the nearest polygon.  If none are sufficiently close, null.
 	 */
 	SelectEdge nearestEdge(const Vector2 & worldPos, float maxDist);
+
+	/*!
+	 *	@brief		Inserts an edge into the given edge, returnig a selection on that
+	 *				vertex.
+	 *
+	 *	@param		worldPos		The initial position of the inserted vertex.
+	 *	@param		edge			The edge in which to insert the new vertex.
+	 *	@returns	The selection of the new vertex.
+	 */
+	SelectVertex insertVertex(const Vector2 & worldPos, SelectEdge edge);
 	
 protected:
 

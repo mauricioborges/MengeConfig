@@ -227,6 +227,16 @@ public:
 	 */
 	float nearestEdgeXY(const Vector2 & v, SelectEdge & edge);
 
+	/*!
+	 *	@brief		Inserts a new point into the polygon immediately following the given
+	 *				vertex.   The point lies on the ground plane.
+	 *
+	 *	@param		v0			The pointer to the vertex preceding the new point.
+	 *	@param		groundPos	The position of the new vertex lying on the ground plane.
+	 *	@returns	A pointer to the new vertex.
+	 */
+	Vector3 * insertPoint(const Vector3 * v0, const Vector2 & groundPos);
+
 	friend class DrawPolygonContext;
 	friend class LiveObstacleSet;
 	friend class EditPolygonContext;

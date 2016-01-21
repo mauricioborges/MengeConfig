@@ -115,6 +115,13 @@ SelectEdge LiveObstacleSet::nearestEdge(const Vector2 & worldPos, float maxDist)
 
 ///////////////////////////////////////////////////////////////////////////////
 
+SelectVertex LiveObstacleSet::insertVertex(const Vector2 & worldPos, SelectEdge edge) {
+	Vector3 * v = edge._poly->insertPoint(edge._v0, worldPos);
+	return SelectVertex(v, edge._poly);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 void LiveObstacleSet::removePolygon(GLPolygon * poly) {
 	std::vector<GLPolygon *>::iterator itr = _polygons.begin();
 	for (; itr != _polygons.end(); ++itr) {

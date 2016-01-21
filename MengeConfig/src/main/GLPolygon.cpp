@@ -166,6 +166,26 @@ float GLPolygon::nearestEdgeXY(const Vector2 & v, SelectEdge & edge) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+Vector3 * GLPolygon::insertPoint(const Vector3 * v0, const Vector2 & groundPos) {
+	Vector3 * start = &_vertices[0];
+	size_t delta = v0 - start;
+	if (delta == _vertices.size() - 1) {
+		// new vertex gets appended on the end
+		_vertices.push_back(Vector3(groundPos.x(), groundPos.y(), 0.f));
+	}
+	else {
+		// insert in the middle
+		std::vector<Vector3>::iterator itr = _vertices.begin();
+		itr += delta + 1;
+		_vertices.insert(itr, Vector3(groundPos.x(), groundPos.y(), 0.f));
+	}
+	// I can't just do v0 + 1, because the vector may end up putting
+	//	the data in some alternative location.
+	return &_vertices[delta + 1];
+}
+
+///////////////////////////////////////////////////////////////////////////////
 //                    Implementation of SelectEdge
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -95,8 +95,6 @@ protected:
 	*/
 	void setEditMode(EditMode mode);
 
-
-
 	/*!
 	 *	@brief		The set of polygons to edit.  The class does *not* own this obstacle set.
 	 */
