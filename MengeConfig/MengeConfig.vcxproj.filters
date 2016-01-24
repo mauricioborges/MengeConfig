@@ -87,6 +87,12 @@
     <ClCompile Include="src\main\EditPolygonContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\main\ToolProperties.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gen\cpp\moc_ToolProperties.cpp">
+      <Filter>Source Files\moc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\glwidget.hpp">
@@ -132,6 +138,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\MCException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\ToolProperties.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

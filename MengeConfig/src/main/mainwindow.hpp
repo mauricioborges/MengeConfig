@@ -7,6 +7,7 @@ class SceneHierarchy;
 class SceneViewer;
 class FSMViewer;
 class AppLogger;
+class ToolPropertyWidget;
 
 /*!
  *	@brief		The main window of the application -- all GUI runs through this.
@@ -40,6 +41,17 @@ private:
 	QDockWidget * _hierarchyDock;
 
 	/*!
+	 *	@brief		The tool properties for the current context.
+	 */
+	ToolPropertyWidget * _toolProperties;
+
+	/*!
+	 *	@brief		The dock widget containing the tool properties -- used to handle visibility
+	 *				control
+	 */
+	QDockWidget * _toolPropDock;
+
+	/*!
 	 *	@brief		The scene visualizers -- "phsycial" elements are drawn in this viewer.
 	 */
 	SceneViewer * _sceneViewer;
@@ -69,6 +81,11 @@ private:
 	QAction *	_toggleSceneHierarchy;
 
 	/*!
+	 *	@brief		The toggle for showing/hiding the scene hierarchy.
+	 */
+	QAction *	_toggleToolProperties;
+
+	/*!
 	 *	@brief		The toggle for showing/hiding the behavior fsm viewer.
 	 */
 	QAction *	_toggleFsmVis;
@@ -81,7 +98,7 @@ private:
 	/*!
 	 *	@brief		Causes the hierarchy visibility to be toggled.
 	 *
-	 *	@param		state The visibility to set on the hierarchy.
+	 *	@param		state		The visibility to set on the hierarchy.
 	 */
 	void toggleHierarchy(bool state);
 
@@ -91,6 +108,20 @@ private:
 	 *	@param		state		The visibility state of the widget.
 	 */
 	void hierarchyVisibilityChanged(bool state);
+
+	/*!
+	 *	@brief		Causes the tool property visibility to be toggled.
+	 *
+	 *	@param		state		The visibility to be set on the window.
+	 */
+	void toggleToolProperties(bool state);
+
+	/*!
+	*	@brief		Informs the app that the tool property window has changed.
+	*
+	*	@param		state		The visibility state of the widget.
+	*/
+	void toolPropertiesVisibilityChanged(bool state);
 
 	/*!
 	 *	@brief		Slot for when the state of the scene viewer visibility changes.

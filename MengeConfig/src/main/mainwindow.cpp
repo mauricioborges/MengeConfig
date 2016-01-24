@@ -5,6 +5,7 @@
 #include "SceneHierarchy.hpp"
 #include "SceneViewer.hpp"
 #include "SceneHierarchy.hpp"
+#include "ToolProperties.hpp"
 
 #include <QtWidgets\qboxlayout.h>
 #include <QtWidgets/qdockwidget.h>
@@ -69,6 +70,13 @@ MainWindow::MainWindow()
 	menuView->addAction(_toggleLogVis);
 	connect(_toggleLogVis, &QAction::triggered, this, &MainWindow::toggleLog);
 
+	_toggleToolProperties = new QAction(menuView);
+	_toggleToolProperties->setText(tr("Tool Properties"));
+	_toggleToolProperties->setCheckable(true);
+	_toggleToolProperties->setChecked(false);
+	menuView->addAction(_toggleToolProperties);
+	connect(_toggleToolProperties, &QAction::triggered, this, &MainWindow::toggleToolProperties);
+
 	setMenuBar(menuBar);
 
 	// Docked elements
@@ -78,6 +86,13 @@ MainWindow::MainWindow()
 	_hierarchyDock->setWidget(_hierarchy);
 	addDockWidget(Qt::RightDockWidgetArea, _hierarchyDock);
 	connect(_hierarchyDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleHierarchy);
+
+	_toolPropDock = new QDockWidget(tr("Tool Properties"), this);
+	_toolProperties = new ToolPropertyWidget();
+	_toolPropDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+	_toolPropDock->setWidget(_toolProperties);
+	addDockWidget(Qt::LeftDockWidgetArea, _toolPropDock);
+	connect(_toolPropDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleToolProperties);
 	
 	// Set up the logger
 	_logger = new AppLogger(this);
@@ -103,6 +118,21 @@ void MainWindow::hierarchyVisibilityChanged(bool state) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+void MainWindow::toggleToolProperties(bool state) {
+	// NOTE: This does not cause a feedback loop with hierarchyVisibilityChanged because
+	//	only if the visibility state *changes* does work get done.
+	_toolPropDock->setVisible(state);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void MainWindow::toolPropertiesVisibilityChanged(bool state) {
+	// NOTE: This does not cause a feedback loop with toggleHierarchy because
+	//	only if the visibility state *changes* does work get done.
+	_toggleToolProperties->setChecked(state);
+}
+
 
 void MainWindow::toggleSceneViewer(bool state) {
 	_sceneViewer->setVisible(state);
