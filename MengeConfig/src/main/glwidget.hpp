@@ -84,7 +84,7 @@ public:
 	 *	@param		dist	The distance, from the camera, to its far clipping plane.
 	 *						Value is not validated.
 	 */
-	void setCameraFarPlane(int i, float dist);// { _cameras[i].setFarPlane(dist); }
+	void setCameraFarPlane(int i, float dist);
 
 	friend class SceneViewer;
 
