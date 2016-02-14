@@ -38,8 +38,36 @@ MainWindow::MainWindow()
 	vSplitter->addWidget(splitter);
 	setCentralWidget(vSplitter);
 	
-	// Set up the main window
-    QMenuBar *menuBar = new QMenuBar;
+	buildMenu();
+
+	// Docked elements
+	_hierarchyDock = new QDockWidget(tr("Scene Hierarchy"), this);
+	_hierarchy = new SceneHierarchy();
+	_hierarchyDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+	_hierarchyDock->setWidget(_hierarchy);
+	addDockWidget(Qt::RightDockWidgetArea, _hierarchyDock);
+	connect(_hierarchyDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleHierarchy);
+
+	_toolPropDock = new QDockWidget(tr("Tool Properties"), this);
+	_toolProperties = new ToolPropertyWidget();
+	_toolPropDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+	_toolPropDock->setWidget(_toolProperties);
+	addDockWidget(Qt::LeftDockWidgetArea, _toolPropDock);
+	connect(_toolPropDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleToolProperties);
+	
+	// Set up the logger
+	_logger = new AppLogger(this);
+	_logger->setVisible(false);
+	vSplitter->addWidget(_logger);
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void MainWindow::buildMenu() {
+	QMenuBar *menuBar = new QMenuBar;
+
+	// View menu
 	QMenu *menuView = menuBar->addMenu(tr("&View"));
 
 	_toggleSceneVis = new QAction(menuView);
@@ -78,26 +106,6 @@ MainWindow::MainWindow()
 	connect(_toggleToolProperties, &QAction::triggered, this, &MainWindow::toggleToolProperties);
 
 	setMenuBar(menuBar);
-
-	// Docked elements
-	_hierarchyDock = new QDockWidget(tr("Scene Hierarchy"), this);
-	_hierarchy = new SceneHierarchy();
-	_hierarchyDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-	_hierarchyDock->setWidget(_hierarchy);
-	addDockWidget(Qt::RightDockWidgetArea, _hierarchyDock);
-	connect(_hierarchyDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleHierarchy);
-
-	_toolPropDock = new QDockWidget(tr("Tool Properties"), this);
-	_toolProperties = new ToolPropertyWidget();
-	_toolPropDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-	_toolPropDock->setWidget(_toolProperties);
-	addDockWidget(Qt::LeftDockWidgetArea, _toolPropDock);
-	connect(_toolPropDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleToolProperties);
-	
-	// Set up the logger
-	_logger = new AppLogger(this);
-	_logger->setVisible(false);
-	vSplitter->addWidget(_logger);
 
 }
 

@@ -71,6 +71,11 @@ private:
 	///////////////////////////////////////////////////////////////////////////
 
 	/*!
+	 *	@brief		Builds the main window.
+	 */
+	void buildMenu();
+
+	/*!
 	 *	@brief		The toggle for showing/hiding the scene viewer.
 	 */
 	QAction *	_toggleSceneVis;
