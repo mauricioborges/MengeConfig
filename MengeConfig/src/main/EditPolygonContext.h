@@ -95,16 +95,16 @@ public:
 protected:
 
 	/*!
-	*	@brief		Draw context elements into the 3D world.
-	*
-	*	@param		select		Defines if the drawing is being done for selection
-	*							purposes (true) or visualization (false).
-	*/
+	 *	@brief		Draw context elements into the 3D world.
+	 *
+	 *	@param		select		Defines if the drawing is being done for selection
+	 *							purposes (true) or visualization (false).
+	 */
 	virtual void draw3DGL(bool select = false);
 
 	/*!
-	*	@brief		Sets the editing mode of the context.
-	*/
+	 *	@brief		Sets the editing mode of the context.
+	 */
 	void setEditMode(EditMode mode);
 
 	/*!

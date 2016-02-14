@@ -15,6 +15,12 @@
 //                    Implementation of New polygon callback
 ///////////////////////////////////////////////////////////////////////////////
 
+/*!
+ *	@brief		Class implementing the PolygonCreatedCB for the DrawPolygonContext.
+ *
+ *	It ties the draw polygon context together with its parent context, allowing the
+ *	ObstacleContext to be informed when a polygon is finished.
+ */
 class NewPolyCB : public PolygonCreatedCB {
 public:
 	/*!
