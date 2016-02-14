@@ -30,6 +30,7 @@
     <ClCompile Include="src\gen\cpp\moc_ToolProperties.cpp" />
     <ClCompile Include="src\gen\cpp\qrc_MengeConfig.cpp" />
     <ClCompile Include="src\main\AppLogger.cpp" />
+    <ClCompile Include="src\main\ContextManager.cpp" />
     <ClCompile Include="src\main\DrawPolygonContext.cpp" />
     <ClCompile Include="src\main\EditPolygonContext.cpp" />
     <ClCompile Include="src\main\LiveObstacleSet.cpp" />
