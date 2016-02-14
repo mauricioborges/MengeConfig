@@ -1,6 +1,8 @@
 #include "SceneViewer.hpp"
 
+#include "ContextManager.hpp"
 #include "glwidget.hpp"
+#include "ObstacleContext.hpp"
 
 #include <QtWidgets/qaction.h>
 #include <QtWidgets/QBoxLayout.h>
@@ -90,6 +92,14 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	connect(_glView, &GLWidget::currWorldPos, this, &SceneViewer::setCurrentWorldPos);
 
 	setLayout(mainLayout);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::drawObstacle() {
+	// TODO: Determine where the context comes from.
+	QtContext * ctx = new ObstacleContext();
+	ContextManager::instance()->activate(ctx);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

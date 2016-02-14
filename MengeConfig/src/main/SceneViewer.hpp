@@ -21,6 +21,11 @@ public:
 	 */
 	SceneViewer(QWidget * parent = 0x0);
 
+	/*!
+	 *	@brief		Starts the context for drawing obstacles.
+	 */
+	void drawObstacle();
+
 private:
 
 	/*!

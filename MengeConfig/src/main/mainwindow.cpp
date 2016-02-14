@@ -72,6 +72,15 @@ MainWindow::MainWindow()
 void MainWindow::buildMenu() {
 	QMenuBar *menuBar = new QMenuBar;
 
+	// Obstacles menu
+	QMenu * menuObst = menuBar->addMenu(tr("&Obstacles"));
+
+	_drawObstacleAct = new QAction(menuObst);
+	_drawObstacleAct->setText(tr("&Draw Obstacle"));
+	menuObst->addAction(_drawObstacleAct);
+	connect(_drawObstacleAct, &QAction::triggered, _sceneViewer, &SceneViewer::drawObstacle);
+
+
 	// View menu
 	QMenu *menuView = menuBar->addMenu(tr("&View"));
 
@@ -111,7 +120,6 @@ void MainWindow::buildMenu() {
 	connect(_toggleToolProperties, &QAction::triggered, this, &MainWindow::toggleToolProperties);
 
 	setMenuBar(menuBar);
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

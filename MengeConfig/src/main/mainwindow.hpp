@@ -76,6 +76,11 @@ private:
 	void buildMenu();
 
 	/*!
+	*	@brief		Enters the mode for drawing obstacles.
+	*/
+	QAction *	_drawObstacleAct;
+
+	/*!
 	 *	@brief		The toggle for showing/hiding the scene viewer.
 	 */
 	QAction *	_toggleSceneVis;
