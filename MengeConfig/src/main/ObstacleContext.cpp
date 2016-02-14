@@ -8,6 +8,8 @@
 
 #include "Agents/ObstacleSets/ExplicitObstacleSet.h"
 
+#include <QtWidgets/qtabwidget.h>
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                    Implementation of New polygon callback
@@ -142,6 +144,7 @@ QWidget * ObstacleContext::getContextWidget() {
 
 bool ObstacleContext::setPolygonDraw() {
 	if (_state != NEW_OBSTACLE) {
+		((ObstacleContextWidget*)_widget)->_tabWidget->setCurrentIndex(0);
 		AppLogger::logStream << AppLogger::INFO_MSG << "Setting to new polygon" << AppLogger::END_MSG;
 		_state = NEW_OBSTACLE;
 		return true;
@@ -153,6 +156,7 @@ bool ObstacleContext::setPolygonDraw() {
 
 bool ObstacleContext::setPolygonEdit() {
 	if (_state != EDIT_OBSTACLE) {
+		((ObstacleContextWidget*)_widget)->_tabWidget->setCurrentIndex(1);
 		AppLogger::logStream << AppLogger::INFO_MSG << "Setting to edit polygon" << AppLogger::END_MSG;
 		_state = EDIT_OBSTACLE;
 		// I need to do something with the current obstacle -- commit it or some such thing.

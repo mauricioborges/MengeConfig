@@ -38,6 +38,8 @@ public:
 	 */
 	~ObstacleContextWidget();
 
+	friend class ObstacleContext;
+
 protected:
 
 	/*!

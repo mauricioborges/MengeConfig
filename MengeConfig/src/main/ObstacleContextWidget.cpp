@@ -18,9 +18,11 @@ ObstacleContextWidget::ObstacleContextWidget(ObstacleContext * context, EditPoly
 
 	_tabWidget->addTab(drawWidget, tr("Draw Obstacle"));
 	_tabWidget->addTab(editWidget, tr("Edit Obstacle"));
+	_tabWidget->setTabToolTip(0, tr("Enter Drawing Mode (1)"));
+	_tabWidget->setTabToolTip(1, tr("Enter Editing Mode (2)"));
 	mainLayout->addWidget(_tabWidget);
 
-	connect(_tabWidget, &QTabWidget::currentChanged, this, &ObstacleContextWidget::tabChanged);
+	connect(_tabWidget, &QTabWidget::tabBarClicked, this, &ObstacleContextWidget::tabChanged);
 
 	setLayout(mainLayout);
 }
