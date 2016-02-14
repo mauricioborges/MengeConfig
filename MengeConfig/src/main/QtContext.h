@@ -26,13 +26,22 @@ class GLWidget;
  */
 class QtContext : public Menge::SceneGraph::Context {
 public:
+	/*!
+	 *	@brief		Default constructor.
+	 */
+	QtContext();
 
 	/*!
-	*	@brief		The draw function for the context.
-	*
-	*	@param		vWidth		The width of the viewport (in pixels).
-	*	@param		vHeight		The height of the viewport (in pixels).
-	*/
+	 *	@brief		Destructor.
+	 */
+	virtual ~QtContext();
+
+	/*!
+	 *	@brief		The draw function for the context.
+	 *
+	 *	@param		vWidth		The width of the viewport (in pixels).
+	 *	@param		vHeight		The height of the viewport (in pixels).
+	 */
 	virtual void drawGL(int vWidth, int vHeight);
 
 	/*!

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gen\cpp\moc_AppLogger.cpp" />
+    <ClCompile Include="src\gen\cpp\moc_ContextManager.cpp" />
     <ClCompile Include="src\gen\cpp\moc_FSMViewer.cpp" />
     <ClCompile Include="src\gen\cpp\moc_glwidget.cpp" />
     <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp" />
@@ -47,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\AppLogger.hpp" />
+    <ClInclude Include="src\main\ContextManager.hpp" />
     <ClInclude Include="src\main\DrawPolygonContext.h" />
     <ClInclude Include="src\main\EditPolygonContext.h" />
     <ClInclude Include="src\main\LiveObstacleSet.h" />
