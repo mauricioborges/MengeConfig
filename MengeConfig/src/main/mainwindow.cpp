@@ -1,6 +1,7 @@
 #include "mainwindow.hpp"
 
 #include "AppLogger.hpp"
+#include "ContextManager.hpp"
 #include "FSMViewer.hpp"
 #include "SceneHierarchy.hpp"
 #include "SceneViewer.hpp"
@@ -54,6 +55,10 @@ MainWindow::MainWindow()
 	_toolPropDock->setWidget(_toolProperties);
 	addDockWidget(Qt::LeftDockWidgetArea, _toolPropDock);
 	connect(_toolPropDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleToolProperties);
+
+	ContextManager * mgr = ContextManager::instance();
+	connect(mgr, &ContextManager::activated, _toolProperties, &ToolPropertyWidget::activated);
+	connect(mgr, &ContextManager::deactivated, _toolProperties, &ToolPropertyWidget::deactivated);
 	
 	// Set up the logger
 	_logger = new AppLogger(this);
