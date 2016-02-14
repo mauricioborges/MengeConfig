@@ -94,6 +94,20 @@ public slots:
 	 */
     void cleanup();
 
+	/*!
+	 *	@brief		Reports to the viewer that a new context has been activated.
+	 *
+	 *	@param		id		The identifier for the context.
+	 */
+	void activated(size_t id);
+
+	/*!
+	*	@brief		Reports to the viewer that a context has been deactivated.
+	*
+	*	@param		id		The identifier for the context.
+	*/
+	void deactivated(size_t id);
+
 signals:
 	/*!
 	 *	@brief		Indicates that the camera has been rotated arbitrarily.

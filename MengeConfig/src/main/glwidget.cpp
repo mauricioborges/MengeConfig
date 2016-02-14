@@ -16,6 +16,7 @@
 #include <math.h>
 #include <gl/GL.h>
 #include "AppLogger.hpp"
+#include "ContextManager.hpp"
 #include "GLCamera.h"
 #include "GLScene.h"
 #include "GLLight.h"
@@ -131,7 +132,9 @@ GLWidget::GLWidget(QWidget *parent)
 	_cameras.push_back(camera);
 
 	_scene = new Menge::SceneGraph::GLScene();
-	_context = new ObstacleContext();
+	ContextManager * mgr = ContextManager::instance();
+	connect(mgr, &ContextManager::activated, this, &GLWidget::activated);
+	connect(mgr, &ContextManager::deactivated, this, &GLWidget::deactivated);
 
 	_grid = new GridNode();
 	_grid->setSize(100.f, 100.f);
@@ -189,6 +192,23 @@ void GLWidget::cleanup()
     makeCurrent();
 	// TODO: Notify the scene that the window is being destroyed.
     doneCurrent();
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::activated(size_t id) {
+	ContextManager * mgr = ContextManager::instance();
+	QtContext * ctx = mgr->getContext(id);
+	// TODO: Test that the context in question applies to the viewer.
+	_context = ctx;
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::deactivated(size_t id) {
+	ContextManager * mgr = ContextManager::instance();
+	QtContext * ctx = mgr->getContext(id);
+	if (_context == ctx) _context = 0x0;
 }
 
 ///////////////////////////////////////////////////////////////////////////
