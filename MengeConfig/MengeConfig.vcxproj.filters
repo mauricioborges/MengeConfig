@@ -93,6 +93,24 @@
     <ClCompile Include="src\gen\cpp\moc_ToolProperties.cpp">
       <Filter>Source Files\moc</Filter>
     </ClCompile>
+    <ClCompile Include="src\main\ObstacleContextWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gen\cpp\moc_ObstacleContextWidget.cpp">
+      <Filter>Source Files\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\EditPolygonWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\DrawPolygonWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gen\cpp\moc_DrawPolygonWidget.cpp">
+      <Filter>Source Files\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gen\cpp\moc_EditPolygonWidget.cpp">
+      <Filter>Source Files\moc</Filter>
+    </ClCompile>
     <ClCompile Include="src\main\ContextManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -147,6 +165,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\ToolProperties.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\ObstacleContextWidget.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\EditPolygonWidget.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\DrawPolygonWidget.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\ContextManager.hpp">

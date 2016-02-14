@@ -10,6 +10,8 @@
 #include "LiveObstacleSet.h"
 #include "GLPolygon.h"
 
+class EditPolygonWidget;
+
 /*!
  *	@brief		Context for editing existing polygons.
  */
@@ -60,6 +62,16 @@ public:
 	 *				if redrawing is necessary.
 	 */
 	virtual Menge::SceneGraph::ContextResult handleKeyboard(QKeyEvent * evt, GLWidget * view);
+
+	/*!
+	*	@brief		Returns the control widget associated with this context.
+	*
+	*				The main application can choose to populate a tool window with this widget.  It contains
+	*				buttons and settings to interact with or change state in the context.
+	*
+	*	@returns	A pointer to the tool widget for this context.
+	*/
+	virtual QWidget * getContextWidget();
 
 	/*!
 	 *	@brief		Called when the context is activated.
@@ -146,8 +158,10 @@ protected:
 	 */
 	Vector2 _downOrigin;
 
-	// _edgeDir
-	// _activeId
+	/*!
+	 *	@brief		The underlying widget for this context.
+	 */
+	EditPolygonWidget * _widget;
 };
 
 #endif	// __EDIT_POLYGON_CONTEXT_H__

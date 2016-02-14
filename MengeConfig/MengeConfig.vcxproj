@@ -21,10 +21,13 @@
   <ItemGroup>
     <ClCompile Include="src\gen\cpp\moc_AppLogger.cpp" />
     <ClCompile Include="src\gen\cpp\moc_ContextManager.cpp" />
+    <ClCompile Include="src\gen\cpp\moc_DrawPolygonWidget.cpp" />
+    <ClCompile Include="src\gen\cpp\moc_EditPolygonWidget.cpp" />
     <ClCompile Include="src\gen\cpp\moc_FSMViewer.cpp" />
     <ClCompile Include="src\gen\cpp\moc_glwidget.cpp" />
     <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp" />
     <ClCompile Include="src\gen\cpp\moc_ObstacleContext.cpp" />
+    <ClCompile Include="src\gen\cpp\moc_ObstacleContextWidget.cpp" />
     <ClCompile Include="src\gen\cpp\moc_SceneHierarchy.cpp" />
     <ClCompile Include="src\gen\cpp\moc_SceneViewer.cpp" />
     <ClCompile Include="src\gen\cpp\moc_ToolProperties.cpp" />
@@ -32,7 +35,9 @@
     <ClCompile Include="src\main\AppLogger.cpp" />
     <ClCompile Include="src\main\ContextManager.cpp" />
     <ClCompile Include="src\main\DrawPolygonContext.cpp" />
+    <ClCompile Include="src\main\DrawPolygonWidget.cpp" />
     <ClCompile Include="src\main\EditPolygonContext.cpp" />
+    <ClCompile Include="src\main\EditPolygonWidget.cpp" />
     <ClCompile Include="src\main\LiveObstacleSet.cpp" />
     <ClCompile Include="src\main\ObstacleContext.cpp" />
     <ClCompile Include="src\main\FSMViewer.cpp" />
@@ -41,6 +46,7 @@
     <ClCompile Include="src\main\main.cpp" />
     <ClCompile Include="src\main\mainwindow.cpp" />
     <ClCompile Include="src\main\GLPolygon.cpp" />
+    <ClCompile Include="src\main\ObstacleContextWidget.cpp" />
     <ClCompile Include="src\main\QtContext.cpp" />
     <ClCompile Include="src\main\ReferenceGrid.cpp" />
     <ClCompile Include="src\main\SceneHierarchy.cpp" />
@@ -51,7 +57,9 @@
     <ClInclude Include="src\main\AppLogger.hpp" />
     <ClInclude Include="src\main\ContextManager.hpp" />
     <ClInclude Include="src\main\DrawPolygonContext.h" />
+    <ClInclude Include="src\main\DrawPolygonWidget.hpp" />
     <ClInclude Include="src\main\EditPolygonContext.h" />
+    <ClInclude Include="src\main\EditPolygonWidget.hpp" />
     <ClInclude Include="src\main\LiveObstacleSet.h" />
     <ClInclude Include="src\main\MCException.h" />
     <ClInclude Include="src\main\ObstacleContext.hpp" />
@@ -60,6 +68,7 @@
     <ClInclude Include="src\main\GridNode.h" />
     <ClInclude Include="src\main\mainwindow.hpp" />
     <ClInclude Include="src\main\GLPolygon.h" />
+    <ClInclude Include="src\main\ObstacleContextWidget.hpp" />
     <ClInclude Include="src\main\QtContext.h" />
     <ClInclude Include="src\main\ReferenceGrid.h" />
     <ClInclude Include="src\main\SceneHierarchy.hpp" />

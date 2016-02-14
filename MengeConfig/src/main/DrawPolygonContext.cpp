@@ -1,6 +1,7 @@
 #include "DrawPolygonContext.h"
 
 #include "AppLogger.hpp"
+#include "DrawPolygonWidget.hpp"
 #include "GLPolygon.h"
 #include "glwidget.hpp"
 #include "MCException.h"
@@ -18,7 +19,7 @@ using namespace Menge::Math;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 DrawPolygonContext::DrawPolygonContext() : QtContext(), _state(WAITING), _polygon(0x0), _dragging(false), _newPolyCB(0x0) {
-
+	_widget = new DrawPolygonWidget(this);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,6 +113,12 @@ Menge::SceneGraph::ContextResult DrawPolygonContext::handleKeyboard(QKeyEvent * 
 		evt->ignore();
 	}
 	return result;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+QWidget * DrawPolygonContext::getContextWidget() {
+	return _widget;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

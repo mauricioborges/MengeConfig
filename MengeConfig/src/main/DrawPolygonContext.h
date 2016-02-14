@@ -7,6 +7,7 @@
 
 // Forward declarations
 class GLPolygon;
+class DrawPolygonWidget;
 
 /*!
  *	@brief		A functor for serving as the call back fo the DrawPolygonContext
@@ -73,6 +74,16 @@ public:
 	 *				if redrawing is necessary.
 	 */
 	virtual Menge::SceneGraph::ContextResult handleKeyboard(QKeyEvent * evt, GLWidget * view);
+
+	/*!
+	*	@brief		Returns the control widget associated with this context.
+	*
+	*				The main application can choose to populate a tool window with this widget.  It contains
+	*				buttons and settings to interact with or change state in the context.
+	*
+	*	@returns	A pointer to the tool widget for this context.
+	*/
+	virtual QWidget * getContextWidget();
 
 	/*!
 	 *	@brief		Give the context the opportunity to respond to a mouse wheel
@@ -171,4 +182,9 @@ private:
 	 *	@brief		The callback for polygon creation.
 	 */
 	PolygonCreatedCB * _newPolyCB;
+
+	/*!
+	 *	@brief		The underlying widget associated with this context.
+	 */
+	DrawPolygonWidget * _widget;
 };

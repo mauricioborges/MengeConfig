@@ -1,6 +1,7 @@
 #include "EditPolygonContext.h"
 
 #include "AppLogger.hpp"
+#include "EditPolygonWidget.hpp"
 #include "LiveObstacleSet.h"
 #include "GLPolygon.h"
 #include "glwidget.hpp"
@@ -15,8 +16,8 @@ using namespace Menge::Math;
 //						Implementation of EditPolygonContext
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-EditPolygonContext::EditPolygonContext(LiveObstacleSet * polygons) : _obstacleSet(polygons), _activePoly(0x0), _activeVert(), _dragging(false), _mode(VERTEX) {
-
+EditPolygonContext::EditPolygonContext(LiveObstacleSet * polygons) : QtContext(), _obstacleSet(polygons), _activePoly(0x0), _activeVert(), _dragging(false), _mode(VERTEX) {
+	_widget = new EditPolygonWidget(this);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,6 +195,12 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleKeyboard(QKeyEvent * 
 		evt->ignore();
 	}
 	return result;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+QWidget * EditPolygonContext::getContextWidget() {
+	return _widget;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

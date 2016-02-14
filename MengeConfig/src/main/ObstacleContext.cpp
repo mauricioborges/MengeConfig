@@ -4,6 +4,7 @@
 #include "DrawPolygonContext.h"
 #include "EditPolygonContext.h"
 #include "LiveObstacleSet.h"
+#include "ObstacleContextWidget.hpp"
 
 #include "Agents/ObstacleSets/ExplicitObstacleSet.h"
 
@@ -52,7 +53,7 @@ private:
 //                    Implementation of ObstacleContext
 ///////////////////////////////////////////////////////////////////////////////
 
-ObstacleContext::ObstacleContext() : _obstacleSet(0x0), _operationContexts(0x0), _callback(0x0), _state(NONE), _editSet(false){
+ObstacleContext::ObstacleContext() : _obstacleSet(0x0), _operationContexts(0x0), _callback(0x0), _state(NONE), _editSet(false), _widget(0x0) {
 	// draw polygon context
 	_obstacleSet = new LiveObstacleSet();
 	_callback = new NewPolyCB(_obstacleSet);
@@ -64,8 +65,21 @@ ObstacleContext::ObstacleContext() : _obstacleSet(0x0), _operationContexts(0x0),
 	EditPolygonContext * editContext = new EditPolygonContext(_obstacleSet);
 	_operationContexts.push_back(editContext);
 
+	// TODO: Determine if I *really* need to know the type of widget here.
+	_widget = new ObstacleContextWidget(this, (EditPolygonWidget*)editContext->getContextWidget(), (DrawPolygonWidget*)drawContext->getContextWidget());
+
 	// set state
 	_state = NEW_OBSTACLE;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+ObstacleContext::~ObstacleContext() {
+	for (size_t i = 0; i < _operationContexts.size(); ++i) {
+		delete _operationContexts[i];
+	}
+	delete _widget;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -103,17 +117,10 @@ Menge::SceneGraph::ContextResult ObstacleContext::handleKeyboard(QKeyEvent * evt
 		Qt::KeyboardModifiers mods = evt->modifiers();
 		if (evt->type() == QEvent::KeyPress) {
 			if (mods == Qt::NoModifier && evt->key() == Qt::Key_1) {
-				AppLogger::logStream << AppLogger::INFO_MSG << "Setting to new polygon" << AppLogger::END_MSG;
-				result.set(true, _state != NEW_OBSTACLE);
-				_state = NEW_OBSTACLE;
+				result.set(true, setPolygonDraw());
 			}
 			else if (mods == Qt::NoModifier && evt->key() == Qt::Key_2) {
-				AppLogger::logStream << AppLogger::INFO_MSG << "Setting to edit polygon" << AppLogger::END_MSG;
-				result.set(true, _state == NEW_OBSTACLE);
-				if (_state == NEW_OBSTACLE) {
-					// I need to do something with the current obstalce -- commit it or some such thing.
-				}
-				_state = EDIT_OBSTACLE;
+				result.set(true, setPolygonEdit());
 			}
 		}
 	}
@@ -123,6 +130,37 @@ Menge::SceneGraph::ContextResult ObstacleContext::handleKeyboard(QKeyEvent * evt
 		evt->ignore();
 	}
 	return result;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+QWidget * ObstacleContext::getContextWidget() {
+	return _widget;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool ObstacleContext::setPolygonDraw() {
+	if (_state != NEW_OBSTACLE) {
+		AppLogger::logStream << AppLogger::INFO_MSG << "Setting to new polygon" << AppLogger::END_MSG;
+		_state = NEW_OBSTACLE;
+		return true;
+	}
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool ObstacleContext::setPolygonEdit() {
+	if (_state != EDIT_OBSTACLE) {
+		AppLogger::logStream << AppLogger::INFO_MSG << "Setting to edit polygon" << AppLogger::END_MSG;
+		_state = EDIT_OBSTACLE;
+		// I need to do something with the current obstacle -- commit it or some such thing.
+
+		return true;
+	}
+	return false;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////

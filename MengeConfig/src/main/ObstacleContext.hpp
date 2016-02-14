@@ -18,6 +18,7 @@ namespace Menge {
 }
 class LiveObstacleSet;
 class PolygonCreatedCB;
+class ObstacleContextWidget;
 
 // TODO:
 //	- Create new obstacle set
@@ -57,11 +58,16 @@ public:
 	ObstacleContext();
 
 	/*!
-	*	@brief		The draw function for the context.
-	*
-	*	@param		vWidth		The width of the viewport (in pixels).
-	*	@param		vHeight		The height of the viewport (in pixels).
-	*/
+	 *	@brief		Destructor.
+	 */
+	virtual ~ObstacleContext();
+
+	/*!
+	 *	@brief		The draw function for the context.
+	 *
+	 *	@param		vWidth		The width of the viewport (in pixels).
+	 *	@param		vHeight		The height of the viewport (in pixels).
+	 */
 	virtual void drawGL(int vWidth, int vHeight);
 
 	/*!
@@ -84,7 +90,31 @@ public:
 	 */
 	virtual Menge::SceneGraph::ContextResult handleKeyboard(QKeyEvent * evt, GLWidget * view);
 
+	/*!
+	*	@brief		Returns the control widget associated with this context.
+	*
+	*				The main application can choose to populate a tool window with this widget.  It contains
+	*				buttons and settings to interact with or change state in the context.
+	*
+	*	@returns	A pointer to the tool widget for this context.
+	*/
+	virtual QWidget * getContextWidget();
+
 	///////////////////////////////////////////////////////////////////////////////////
+
+	/*!
+	 *	@brief		Changes the context mode to drawing a polygon.
+	 *
+	 *	@returns	True if the context state changed, false if not.
+	 */
+	bool setPolygonDraw();
+
+	/*!
+	 *	@brief		Changes the context mode to editing a polygon.
+	 *
+	 *	@returns	True if the context state changed, false if not.
+	 */
+	bool setPolygonEdit();
 
 	/*!
 	 *	@brief		Starts a new obstacle set.
@@ -158,6 +188,11 @@ protected:
 	 *	@brief		Reports if the polygons being worked with represent a change to a previously-existin gset.
 	 */
 	bool _editSet;
+
+	/*!
+	 *	@brief		The widget for this context.
+	 */
+	ObstacleContextWidget * _widget;
 };
 
 #endif		// __DRAW_OBSTACLE_CONTEXT_H__
