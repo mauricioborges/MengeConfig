@@ -75,9 +75,18 @@ private:
 	 */
 	void buildMenu();
 
+	/*!	@brief		Load new project action. */
+	QAction *	_loadProject;
+
+	/*! @brief		Reset project action. */
+	QAction *	_resetProject;
+
+	/*! @brief      Save project action. */	
+	QAction *   _saveProject;
+
 	/*!
-	*	@brief		Enters the mode for drawing obstacles.
-	*/
+	 *	@brief		Enters the mode for drawing obstacles.
+	 */
 	QAction *	_drawObstacleAct;
 
 	/*!

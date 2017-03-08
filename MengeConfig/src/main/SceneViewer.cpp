@@ -1,5 +1,6 @@
 #include "SceneViewer.hpp"
 
+#include "AppLogger.hpp"
 #include "ContextManager.hpp"
 #include "glwidget.hpp"
 #include "ObstacleContext.hpp"
@@ -92,6 +93,27 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	connect(_glView, &GLWidget::currWorldPos, this, &SceneViewer::setCurrentWorldPos);
 
 	setLayout(mainLayout);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::loadProject() {
+	AppLogger::logStream << AppLogger::INFO_MSG << "Load project not implemented yet..."
+		<< AppLogger::END_MSG;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::resetProject() {
+	AppLogger::logStream << AppLogger::INFO_MSG << "Reset project not implemented yet..."
+		<< AppLogger::END_MSG;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::saveProject() {
+	AppLogger::logStream << AppLogger::INFO_MSG << "Save project not implemented yet..."
+		<< AppLogger::END_MSG;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

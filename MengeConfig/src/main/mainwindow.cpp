@@ -72,6 +72,26 @@ MainWindow::MainWindow()
 void MainWindow::buildMenu() {
 	QMenuBar *menuBar = new QMenuBar;
 
+	// Projects menu
+	QMenu * menuProj = menuBar->addMenu( tr( "&Project" ) );
+	_loadProject = new QAction( menuProj );
+	_loadProject->setText( tr( "&Open Project" ) );
+	_loadProject->setEnabled( false );
+	menuProj->addAction( _loadProject );
+	connect( _loadProject, &QAction::triggered, _sceneViewer, &SceneViewer::loadProject );
+
+	_resetProject = new QAction( menuProj );
+	_resetProject->setText( tr( "&Reset Project" ) );
+	_resetProject->setEnabled( false );
+	menuProj->addAction( _resetProject );
+	connect( _resetProject, &QAction::triggered, _sceneViewer, &SceneViewer::resetProject );
+
+	_saveProject = new QAction( menuProj );
+	_saveProject->setText( tr( "&Save Project" ) );
+	_saveProject->setEnabled( false );
+	menuProj->addAction( _saveProject );
+	connect( _saveProject, &QAction::triggered, _sceneViewer, &SceneViewer::saveProject );
+
 	// Obstacles menu
 	QMenu * menuObst = menuBar->addMenu(tr("&Obstacles"));
 
