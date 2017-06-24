@@ -57,8 +57,7 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 						_dragging = true;
 					}
 					result.setHandled(true);
-				}
-				else if (evt->button() == Qt::RightButton && _dragging) {
+				} else if (evt->button() == Qt::RightButton && _dragging) {
 					if (_activeVert.isValid()) {
 						if (_mode == EDGE) {
 							// inserted a vertex -- cancellation requires removal
@@ -68,12 +67,10 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 							// assume vertex edit mode -- simply reposition the vertex
 							_activeVert.set(_downOrigin.x(), _downOrigin.y(), _activeVert.z());
 						}
-					}
-					else if (_activeEdge.isValid()) {
+					} else if (_activeEdge.isValid()) {
 						_activeEdge.set0(_downOrigin);
 						_activeEdge.set1(_downOrigin + _edgeOffset);
-					}
-					else if (_activePoly) {
+					} else if (_activePoly) {
 						for (size_t i = 0; i < _activePoly->_vertices.size(); ++i) {
 							_activePoly->_vertices[i].set(_downOrigin.x() + _polyVertices[i].x(),
 								_downOrigin.y() + _polyVertices[i].y(), 
@@ -82,22 +79,19 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 					}
 					_dragging = false;
 					result.set(true, true);
-				}
-				else if (evt->button() == Qt::MiddleButton && _activeEdge.isValid()) {
+				} else if (evt->button() == Qt::MiddleButton && _activeEdge.isValid()) {
 					_activeVert = _obstacleSet->insertVertex(world, _activeEdge);
 					_downPos.set(world);
-					_downOrigin.set(world.x(), world.y());
+          _downOrigin.set( _activeVert.x(), _activeVert.y() );
 					_activeEdge.clear();
 					_dragging = true;
 					result.set(true, true);
 				}
-			} 
-			else if (evt->type() == QEvent::MouseButtonRelease) {
+			} else if (evt->type() == QEvent::MouseButtonRelease) {
 				if (evt->button() == Qt::LeftButton || evt->button() == Qt::MiddleButton) {
 					_dragging = false;
 				}
-			}
-			else if (evt->type() == QEvent::MouseMove) {
+			} else if (evt->type() == QEvent::MouseMove) {
 				if (_dragging) {
           Vector2 newPos( _downOrigin + ( world - _downPos ) );
 
