@@ -8,11 +8,12 @@
 #include "SceneHierarchy.hpp"
 #include "ToolProperties.hpp"
 
-#include <QtWidgets\qboxlayout.h>
-#include <QtWidgets/qdockwidget.h>
+#include <QtWidgets/QBoxLayout.h>
+#include <QtWidgets/QDockWidget.h>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QSplitter>
+#include <QtWidgets/QStatusBar.h>
 
 #include <iostream>
 
@@ -20,7 +21,7 @@
 //						Implementation of MainWindow
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-MainWindow::MainWindow()
+MainWindow::MainWindow() : QMainWindow()
 {
 	// The major gui components
 	QWidget * widget = new QWidget();
@@ -39,6 +40,8 @@ MainWindow::MainWindow()
 	vSplitter->addWidget(splitter);
 	setCentralWidget(vSplitter);
 	
+  this->statusBar()->showMessage( tr( "Starting..." ), 2000 );
+
 	buildMenu();
 
 	// Docked elements
@@ -76,18 +79,21 @@ void MainWindow::buildMenu() {
 	QMenu * menuProj = menuBar->addMenu( tr( "&Project" ) );
 	_loadProject = new QAction( menuProj );
 	_loadProject->setText( tr( "&Open Project" ) );
+  _loadProject->setStatusTip( tr( "Open a Menge simulation project from disk" ) );
 	_loadProject->setEnabled( false );
 	menuProj->addAction( _loadProject );
 	connect( _loadProject, &QAction::triggered, _sceneViewer, &SceneViewer::loadProject );
 
 	_resetProject = new QAction( menuProj );
 	_resetProject->setText( tr( "&Reset Project" ) );
+  _resetProject->setStatusTip( tr( "Reset the project to its on-disk state" ) );
 	_resetProject->setEnabled( false );
 	menuProj->addAction( _resetProject );
 	connect( _resetProject, &QAction::triggered, _sceneViewer, &SceneViewer::resetProject );
 
 	_saveProject = new QAction( menuProj );
 	_saveProject->setText( tr( "&Save Project" ) );
+  _saveProject->setStatusTip( tr( "Save the current project to disk" ) );
 	_saveProject->setEnabled( false );
 	menuProj->addAction( _saveProject );
 	connect( _saveProject, &QAction::triggered, _sceneViewer, &SceneViewer::saveProject );
@@ -97,6 +103,7 @@ void MainWindow::buildMenu() {
 
 	_drawObstacleAct = new QAction(menuObst);
 	_drawObstacleAct->setText(tr("&Draw Obstacle"));
+  _drawObstacleAct->setStatusTip( tr( "Begin drawing obstacles in the simulation domain" ) );
 	menuObst->addAction(_drawObstacleAct);
 	connect(_drawObstacleAct, &QAction::triggered, _sceneViewer, &SceneViewer::drawObstacle);
 
@@ -106,6 +113,7 @@ void MainWindow::buildMenu() {
 
 	_toggleSceneVis = new QAction(menuView);
 	_toggleSceneVis->setText(tr("Scene Viewer"));
+  _toggleSceneVis->setStatusTip( tr( "Toggle the display of the main scene" ) );
 	_toggleSceneVis->setCheckable(true);
 	_toggleSceneVis->setChecked(true);
 	menuView->addAction(_toggleSceneVis);
@@ -113,6 +121,7 @@ void MainWindow::buildMenu() {
 
 	_toggleSceneHierarchy = new QAction(menuView);
 	_toggleSceneHierarchy->setText(tr("Scene Hierarchy"));
+  _toggleSceneHierarchy->setStatusTip( tr( "Toggle the display of the scene hierarchy" ) );
 	_toggleSceneHierarchy->setCheckable(true);
 	_toggleSceneHierarchy->setChecked(true);
 	menuView->addAction(_toggleSceneHierarchy);
@@ -120,6 +129,8 @@ void MainWindow::buildMenu() {
 
 	_toggleFsmVis = new QAction(menuView);
 	_toggleFsmVis->setText(tr("FSM Viewer"));
+  _toggleFsmVis->setStatusTip( 
+    tr( "Toggle the display of the Behavior Finite State Machine viewer" ) );
 	_toggleFsmVis->setCheckable(true);
 	_toggleFsmVis->setChecked(true);
 	menuView->addAction(_toggleFsmVis);
@@ -127,6 +138,7 @@ void MainWindow::buildMenu() {
 
 	_toggleLogVis = new QAction(menuView);
 	_toggleLogVis->setText(tr("Activity Log"));
+  _toggleLogVis->setStatusTip( tr( "Toggle display of the work log" ) );
 	_toggleLogVis->setCheckable(true);
 	_toggleLogVis->setChecked(false);
 	menuView->addAction(_toggleLogVis);
@@ -134,6 +146,7 @@ void MainWindow::buildMenu() {
 
 	_toggleToolProperties = new QAction(menuView);
 	_toggleToolProperties->setText(tr("Tool Properties"));
+  _toggleToolProperties->setStatusTip( tr( "Toggle the display of the current tool's properties" ) );
 	_toggleToolProperties->setCheckable(true);
 	_toggleToolProperties->setChecked(false);
 	menuView->addAction(_toggleToolProperties);
