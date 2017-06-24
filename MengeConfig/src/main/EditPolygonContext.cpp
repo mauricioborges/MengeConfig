@@ -48,7 +48,7 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 						}
 						_dragging = true;
 					} else if (_activeVert.isValid()) {
-						_downOrigin.set(world.x(), world.y());
+						_downOrigin.set(_activeVert.x(), _activeVert.y());
 						_dragging = true;
 					} else if (_activeEdge.isValid()) {
 						_downOrigin.set(_activeEdge._v0->x(), _activeEdge._v0->y());
@@ -99,18 +99,17 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 			}
 			else if (evt->type() == QEvent::MouseMove) {
 				if (_dragging) {
-					if (_activeVert.isValid()) world = view->snap(world);
-					Vector2 newPos(_downOrigin + (world - _downPos));
+          Vector2 newPos( _downOrigin + ( world - _downPos ) );
+
+          // If moving vertices, allow snaping.
+          if ( _activeVert.isValid() ) newPos = view->snap( newPos );
 					
-					if (_activeVert.isValid()) {
-						assert(_activeVert.isValid() && "Somehow dragging in vertex mode without an active vertex");
+          if ( _activeVert.isValid() ) {
 						_activeVert.set(newPos.x(), newPos.y(), _activeVert.z());
-					}
-					else if (_activeEdge.isValid()) {
+					} else if (_activeEdge.isValid()) {
 						_activeEdge.set0(newPos);
 						_activeEdge.set1(newPos + _edgeOffset);
-					}
-					else if (_activePoly) {
+					} else if (_activePoly) {
 						for (size_t i = 0; i < _activePoly->_vertices.size(); ++i) {
 							_activePoly->_vertices[i].set(newPos.x() + _polyVertices[i].x(),
 								newPos.y() + _polyVertices[i].y(), 
