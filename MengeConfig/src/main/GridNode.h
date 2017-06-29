@@ -6,10 +6,10 @@
 #ifndef __GRID_NODE_H__
 #define __GRID_NODE_H__
 
-#include <GLNode.h>
+#include <MengeVis/SceneGraph/GLNode.h>
 #include "ReferenceGrid.h"
 
-class GridNode : public Menge::SceneGraph::GLNode, public ReferenceGrid {
+class GridNode : public MengeVis::SceneGraph::GLNode, public ReferenceGrid {
 public:
 	/*!
 	 *	@brief		Constructor.
@@ -17,7 +17,7 @@ public:
 	 *	@param		parent		A pointer to the optional parent node in the
 	 *							graph.
 	 */
-	GridNode(Menge::SceneGraph::GLDagNode * parent = 0x0);
+	GridNode(MengeVis::SceneGraph::GLDagNode * parent = 0x0);
 
 	/*!
 	 *	@brief		Virtual destructor.

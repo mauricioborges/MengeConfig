@@ -17,9 +17,10 @@
 #include <gl/GL.h>
 #include "AppLogger.hpp"
 #include "ContextManager.hpp"
-#include "GLCamera.h"
-#include "GLScene.h"
-#include "GLLight.h"
+
+#include <MengeVis/SceneGraph/GLCamera.h>
+#include <MengeVis/SceneGraph/GLScene.h>
+#include <MengeVis/SceneGraph/GLLight.h>
 #include "GridNode.h"
 
 #include <iostream>
@@ -27,6 +28,13 @@
 
 // temporary
 #include "ObstacleContext.hpp"
+
+using Menge::Math::Vector2;
+using Menge::Math::Vector3;
+using MengeVis::SceneGraph::ContextResult;
+using MengeVis::SceneGraph::GLCamera;
+using MengeVis::SceneGraph::GLLight;
+using MengeVis::SceneGraph::GLScene;
 
 ///////////////////////////////////////////////////////////////////////////
 //				IMPLEMENTATION FOR ReferenceGridProperties
@@ -42,10 +50,10 @@ public:
 		setWindowTitle(tr("Edit Reference Grid Properties"));
 		QGridLayout * layout = new QGridLayout();
 
-		Menge::Math::Vector2 o = grid->getOrigin();
+		Vector2 o = grid->getOrigin();
 		_xO = makeNumEditor(0, "X Origin", layout, new QDoubleValidator(), QString::number(o.x()));
 		_yO = makeNumEditor(1, "Y Origin", layout, new QDoubleValidator(), QString::number(o.y()));
-		Menge::Math::Vector2 size = grid->getSize();
+		Vector2 size = grid->getSize();
 		_w = makeNumEditor(2, "Width", layout, new QDoubleValidator(), QString::number(size.x()));
 		_h = makeNumEditor(3, "Height", layout, new QDoubleValidator(), QString::number(size.y()));
 		_majorDist = makeNumEditor(4, "Major Distance", layout, new QDoubleValidator(), QString::number(grid->getMajorDist()));
@@ -122,7 +130,7 @@ GLWidget::GLWidget(QWidget *parent)
 	setFocusPolicy(Qt::StrongFocus);
 	setMouseTracking(true);
 	// TODO: Handle cameras in some other way
-	Menge::SceneGraph::GLCamera camera;
+	GLCamera camera;
 	camera.setPosition(0.f, 0.f, 10.f);
 	camera.setTarget(0.f, 0.f, 0.f);
 	camera.setFarPlane(100.f);
@@ -131,7 +139,7 @@ GLWidget::GLWidget(QWidget *parent)
 	camera.setPersp();
 	_cameras.push_back(camera);
 
-	_scene = new Menge::SceneGraph::GLScene();
+	_scene = new GLScene();
 	ContextManager * mgr = ContextManager::instance();
 	connect(mgr, &ContextManager::activated, this, &GLWidget::activated);
 	connect(mgr, &ContextManager::deactivated, this, &GLWidget::deactivated);
@@ -166,7 +174,7 @@ QSize GLWidget::sizeHint() const
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GLWidget::setScene(Menge::SceneGraph::GLScene * scene) {
+void GLWidget::setScene(GLScene * scene) {
 	if (_scene && scene != _scene) {
 		delete _scene;
 	}
@@ -273,7 +281,7 @@ void GLWidget::resizeGL(int w, int h)
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (_context) {
-		Menge::SceneGraph::ContextResult result = _context->handleMouse(event, this);
+		ContextResult result = _context->handleMouse(event, this);
 		if (result.needsRedraw()) {
 			update();
 		}
@@ -300,7 +308,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	if (_context) {
-		Menge::SceneGraph::ContextResult result = _context->handleMouse(event, this);
+		ContextResult result = _context->handleMouse(event, this);
 		if (result.needsRedraw()) {
 			update();
 		}
@@ -312,13 +320,13 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	Menge::Math::Vector2 worldPos;
+	Vector2 worldPos;
 	if (getWorldPos(event->pos(), worldPos)) {
 		emit currWorldPos(worldPos.x(), worldPos.y());
 	}
 
 	if (_context) {
-		Menge::SceneGraph::ContextResult result = _context->handleMouse(event, this);
+		ContextResult result = _context->handleMouse(event, this);
 		if (result.needsRedraw()) {
 			update();
 		}
@@ -364,7 +372,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 
 void GLWidget::wheelEvent(QWheelEvent *event) {
 	if (_context) {
-		Menge::SceneGraph::ContextResult result = _context->handleWheel(event, this);
+		ContextResult result = _context->handleWheel(event, this);
 		if (result.needsRedraw()) {
 			update();
 		}
@@ -387,7 +395,7 @@ void GLWidget::wheelEvent(QWheelEvent *event) {
 
 void GLWidget::keyPressEvent(QKeyEvent *event) {
 	if (_context) {
-		Menge::SceneGraph::ContextResult result = _context->handleKeyboard(event, this);
+		ContextResult result = _context->handleKeyboard(event, this);
 		if (result.needsRedraw()) {
 			update();
 		}
@@ -400,7 +408,7 @@ void GLWidget::keyPressEvent(QKeyEvent *event) {
 
 void GLWidget::keyReleaseEvent(QKeyEvent *event) {
 	if (_context) {
-		Menge::SceneGraph::ContextResult result = _context->handleKeyboard(event, this);
+		ContextResult result = _context->handleKeyboard(event, this);
 		if (result.needsRedraw()) {
 			update();
 		}
@@ -421,10 +429,10 @@ void GLWidget::newGLContext() {
 	//		do I need to actually call newGLContext on it?
 	// TODO: If new gl context is not necessary for a resize, then I should
 	//	move the resizing stuff to resize, and the new gl to initializeGL.
-	//Menge::SceneGraph::TextWriter::Instance()->resize(w, h);
-	//Menge::SceneGraph::TextWriter::Instance()->newGLContext();
+	//MengeVis::SceneGraph::TextWriter::Instance()->resize(w, h);
+	//MengeVis::SceneGraph::TextWriter::Instance()->newGLContext();
 	//initializeGL();
-	//Menge::GLContextManager::newGLContext();
+	//MengeVis::GLContextManager::newGLContext();
 	if (_scene) {
 		_scene->newGLContext();
 	}
@@ -497,7 +505,7 @@ void GLWidget::editGridProperties() {
 
 ///////////////////////////////////////////////////////////////////////////
 
-bool GLWidget::getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worldPos, bool ignoreSnap) {
+bool GLWidget::getWorldPos(const QPoint & screenPos, Vector2 & worldPos, bool ignoreSnap) {
 	// TODO: worldPos should be in R3
 	if (_isTopView) {
 		// THIS IS A TOTAL HACK
@@ -513,7 +521,7 @@ bool GLWidget::getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worl
 		float v = (h - screenPos.y()) / h;
 		float wHalfWidth, wHalfHeight;
 		
-		Menge::Math::Vector3 pos = _cameras[_currCam].getPosition();
+		Vector3 pos = _cameras[_currCam].getPosition();
 		if (persp == 0) {	// orthographic
 			wHalfWidth = 0.5f / _cameras[_currCam].getOrthoScaleFactor() * _cameras[_currCam].targetDistance();
 			wHalfHeight = wHalfWidth * h / w;
@@ -536,7 +544,7 @@ bool GLWidget::getWorldPos(const QPoint & screenPos, Menge::Math::Vector2 & worl
 
 ///////////////////////////////////////////////////////////////////////////
 
-Menge::Math::Vector2 GLWidget::snap(const Menge::Math::Vector2 & pos) {
+Vector2 GLWidget::snap(const Vector2 & pos) {
 	if ( _activeGrid) {
 		if (_hSnap && _vSnap) {
 			return _grid->snap(pos);
@@ -569,7 +577,7 @@ float GLWidget::getWorldScale(float len) {
 			scale = wWidth / width();
 		}
 		else {		// perspective
-			Menge::Math::Vector3 pos = _cameras[_currCam].getPosition();
+			Vector3 pos = _cameras[_currCam].getPosition();
 			float wHeight = 2.f * pos.z() * tan(_cameras[_currCam].getFOV() * 0.5f / 180.f * 3.141597f);
 			scale = wHeight / height();
 		}
@@ -613,7 +621,7 @@ void GLWidget::setViewDirection(int direction){
 void GLWidget::initLighting() {
 	glEnable(GL_LIGHTING);
 	for (size_t i = 0; i < _lights.size(); ++i) {
-		_lights[i].initGL((int)i, Menge::SceneGraph::GLLight::CAMERA);
+		_lights[i].initGL((int)i, GLLight::CAMERA);
 	}
 }
 

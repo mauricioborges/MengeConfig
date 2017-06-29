@@ -7,13 +7,13 @@
 #include <QtGui/QOpenGLBuffer>
 #include <QtGui/QMatrix4x4>
 
-#include <Math/Vector2.h>
+#include <MengeCore/Math/Vector2.h>
 
 #include <memory>
 
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
-namespace Menge {
+namespace MengeVis {
 	namespace SceneGraph {
 		class GLScene;
 		class GLCamera;
@@ -66,7 +66,7 @@ public:
 	 *
 	 *	@param		scene	The GLScene to be rendered and temporally advanced.
 	 */
-	void setScene(Menge::SceneGraph::GLScene * scene);
+	void setScene(MengeVis::SceneGraph::GLScene * scene);
 
 	/*!
 	 *	@brief		Sets the horizontal field of view for the ith camera.
@@ -282,7 +282,7 @@ protected:
 	/*!
 	 *	@brief		The GLScene to draw.
 	 */
-	Menge::SceneGraph::GLScene *	_scene;
+	MengeVis::SceneGraph::GLScene *	_scene;
 
 	/*!
 	 *	@brief		The active context on the scene.  The view does *not* own the context.
@@ -292,7 +292,7 @@ protected:
 	/*!
 	 *	@brief		A set of cameras from which to draw the scene.
 	 */
-	std::vector< Menge::SceneGraph::GLCamera > _cameras;
+	std::vector< MengeVis::SceneGraph::GLCamera > _cameras;
 
 	/*!
 	 *	@brief		The index of camera currently being used to draw the scene.
@@ -307,7 +307,7 @@ protected:
 	/*!
 	 *	@brief		The set of lights to use in rendering.
 	 */
-	std::vector< Menge::SceneGraph::GLLight > _lights;
+	std::vector< MengeVis::SceneGraph::GLLight > _lights;
 
 	/*!
 	 *	@brief		Determines whether a world-aligned axis is drawn

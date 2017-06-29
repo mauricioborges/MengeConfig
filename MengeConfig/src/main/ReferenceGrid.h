@@ -1,7 +1,7 @@
 #ifndef __REFERENCE_GRID_H__
 #define __REFERENCE_GRID_H__
 
-#include <Math/Vector2.h>
+#include <MengeCore/Math/Vector2.h>
 
 using namespace Menge::Math;
 

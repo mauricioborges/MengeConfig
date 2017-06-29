@@ -13,7 +13,7 @@
     <MocExe>$(QtDir)/bin/moc.exe</MocExe>
 	<QrcExt>qrc</QrcExt>
 	<RccExe>$(QtDir)/bin/rcc.exe</RccExe>
-	<MengeRoot>E:\work\projects\menge_release</MengeRoot>
+	<MengeRoot>E:\work\projects\menge_fork</MengeRoot>
 	<MengeDir>$(MengeRoot)\src\Menge</MengeDir>
 	<MengeLibDir>$(MengeRoot)\projects\VS2013\Menge\build\lib\</MengeLibDir>
 	<MengeDepDll>$(MengeRoot)\projects\resources\win\</MengeDepDll>

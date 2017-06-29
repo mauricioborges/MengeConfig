@@ -78,7 +78,7 @@ public:
 	 *	@returns	A ContextResult instance reporting if the event was handled and
 	 *				if redrawing is necessary.
 	 */
-	virtual Menge::SceneGraph::ContextResult handleMouse(QMouseEvent * evt, GLWidget * view);
+  virtual MengeVis::SceneGraph::ContextResult handleMouse( QMouseEvent * evt, GLWidget * view );
 
 	/*!
 	 *	@brief		Give the context the opportunity to respond to a keyboard
@@ -88,7 +88,7 @@ public:
 	 *	@returns	A ContextResult instance reporting if the event was handled and
 	 *				if redrawing is necessary.
 	 */
-	virtual Menge::SceneGraph::ContextResult handleKeyboard(QKeyEvent * evt, GLWidget * view);
+  virtual MengeVis::SceneGraph::ContextResult handleKeyboard( QKeyEvent * evt, GLWidget * view );
 
 	/*!
 	*	@brief		Returns the control widget associated with this context.

@@ -6,8 +6,10 @@
 #include "GLPolygon.h"
 #include "glwidget.hpp"
 
-#include <Math/vector.h>
-using namespace Menge::Math;
+#include <MengeCore/Math/vector.h>
+
+using Menge::Math::Vector2;
+using MengeVis::SceneGraph::ContextResult;
 
 #include <cassert>
 #include <gl/GL.h>
@@ -28,8 +30,8 @@ EditPolygonContext::~EditPolygonContext() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * evt, GLWidget * view) {
-	Menge::SceneGraph::ContextResult result = QtContext::handleMouse(evt, view);
+ContextResult EditPolygonContext::handleMouse(QMouseEvent * evt, GLWidget * view) {
+	ContextResult result = QtContext::handleMouse(evt, view);
 	if (!result.isHandled()) {
 		Qt::KeyboardModifiers mods = evt->modifiers();
 		if (mods == Qt::NoModifier) {
@@ -141,8 +143,8 @@ Menge::SceneGraph::ContextResult EditPolygonContext::handleMouse(QMouseEvent * e
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-Menge::SceneGraph::ContextResult EditPolygonContext::handleKeyboard(QKeyEvent * evt, GLWidget * view) {
-	Menge::SceneGraph::ContextResult result = QtContext::handleKeyboard(evt, view);
+ContextResult EditPolygonContext::handleKeyboard(QKeyEvent * evt, GLWidget * view) {
+	ContextResult result = QtContext::handleKeyboard(evt, view);
 
 	if (!result.isHandled()) {
 		Qt::KeyboardModifiers mods = evt->modifiers();

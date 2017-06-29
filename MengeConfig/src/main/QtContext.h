@@ -6,8 +6,8 @@
 #ifndef __QT_CONTEXT_H__
 #define __QT_CONTEXT_H__
 
-#include <SceneGraph/Context.h>
-#include <SceneGraph/GLCamera.h>
+#include <MengeVis/SceneGraph/Context.h>
+#include <MengeVis/SceneGraph/GLCamera.h>
 
 #include "QtGui/qevent.h"
 
@@ -24,7 +24,7 @@ class GLWidget;
 /*!
  *	@brief		Context suitable for use with QT API.
  */
-class QtContext : public Menge::SceneGraph::Context {
+class QtContext : public MengeVis::SceneGraph::Context {
 public:
 	/*!
 	 *	@brief		Default constructor.
@@ -53,7 +53,9 @@ public:
 	 *	@returns	A ContextResult instance reporting if the event was handled and
 	 *				if redrawing is necessary.
 	 */
-	virtual Menge::SceneGraph::ContextResult handleMouse(QMouseEvent * evt, GLWidget * view) { return Menge::SceneGraph::ContextResult(false, false); }
+  virtual MengeVis::SceneGraph::ContextResult handleMouse( QMouseEvent * evt, GLWidget * view ) {
+    return MengeVis::SceneGraph::ContextResult( false, false );
+  }
 
 	/*!
 	 *	@brief		Give the context the opportunity to respond to a keyboard
@@ -64,7 +66,9 @@ public:
 	 *	@returns	A ContextResult instance reporting if the event was handled and
 	 *				if redrawing is necessary.
 	 */
-	virtual Menge::SceneGraph::ContextResult handleKeyboard(QKeyEvent * evt, GLWidget * view) { return Menge::SceneGraph::ContextResult(false, false); }
+  virtual MengeVis::SceneGraph::ContextResult handleKeyboard( QKeyEvent * evt, GLWidget * view ) {
+    return MengeVis::SceneGraph::ContextResult( false, false );
+  }
 
 	/*!
 	 *	@brief		Give the context the opportunity to respond to a mouse wheel
@@ -75,7 +79,9 @@ public:
 	 *	@returns	A ContextResult instance reporting if the event was handled and
 	 *				if redrawing is necessary.
 	 */
-	virtual Menge::SceneGraph::ContextResult handleWheel(QWheelEvent * evt, GLWidget * view) { return Menge::SceneGraph::ContextResult(false, false); }
+  virtual MengeVis::SceneGraph::ContextResult handleWheel( QWheelEvent * evt, GLWidget * view ) {
+    return MengeVis::SceneGraph::ContextResult( false, false );
+  }
 
 	/*!
 	 *	@brief		Returns the control widget associated with this context.  
@@ -91,7 +97,6 @@ public:
 /*!
  *	@brief		Selection context for performing selection in OpenGL view driven by QT.
  */
-class QtSelectContext : public QtContext, public Menge::SceneGraph::SelectContext {
-};
+class QtSelectContext : public QtContext, public MengeVis::SceneGraph::SelectContext {};
 
 #endif	// __QT_CONTEXT_H__

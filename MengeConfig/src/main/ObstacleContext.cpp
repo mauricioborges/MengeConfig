@@ -6,10 +6,13 @@
 #include "LiveObstacleSet.h"
 #include "ObstacleContextWidget.hpp"
 
-#include "Agents/ObstacleSets/ExplicitObstacleSet.h"
+#include "MengeCore/Agents/ObstacleSets/ExplicitObstacleSet.h"
 
 #include <QtWidgets/qtabwidget.h>
 
+using Menge::Agents::ExplicitObstacleSet;
+using Menge::Agents::ObstacleSet;
+using MengeVis::SceneGraph::ContextResult;
 
 ///////////////////////////////////////////////////////////////////////////////
 //                    Implementation of New polygon callback
@@ -101,8 +104,8 @@ void ObstacleContext::drawGL(int vWidth, int vHeight) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-Menge::SceneGraph::ContextResult ObstacleContext::handleMouse(QMouseEvent * evt, GLWidget * view) {
-	Menge::SceneGraph::ContextResult result(false, false);
+ContextResult ObstacleContext::handleMouse(QMouseEvent * evt, GLWidget * view) {
+	ContextResult result(false, false);
 	if (_state != NONE) {
 		result = _operationContexts[_state]->handleMouse(evt, view);
 	}
@@ -116,8 +119,8 @@ Menge::SceneGraph::ContextResult ObstacleContext::handleMouse(QMouseEvent * evt,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-Menge::SceneGraph::ContextResult ObstacleContext::handleKeyboard(QKeyEvent * evt, GLWidget * view) {
-	Menge::SceneGraph::ContextResult result(false, false);
+ContextResult ObstacleContext::handleKeyboard(QKeyEvent * evt, GLWidget * view) {
+	ContextResult result(false, false);
 	if (_state != NONE) {
 		result = _operationContexts[_state]->handleKeyboard(evt, view);
 	}
@@ -197,7 +200,7 @@ void ObstacleContext::finishObstacleSet( bool save ) {
 		if (save) {
 			if (_editSet == 0) {
 				// save brand new obstacle set
-				Menge::Agents::ExplicitObstacleSet * obstacleSet = new Menge::Agents::ExplicitObstacleSet();
+				ExplicitObstacleSet * obstacleSet = new ExplicitObstacleSet();
 				// TODO: Populate the obstacle set from the live obstacle set.
 				// notify entity of new obstacle set.
 			}
@@ -214,7 +217,7 @@ void ObstacleContext::finishObstacleSet( bool save ) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void ObstacleContext::setObstacleSet(Menge::Agents::ObstacleSet * obstacleSet) {
+void ObstacleContext::setObstacleSet(ObstacleSet * obstacleSet) {
 	// TODO: Create a new live set, and populate it from the explicit set.
 	// TODO: I need to save the edited obstacle set so I can replace it in the scene data later.
 	// TODO: If the input obstacle set is *not* explicit, warn that it will be converted.
