@@ -10,6 +10,7 @@
 
 #include <QtWidgets/QBoxLayout.h>
 #include <QtWidgets/QDockWidget.h>
+#include <QtWidgets/QFileDialog.h>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QSplitter>
@@ -78,25 +79,28 @@ void MainWindow::buildMenu() {
 	// Projects menu
 	QMenu * menuProj = menuBar->addMenu( tr( "&Project" ) );
 	_loadProject = new QAction( menuProj );
-	_loadProject->setText( tr( "&Open Project" ) );
+	_loadProject->setText( tr( "Open Project" ) );
+  _loadProject->setShortcut( QKeySequence( tr( "Ctrl+o" ) ) );
   _loadProject->setStatusTip( tr( "Open a Menge simulation project from disk" ) );
-	_loadProject->setEnabled( false );
+	_loadProject->setEnabled( true );
 	menuProj->addAction( _loadProject );
-	connect( _loadProject, &QAction::triggered, _sceneViewer, &SceneViewer::loadProject );
+  connect( _loadProject, &QAction::triggered, this, &MainWindow::loadProject );
 
 	_resetProject = new QAction( menuProj );
-	_resetProject->setText( tr( "&Reset Project" ) );
+  _resetProject->setText( tr( "Reset Project" ) );
+  _resetProject->setShortcut( QKeySequence( tr( "Ctrl+r" ) ) );
   _resetProject->setStatusTip( tr( "Reset the project to its on-disk state" ) );
 	_resetProject->setEnabled( false );
 	menuProj->addAction( _resetProject );
-	connect( _resetProject, &QAction::triggered, _sceneViewer, &SceneViewer::resetProject );
+  connect( _resetProject, &QAction::triggered, this, &MainWindow::resetProject );
 
 	_saveProject = new QAction( menuProj );
-	_saveProject->setText( tr( "&Save Project" ) );
+  _saveProject->setText( tr( "Save Project" ) );
+  _saveProject->setShortcut( QKeySequence( tr( "Ctrl+Shift+S" ) ) );
   _saveProject->setStatusTip( tr( "Save the current project to disk" ) );
 	_saveProject->setEnabled( false );
 	menuProj->addAction( _saveProject );
-	connect( _saveProject, &QAction::triggered, _sceneViewer, &SceneViewer::saveProject );
+  connect( _saveProject, &QAction::triggered, this, &MainWindow::saveProject );
 
 	// Obstacles menu
 	QMenu * menuObst = menuBar->addMenu(tr("&Obstacles"));
@@ -202,4 +206,36 @@ void MainWindow::toggleFSMViewer(bool state) {
 
 void MainWindow::toggleLog(bool state) {
 	_logger->setVisible(state);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void MainWindow::loadProject() {
+  QFileDialog dialog( this );
+  dialog.setWindowTitle( "Open Project" );
+  dialog.setFileMode( QFileDialog::ExistingFile );
+  dialog.setNameFilter( tr( "Project files (*.xml);;All files(*.*)" ) );
+  QStringList fileNames;
+  if ( dialog.exec() ) {
+    std::string fileName = dialog.selectedFiles().at( 0 ).toStdString();
+    AppLogger::logStream << AppLogger::INFO_MSG << "Selected " << fileName
+      << " to load" << AppLogger::END_MSG;
+    // Load the project
+    //  1. Select pedestrian model
+    //  2. Parse project file (having already set the model in the ProjectSpec).
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void MainWindow::resetProject() {
+  AppLogger::logStream << AppLogger::INFO_MSG << "Reset project not implemented yet..."
+    << AppLogger::END_MSG;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void MainWindow::saveProject() {
+  AppLogger::logStream << AppLogger::INFO_MSG << "Save project not implemented yet..."
+    << AppLogger::END_MSG;
 }

@@ -22,21 +22,6 @@ public:
 	SceneViewer(QWidget * parent = 0x0);
 
 	/*!
-	 *	@brief		Attempts to load a Menge project.
-	 */
-	void loadProject();
-
-	/*!
-	 *	@brief		Resets the project to its initial state.
-	 */
-	void resetProject();
-
-	/*!
-	 *	@brief		Attempts to save the current project into Menge files.
-	 */
-	void saveProject();
-
-	/*!
 	 *	@brief		Starts the context for drawing obstacles.
 	 */
 	void drawObstacle();
@@ -103,7 +88,6 @@ private:
 	*	@brief		The action to toggle the grid's vertical snap functiaonlity.
 	*/
 	QAction * _gridVSnap;
-
 
 };
 

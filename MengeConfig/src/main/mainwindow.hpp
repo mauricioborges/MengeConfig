@@ -20,7 +20,7 @@ public:
 	/*!
 	 *	@brief		Constructor.
 	 */
-    MainWindow();
+  MainWindow();
 
 private:
 	
@@ -161,7 +161,22 @@ private:
 	*
 	*	@param		state		The visibility state of the widget.
 	*/
-	void toggleLog(bool state);
+  void toggleLog( bool state );
+
+  /*!
+  *	@brief		Attempts to load a Menge project.
+  */
+  void loadProject();
+
+  /*!
+  *	@brief		Resets the project to its initial state.
+  */
+  void resetProject();
+
+  /*!
+  *	@brief		Attempts to save the current project into Menge files.
+  */
+  void saveProject();
 
 };
 

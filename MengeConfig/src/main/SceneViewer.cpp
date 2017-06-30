@@ -97,27 +97,6 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void SceneViewer::loadProject() {
-	AppLogger::logStream << AppLogger::INFO_MSG << "Load project not implemented yet..."
-		<< AppLogger::END_MSG;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void SceneViewer::resetProject() {
-	AppLogger::logStream << AppLogger::INFO_MSG << "Reset project not implemented yet..."
-		<< AppLogger::END_MSG;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-void SceneViewer::saveProject() {
-	AppLogger::logStream << AppLogger::INFO_MSG << "Save project not implemented yet..."
-		<< AppLogger::END_MSG;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 void SceneViewer::drawObstacle() {
 	// TODO: Determine where the context comes from.
 	QtContext * ctx = new ObstacleContext();
