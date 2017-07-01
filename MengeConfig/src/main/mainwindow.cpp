@@ -3,6 +3,7 @@
 #include "AppLogger.hpp"
 #include "ContextManager.hpp"
 #include "FSMViewer.hpp"
+#include "PedestrianModelDialog.hpp"
 #include "SceneHierarchy.hpp"
 #include "SceneViewer.hpp"
 #include "SceneHierarchy.hpp"
@@ -15,6 +16,8 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QStatusBar.h>
+
+#include <MengeCore/PluginEngine/CorePluginEngine.h>
 
 #include <iostream>
 
@@ -69,6 +72,9 @@ MainWindow::MainWindow() : QMainWindow()
 	_logger->setVisible(false);
 	vSplitter->addWidget(_logger);
 
+  Menge::PluginEngine::CorePluginEngine pluginEngine( &simDB_ );
+  AppLogger::logStream << AppLogger::INFO_MSG << "Menge has " << simDB_.modelCount() << " models "
+    << "available." << AppLogger::END_MSG;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,14 +221,18 @@ void MainWindow::loadProject() {
   dialog.setWindowTitle( "Open Project" );
   dialog.setFileMode( QFileDialog::ExistingFile );
   dialog.setNameFilter( tr( "Project files (*.xml);;All files(*.*)" ) );
-  QStringList fileNames;
+  
   if ( dialog.exec() ) {
-    std::string fileName = dialog.selectedFiles().at( 0 ).toStdString();
+    QStringList fileNames = dialog.selectedFiles();
+    std::string fileName = fileNames[0].toStdString();
     AppLogger::logStream << AppLogger::INFO_MSG << "Selected " << fileName
       << " to load" << AppLogger::END_MSG;
     // Load the project
     //  1. Select pedestrian model
-    //  2. Parse project file (having already set the model in the ProjectSpec).
+    PedestrianModelDialog model_dlg( &simDB_, this );
+    if ( model_dlg.exec() ) {
+      //  2. Parse project file (having already set the model in the ProjectSpec).
+    }
   }
 }
 

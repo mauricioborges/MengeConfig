@@ -117,6 +117,12 @@
     <ClCompile Include="src\gen\cpp\moc_ContextManager.cpp">
       <Filter>Source Files\moc</Filter>
     </ClCompile>
+    <ClCompile Include="src\gen\cpp\moc_PedestrianModelDialog.cpp">
+      <Filter>Source Files\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\PedestrianModelDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\glwidget.hpp">
@@ -177,6 +183,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\main\ContextManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main\PedestrianModelDialog.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

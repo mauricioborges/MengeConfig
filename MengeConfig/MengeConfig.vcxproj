@@ -28,6 +28,7 @@
     <ClCompile Include="src\gen\cpp\moc_mainwindow.cpp" />
     <ClCompile Include="src\gen\cpp\moc_ObstacleContext.cpp" />
     <ClCompile Include="src\gen\cpp\moc_ObstacleContextWidget.cpp" />
+    <ClCompile Include="src\gen\cpp\moc_PedestrianModelDialog.cpp" />
     <ClCompile Include="src\gen\cpp\moc_SceneHierarchy.cpp" />
     <ClCompile Include="src\gen\cpp\moc_SceneViewer.cpp" />
     <ClCompile Include="src\gen\cpp\moc_ToolProperties.cpp" />
@@ -47,6 +48,7 @@
     <ClCompile Include="src\main\mainwindow.cpp" />
     <ClCompile Include="src\main\GLPolygon.cpp" />
     <ClCompile Include="src\main\ObstacleContextWidget.cpp" />
+    <ClCompile Include="src\main\PedestrianModelDialog.cpp" />
     <ClCompile Include="src\main\QtContext.cpp" />
     <ClCompile Include="src\main\ReferenceGrid.cpp" />
     <ClCompile Include="src\main\SceneHierarchy.cpp" />
@@ -69,6 +71,7 @@
     <ClInclude Include="src\main\mainwindow.hpp" />
     <ClInclude Include="src\main\GLPolygon.h" />
     <ClInclude Include="src\main\ObstacleContextWidget.hpp" />
+    <ClInclude Include="src\main\PedestrianModelDialog.hpp" />
     <ClInclude Include="src\main\QtContext.h" />
     <ClInclude Include="src\main\ReferenceGrid.h" />
     <ClInclude Include="src\main\SceneHierarchy.hpp" />

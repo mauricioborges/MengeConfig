@@ -3,6 +3,8 @@
 
 #include <QtWidgets/QMainWindow>
 
+#include <MengeCore/Runtime/SimulatorDB.h>
+
 class SceneHierarchy;
 class SceneViewer;
 class FSMViewer;
@@ -177,6 +179,12 @@ private:
   *	@brief		Attempts to save the current project into Menge files.
   */
   void saveProject();
+
+  ///////////////////////////////////////////////////////////////////////////
+  //				Menge Data Structures
+  ///////////////////////////////////////////////////////////////////////////
+
+  Menge::SimulatorDB simDB_;
 
 };
 
