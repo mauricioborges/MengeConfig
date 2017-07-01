@@ -27,6 +27,8 @@
 
 MainWindow::MainWindow() : QMainWindow()
 {
+  QIcon menge_icon( ":icons/menge_icon.png" );
+  setWindowIcon( menge_icon );
 	// The major gui components
 	QWidget * widget = new QWidget();
 	QSplitter * vSplitter = new QSplitter();

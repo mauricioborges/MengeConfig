@@ -56,6 +56,7 @@
     <ClCompile Include="src\main\ToolProperties.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\main\AppLogger.hpp" />
     <ClInclude Include="src\main\ContextManager.hpp" />
     <ClInclude Include="src\main\DrawPolygonContext.h" />
@@ -80,6 +81,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\main\MengeConfig.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MengeConfig.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\main\icons\menge_icon.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E0BDB1D2-5251-4792-8584-8AB6BEBB5E84}</ProjectGuid>

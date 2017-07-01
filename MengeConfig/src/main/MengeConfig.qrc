@@ -7,6 +7,7 @@
   <file>images/gridProperties.png</file>
   <file>images/gridSnapHorizontal.png</file>
   <file>images/gridSnapVertical.png</file>
+  <file>icons/menge_icon.png</file>
 </qresource>
 </RCC>
 
