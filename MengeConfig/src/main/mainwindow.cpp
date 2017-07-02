@@ -25,6 +25,9 @@
 //						Implementation of MainWindow
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+using Menge::PluginEngine::CorePluginEngine;
+using Menge::ProjectSpec;
+
 MainWindow::MainWindow() : QMainWindow()
 {
   QIcon menge_icon( ":icons/menge_icon.png" );
@@ -74,7 +77,9 @@ MainWindow::MainWindow() : QMainWindow()
 	_logger->setVisible(false);
 	vSplitter->addWidget(_logger);
 
-  Menge::PluginEngine::CorePluginEngine pluginEngine( &simDB_ );
+  CorePluginEngine pluginEngine( &simDB_ );
+  std::string pluginPath = QDir::currentPath().toStdString() + "/plugins";
+  pluginEngine.loadPlugins( pluginPath );
   AppLogger::logStream << AppLogger::INFO_MSG << "Menge has " << simDB_.modelCount() << " models "
     << "available." << AppLogger::END_MSG;
 }

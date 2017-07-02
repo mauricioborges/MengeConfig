@@ -176,7 +176,10 @@ xcopy "$(QtDir)\bin\Qt5Gui.dll" "$(TargetDir)" /y /d
 xcopy "$(QtDir)\bin\Qt5Widgets.dll" "$(TargetDir)" /y /d
 xcopy "$(MengeLibDir)MengeCore_d.dll" "$(TargetDir)" /y /d
 xcopy "$(MengeLibDir)MengeVis_d.dll" "$(TargetDir)" /y /d
-xcopy "$(MengeDepDll)exe_rsrc\x86\*.*" "$(TargetDir)" /y /d</Command>
+xcopy "$(MengeDepDll)exe_rsrc\x86\*.*" "$(TargetDir)" /y /d
+if not exist $(TargetDir)\plugins  md "$(TargetDir)\plugins"
+xcopy /y "$(MengeRoot)\projects\VS2013\Plugins\build\lib\*_d.dll" "$(TargetDir)\plugins\"
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -203,7 +206,9 @@ xcopy "$(QtDir)\bin\Qt5Gui.dll" "$(TargetDir)" /y /d
 xcopy "$(QtDir)\bin\Qt5Widgets.dll" "$(TargetDir)" /y /d
 xcopy "$(MengeLibDir)\x64\MengeCore_d.dll" "$(TargetDir)" /y /d
 xcopy "$(MengeLibDir)\x64\MengeVis_d.dll" "$(TargetDir)" /y /d
-xcopy "$(MengeDepDll)exe_rsrc\x64\*.*" "$(TargetDir)" /y /d</Command>
+xcopy "$(MengeDepDll)exe_rsrc\x64\*.*" "$(TargetDir)" /y /d
+if not exist $(TargetDir)\plugins  md "$(TargetDir)\plugins"
+xcopy /y "$(MengeRoot)\projects\VS2013\Plugins\build\lib\*_d.dll" "$(TargetDir)\plugins\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -231,7 +236,11 @@ xcopy "$(QtDir)\bin\Qt5Gui.dll" "$(TargetDir)" /y /d
 xcopy "$(QtDir)\bin\Qt5Widgets.dll" "$(TargetDir)" /y /d
 xcopy "$(MengeLibDir)MengeCore.dll" "$(TargetDir)" /y /d
 xcopy "$(MengeLibDir)MengeVis.dll" "$(TargetDir)" /y /d
-xcopy "$(MengeDepDll)exe_rsrc\x86\*.*" "$(TargetDir)" /y /d</Command>
+xcopy "$(MengeDepDll)exe_rsrc\x86\*.*" "$(TargetDir)" /y /d
+if not exist $(TargetDir)\plugins  md "$(TargetDir)\plugins"
+xcopy /y "$(MengeRoot)\projects\VS2013\Plugins\build\lib\*.dll" "$(TargetDir)\plugins\"
+del "$(TargetDir)\plugins\*_d.dll"
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -260,7 +269,11 @@ xcopy "$(QtDir)\bin\Qt5Gui.dll" "$(TargetDir)" /y /d
 xcopy "$(QtDir)\bin\Qt5Widgets.dll" "$(TargetDir)" /y /d
 xcopy "$(MengeLibDir)\x64\MengeCore.dll" "$(TargetDir)" /y /d
 xcopy "$(MengeLibDir)\x64\MengeVis.dll" "$(TargetDir)" /y /d
-xcopy "$(MengeDepDll)exe_rsrc\x64\*.*" "$(TargetDir)" /y /d</Command>
+xcopy "$(MengeDepDll)exe_rsrc\x64\*.*" "$(TargetDir)" /y /d
+if not exist $(TargetDir)\plugins  md "$(TargetDir)\plugins"
+xcopy /y "$(MengeRoot)\projects\VS2013\Plugins\build\lib\*.dll" "$(TargetDir)\plugins\"
+del "$(TargetDir)\plugins\*_d.dll"
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
