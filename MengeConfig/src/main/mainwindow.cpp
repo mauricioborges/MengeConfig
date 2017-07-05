@@ -14,19 +14,25 @@
 #include <QtWidgets/QFileDialog.h>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMenu>
+#include <QtWidgets/QMessageBox.h>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QStatusBar.h>
 
+#include <MengeCore/ProjectSpec.h>
 #include <MengeCore/PluginEngine/CorePluginEngine.h>
+#include <MengeCore/Runtime/SimulatorDBEntry.h>
 
+#include <cassert>
 #include <iostream>
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //						Implementation of MainWindow
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+using Menge::Agents::SimulatorInterface;
 using Menge::PluginEngine::CorePluginEngine;
 using Menge::ProjectSpec;
+using Menge::SimulatorDBEntry;
 
 MainWindow::MainWindow() : QMainWindow()
 {
@@ -42,6 +48,7 @@ MainWindow::MainWindow() : QMainWindow()
 
 	_sceneViewer = new SceneViewer();
 	splitter->addWidget(_sceneViewer);
+  connect( this, &MainWindow::simulationLoaded, _sceneViewer, &SceneViewer::setSimulation );
 
 	_fsmViewer = new FSMViewer();
 	splitter->addWidget(_fsmViewer);
@@ -235,10 +242,33 @@ void MainWindow::loadProject() {
     AppLogger::logStream << AppLogger::INFO_MSG << "Selected " << fileName
       << " to load" << AppLogger::END_MSG;
     // Load the project
+    ProjectSpec projSpec;
+    if ( !projSpec.loadFromXML( fileName ) ) {
+      QString msg = QString( tr( "Unable to open the requested project file: " ) )
+        + QString( fileName.c_str() );
+      QMessageBox::warning( this, tr( "Open Project" ), msg );
+      AppLogger::logStream << AppLogger::ERROR_MSG << "Error loading project file: " << fileName
+        << AppLogger::END_MSG;
+      return;
+    }
     //  1. Select pedestrian model
-    PedestrianModelDialog model_dlg( &simDB_, this );
+    PedestrianModelDialog model_dlg( &simDB_, projSpec.getModel(), this );
     if ( model_dlg.exec() ) {
-      //  2. Parse project file (having already set the model in the ProjectSpec).
+      projSpec.setModel( model_dlg.getModelName() );
+      AppLogger::logStream << AppLogger::INFO_MSG << "Selected model: " << projSpec.getModel()
+        << AppLogger::END_MSG;
+      // Load the simulator.
+      if ( loadSimulation( projSpec ) ) {
+        // TODO: Test for view configuration; if exists, attempt to load it and pass it to the
+        // scene viewer.
+      } else {
+        AppLogger::logStream << AppLogger::ERROR_MSG << "Failed to load the simulation: "
+          << fileName << " with the model " << projSpec.getModel() << "."
+          << AppLogger::END_MSG;
+      } 
+    } else {
+      AppLogger::logStream << AppLogger::WARN_MSG << "Canceled model selection." 
+        << AppLogger::END_MSG;
     }
   }
 }
@@ -255,4 +285,29 @@ void MainWindow::resetProject() {
 void MainWindow::saveProject() {
   AppLogger::logStream << AppLogger::INFO_MSG << "Save project not implemented yet..."
     << AppLogger::END_MSG;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+bool MainWindow::loadSimulation( const ProjectSpec& project_spec ) {
+  SimulatorDBEntry * dbEntry = simDB_.getDBEntry( project_spec.getModel() );
+  // This should have already validated the project spec.
+  assert( dbEntry != nullptr );
+  size_t agentCount;  // Return value from dbEntry->getSimulator()
+  float time_step = project_spec.getTimeStep();   // Return value from dbEntry->getSimulator()
+  sim_.reset( dbEntry->getSimulator( agentCount, time_step,
+                                                    project_spec.getSubSteps(), 
+                                                    project_spec.getDuration(), 
+                                                    project_spec.getBehavior(),
+                                                    project_spec.getScene(),
+                                                    project_spec.getOutputName(),
+                                                    project_spec.getSCBVersion(), 
+                                                    false /*VERBOSE*/ ));
+  if ( sim_ != nullptr ) {
+    AppLogger::logStream << AppLogger::INFO_MSG << "Successfully loaded simulation."
+      << AppLogger::END_MSG;
+    emit simulationLoaded( sim_.get() );
+    return true;
+  } 
+  return false;
 }

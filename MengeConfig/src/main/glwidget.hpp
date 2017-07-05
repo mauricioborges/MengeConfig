@@ -353,6 +353,9 @@ protected:
 	 */
 	void drawWorldAxis();
 
+  //////////////////////////////////////////////////////////
+  //         Menge artifacts
+
 };
 
 #endif

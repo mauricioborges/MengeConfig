@@ -28,11 +28,18 @@ public:
   /*!
    *  @brief  Constructor
    *
-   *  @param  simDB   The simulator database; available pedestrian models are drawn from this
-   *                  database.
-   *  @param  parent  The (optional) parent widget.
+   *  @param  simDB          The simulator database; available pedestrian models are drawn from
+   *                         this database.
+   *  @param  default_model  The name of the model that is requested by default.
+   *  @param  parent         The (optional) parent widget.
    */
-  PedestrianModelDialog( const Menge::SimulatorDB* simDB, QWidget* parent = 0x0 );
+  PedestrianModelDialog( const Menge::SimulatorDB* simDB, const std::string& default_model, 
+                         QWidget* parent = 0x0 );
+
+  /*!
+   *  @brief  Reports the selected model.
+   */
+  std::string getModelName() const;
 
 private:
   // Slot for when the model changes -- udpates the tool tip on the combo box.

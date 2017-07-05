@@ -4,6 +4,7 @@
 #include <QtWidgets/QDialogButtonBox.h>
 #include <QtWidgets/QLabel.h>
 #include <QtWidgets/QLayout.h>
+#include <QtWidgets/QMessageBox.h>
 
 #include <iostream>
 
@@ -14,18 +15,30 @@
 //						Implementation of PedestrianModelDialog
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-PedestrianModelDialog::PedestrianModelDialog( const Menge::SimulatorDB* simDB, QWidget* parent ) 
+PedestrianModelDialog::PedestrianModelDialog( const Menge::SimulatorDB* simDB, 
+                                              const std::string& default_model,
+                                              QWidget* parent ) 
   : QDialog( parent ), simDB_( simDB ) {
   this->setWindowTitle( tr( "Select Pedestrian Model" ) );
   model_label_ = new QLabel( tr( "Model" ) );
   model_combobox_ = new QComboBox();
   const int count = static_cast<int>(simDB->modelCount());
+  int default_index = default_model.empty() ? 0 : -1;
   for ( int i = 0; i < count; ++i ) {
-    model_combobox_->addItem( QString::fromStdString( simDB->name( i ) ) );
+    const std::string& model_name = simDB->name( i );
+    if ( model_name == default_model ) default_index = i;
+    model_combobox_->addItem( QString::fromStdString( model_name ) );
   }
-  connect( model_combobox_, static_cast<void ( QComboBox::* )( int )>( &QComboBox::currentIndexChanged ),
+  connect( model_combobox_,
+           static_cast<void ( QComboBox::* )( int )>( &QComboBox::currentIndexChanged ),
            this, &PedestrianModelDialog::modelChanged );
-  modelChanged( 0 );
+  if ( default_index < 0 ) {
+    QString msg = QString( tr( "Requested default model is not available: " ) )
+      + QString( default_model.c_str() );
+    QMessageBox::warning( this, tr( "Select Pedestrian Model" ), msg );
+    default_index = 0;
+  }
+  model_combobox_->setCurrentIndex( default_index );
 
   button_box_ = new QDialogButtonBox( Qt::Horizontal );
   button_box_->addButton( QDialogButtonBox::Ok );
@@ -45,6 +58,10 @@ PedestrianModelDialog::PedestrianModelDialog( const Menge::SimulatorDB* simDB, Q
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+std::string PedestrianModelDialog::getModelName() const {
+  return model_combobox_->currentText().toStdString();
+}
 
 void PedestrianModelDialog::modelChanged( int i ) {
   model_combobox_->setToolTip( QString::fromStdString( simDB_->longDescriptions( i ) ) );

@@ -17,11 +17,13 @@
 #include <gl/GL.h>
 #include "AppLogger.hpp"
 #include "ContextManager.hpp"
+#include "GridNode.h"
 
 #include <MengeVis/SceneGraph/GLCamera.h>
+#include <MengeVis/SceneGraph/GLContextManager.h>
 #include <MengeVis/SceneGraph/GLScene.h>
 #include <MengeVis/SceneGraph/GLLight.h>
-#include "GridNode.h"
+#include <MengeVis/SceneGraph/shapes.h>
 
 #include <iostream>
 #include <sstream>
@@ -31,6 +33,7 @@
 
 using Menge::Math::Vector2;
 using Menge::Math::Vector3;
+using MengeVis::GLContextManager;
 using MengeVis::SceneGraph::ContextResult;
 using MengeVis::SceneGraph::GLCamera;
 using MengeVis::SceneGraph::GLLight;
@@ -131,12 +134,13 @@ GLWidget::GLWidget(QWidget *parent)
 	setMouseTracking(true);
 	// TODO: Handle cameras in some other way
 	GLCamera camera;
-	camera.setPosition(0.f, 0.f, 10.f);
+	camera.setPosition(0.f, 0.01f, 10.f);
 	camera.setTarget(0.f, 0.f, 0.f);
 	camera.setFarPlane(100.f);
 	camera.setNearPlane(0.1f);
 	camera.setFOV(45.f);
 	camera.setPersp();
+  camera.viewZAxis( false /* down positive */ );
 	_cameras.push_back(camera);
 
 	_scene = new GLScene();
@@ -148,7 +152,6 @@ GLWidget::GLWidget(QWidget *parent)
 	_grid->setSize(100.f, 100.f);
 	_grid->setMajorDist(5.f);
 	_grid->setMinorCount(4);
-	_scene->addNode(_grid);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -248,6 +251,7 @@ void GLWidget::initializeGL()
 
 	glEnable( GL_COLOR_MATERIAL );
 
+  MengeVis::SceneGraph::initShapes();
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -256,9 +260,11 @@ void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    
 	if (_scene) {
 		_scene->drawGL(_cameras[_currCam], _lights, width(), height());
 	}
+  _grid->drawGL( false );
 	// various view decorations
 	// world axis
 	if (_drawWorldAxis) drawWorldAxis();
@@ -432,7 +438,7 @@ void GLWidget::newGLContext() {
 	//MengeVis::SceneGraph::TextWriter::Instance()->resize(w, h);
 	//MengeVis::SceneGraph::TextWriter::Instance()->newGLContext();
 	//initializeGL();
-	//MengeVis::GLContextManager::newGLContext();
+	GLContextManager::newGLContext();
 	if (_scene) {
 		_scene->newGLContext();
 	}

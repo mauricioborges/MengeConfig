@@ -11,6 +11,16 @@
 #include <QtWidgets/QLabel.h>
 #include <QtWidgets/qToolbar.h>
 
+#include <MengeCore/Agents/BaseAgent.h>
+#include <MengeCore/Agents/SimulatorInterface.h>
+#include <MengeVis/Runtime/VisAgent/VisAgent.h>
+#include <MengeVis/SceneGraph/GLScene.h>
+
+using Menge::Agents::BaseAgent;
+using Menge::Agents::SimulatorInterface;
+using MengeVis::Runtime::VisAgent;
+using MengeVis::SceneGraph::GLScene;
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 //						Implementation of SceneViewer
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,9 +108,22 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void SceneViewer::drawObstacle() {
-	// TODO: Determine where the context comes from.
-	QtContext * ctx = new ObstacleContext();
-	ContextManager::instance()->activate(ctx);
+  // TODO: Determine where the context comes from.
+  QtContext * ctx = new ObstacleContext();
+  ContextManager::instance()->activate( ctx );
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::setSimulation( const Menge::Agents::SimulatorInterface* sim ) {
+  _sim = sim;
+  buildScene();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::setView( const MengeVis::Viewer::ViewConfig& view_config ) {
+  // TODO: Implement this.
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,3 +156,35 @@ void SceneViewer::userRotated() {
 void SceneViewer::setCurrentWorldPos(float x, float y) {
 	_posLabel->setText(QString("(%1, %2)").arg(x, 0, 'f', 2).arg(y, 0, 'f', 2));
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::clearScene() {
+  if ( _scene != nullptr ) {
+    // TODO: Do the work to flush all of the scene elements.
+    _glView->setScene( _scene );
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::buildScene() {
+  clearScene();
+  if ( _sim != nullptr ) {
+    // TODO: Do the work to populate the scene.
+    _scene = new GLScene();
+    _visAgents.reserve( _sim->getNumAgents() );
+    for ( size_t a = 0; a < _sim->getNumAgents(); ++a ) {
+      const BaseAgent * agt = _sim->getAgent( a );
+      VisAgent * agtNode = new VisAgent();
+      agtNode->setElement( agt );
+      float h = _sim->getElevation( agt );
+      agtNode->setPosition( agt->_pos.x(), agt->_pos.y(), h );
+      _scene->addNode( agtNode );
+      _visAgents.push_back(agtNode);
+    }
+    _glView->setScene( _scene );
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////

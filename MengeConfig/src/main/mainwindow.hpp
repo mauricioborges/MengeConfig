@@ -3,13 +3,21 @@
 
 #include <QtWidgets/QMainWindow>
 
+#include <memory>
+
+#include <MengeCore/Agents/SimulatorInterface.h>
 #include <MengeCore/Runtime/SimulatorDB.h>
 
+// Forward declarations
 class SceneHierarchy;
 class SceneViewer;
 class FSMViewer;
 class AppLogger;
 class ToolPropertyWidget;
+
+namespace Menge {
+  class ProjectSpec;
+}
 
 /*!
  *	@brief		The main window of the application -- all GUI runs through this.
@@ -23,6 +31,15 @@ public:
 	 *	@brief		Constructor.
 	 */
   MainWindow();
+
+signals:
+  /*!
+   *  @brief    Signals that a simulation has been loaded.
+   *
+   *  @param    sim   A pointer to the signal that has been loaded. May be null if a previously
+   *                  loaded simulation is closed.
+   */
+  void simulationLoaded( Menge::Agents::SimulatorInterface* sim );
 
 private:
 	
@@ -152,39 +169,46 @@ private:
 	void toggleSceneViewer(bool state);
 
 	/*!
-	*	@brief		Slot for when the state of the fsm viewer visibility changes.
-	*
-	*	@param		state		The visibility state of the widget.
-	*/
+	 *	@brief		Slot for when the state of the fsm viewer visibility changes.
+	 *
+	 *	@param		state		The visibility state of the widget.
+	 */
 	void toggleFSMViewer(bool state);
 
 	/*!
-	*	@brief		Slot for when the state of the log widget changes.
-	*
-	*	@param		state		The visibility state of the widget.
-	*/
+	 *	@brief		Slot for when the state of the log widget changes.
+	 *
+	 *	@param		state		The visibility state of the widget.
+	 */
   void toggleLog( bool state );
 
   /*!
-  *	@brief		Attempts to load a Menge project.
-  */
+   *	@brief		Attempts to load a Menge project.
+   */
   void loadProject();
 
   /*!
-  *	@brief		Resets the project to its initial state.
-  */
+   *	@brief		Resets the project to its initial state.
+   */
   void resetProject();
 
   /*!
-  *	@brief		Attempts to save the current project into Menge files.
-  */
+   *	@brief		Attempts to save the current project into Menge files.
+   */
   void saveProject();
 
   ///////////////////////////////////////////////////////////////////////////
-  //				Menge Data Structures
+  //				Menge Elements
   ///////////////////////////////////////////////////////////////////////////
 
+  // Loads the simulator from a project specification.
+  bool loadSimulation( const Menge::ProjectSpec& project_spec );
+
+  // The simulator database that gets loaded with plugins.
   Menge::SimulatorDB simDB_;
+
+  // The simulation.
+  std::unique_ptr<Menge::Agents::SimulatorInterface> sim_;
 
 };
 
