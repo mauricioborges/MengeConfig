@@ -5,6 +5,8 @@
 #include "glwidget.hpp"
 #include "ObstacleContext.hpp"
 
+#include <set>
+
 #include <QtWidgets/qaction.h>
 #include <QtWidgets/QBoxLayout.h>
 #include <QtWidgets/qcombobox.h>
@@ -12,13 +14,22 @@
 #include <QtWidgets/qToolbar.h>
 
 #include <MengeCore/Agents/BaseAgent.h>
+#include <MengeCore/Agents/Obstacle.h>
 #include <MengeCore/Agents/SimulatorInterface.h>
+#include <MengeCore/Agents/SpatialQueries/SpatialQuery.h>
+#include <MengeCore/Math/vector.h>
 #include <MengeVis/Runtime/VisAgent/VisAgent.h>
+#include <MengeVis/Runtime/VisObstacle.h>
 #include <MengeVis/SceneGraph/GLScene.h>
 
 using Menge::Agents::BaseAgent;
+using Menge::Agents::Obstacle;
 using Menge::Agents::SimulatorInterface;
+using Menge::Agents::SpatialQuery;
+using Menge::Math::Vector2;
+using Menge::Math::Vector3;
 using MengeVis::Runtime::VisAgent;
+using MengeVis::Runtime::VisObstacle;
 using MengeVis::SceneGraph::GLScene;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,6 +184,7 @@ void SceneViewer::buildScene() {
   if ( _sim != nullptr ) {
     // TODO: Do the work to populate the scene.
     _scene = new GLScene();
+    // Add agents.
     _visAgents.reserve( _sim->getNumAgents() );
     for ( size_t a = 0; a < _sim->getNumAgents(); ++a ) {
       const BaseAgent * agt = _sim->getAgent( a );
@@ -182,6 +194,33 @@ void SceneViewer::buildScene() {
       agtNode->setPosition( agt->_pos.x(), agt->_pos.y(), h );
       _scene->addNode( agtNode );
       _visAgents.push_back(agtNode);
+    }
+    // Add obstacles.
+    // TODO: If the bsptree (ObstacleKDTree.h) chops up the obstacles, this isn't doing the
+    //		right thing.  Currently, the bsptree chops them
+    //	THIS IS A HACK to address the issues of the ObstacleKDTree
+    //		The right thing to do is modify things so that they are not chopped up.
+    std::set< const Obstacle * > handled;
+    const std::vector< Obstacle * > & obstacles = _sim->getSpatialQuery().getObstacles();
+    for ( size_t o = 0; o < obstacles.size(); ++o ) {
+
+      const Obstacle * obst = obstacles[ o ];
+      if ( handled.find( obst ) == handled.end() ) {
+        Vector2 p0a = obst->getP0();
+        Vector2 p1a = obst->getP1();
+        const Obstacle * next = obst->_nextObstacle;
+        while ( next && next->_unitDir * obst->_unitDir >= 0.99999f ) {
+          handled.insert( next );
+          p1a.set( next->getP1() );
+          next = next->_nextObstacle;
+        }
+        Vector3 p0( p0a.x(), p0a.y(), _sim->getElevation( p0a ) );
+        Vector3 p1( p1a.x(), p1a.y(), _sim->getElevation( p1a ) );
+        VisObstacle * vo = new VisObstacle( p0, p1 );
+
+        _scene->addNode( vo );
+        handled.insert( obst );
+      }
     }
     _glView->setScene( _scene );
   }
