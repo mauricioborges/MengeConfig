@@ -77,6 +77,7 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
     tr("Toggle the current camera's projection between perspective and orthographic"));
 	_toolBar->addAction(togPerspAct);
 	connect(togPerspAct, &QAction::triggered, _glView, &GLWidget::toggleProjection);
+  connect( _glView, &GLWidget::setViewPerspective, togPerspAct, &QAction::setChecked );
 
 	_dirComboBox = new QComboBox();
 	_dirComboBox->setEditable(false);
@@ -145,7 +146,7 @@ void SceneViewer::setSimulation( Menge::Agents::SimulatorInterface* sim ) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void SceneViewer::setView( const MengeVis::Viewer::ViewConfig& view_config ) {
-  // TODO: Implement this.
+  _glView->setView( view_config );
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

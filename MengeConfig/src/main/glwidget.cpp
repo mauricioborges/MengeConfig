@@ -24,6 +24,7 @@
 #include <MengeVis/SceneGraph/GLScene.h>
 #include <MengeVis/SceneGraph/GLLight.h>
 #include <MengeVis/SceneGraph/shapes.h>
+#include <MengeVis/Viewer/ViewConfig.h>
 
 #include <iostream>
 #include <sstream>
@@ -38,6 +39,7 @@ using MengeVis::SceneGraph::ContextResult;
 using MengeVis::SceneGraph::GLCamera;
 using MengeVis::SceneGraph::GLLight;
 using MengeVis::SceneGraph::GLScene;
+using MengeVis::Viewer::ViewConfig;
 
 ///////////////////////////////////////////////////////////////////////////
 //				IMPLEMENTATION FOR ReferenceGridProperties
@@ -180,6 +182,18 @@ void GLWidget::setScene(GLScene * scene) {
 		delete _scene;
 	}
 	_scene = scene;
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void GLWidget::setView( const ViewConfig& view_config ) {
+  view_config.setCameras( _cameras );
+  auto w = width();
+  auto h = height();
+  for ( size_t i = 0; i < _cameras.size(); ++i ) {
+    _cameras[ i ].setViewport( w, h );
+  }
+  emit setViewPerspective( _cameras[ 0 ].getProjection() == GLCamera::PERSP );
 }
 
 ///////////////////////////////////////////////////////////////////////////

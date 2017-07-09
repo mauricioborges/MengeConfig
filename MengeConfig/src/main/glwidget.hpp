@@ -18,7 +18,10 @@ namespace MengeVis {
 		class GLScene;
 		class GLCamera;
 		class GLLight;
-	}
+  }
+  namespace Viewer {
+    class ViewConfig;
+  }
 }
 
 class SceneViewer;
@@ -66,7 +69,14 @@ public:
 	 *
 	 *	@param		scene	The GLScene to be rendered and temporally advanced.
 	 */
-	void setScene(MengeVis::SceneGraph::GLScene * scene);
+  void setScene( MengeVis::SceneGraph::GLScene * scene );
+
+  /*!
+   *  @brief    Configures the scene viewer bsaed on the given view configuration.
+   *
+   *  @param    view_config   The configuration for the viewer.
+   */
+  void setView( const MengeVis::Viewer::ViewConfig& view_config );
 
 	/*!
 	 *	@brief		Sets the horizontal field of view for the ith camera.
@@ -122,7 +132,14 @@ signals:
 	 *	@param		x		The x-value of the position.
 	 *	@param		y		The y-value of the position.
 	 */
-	void currWorldPos(float x, float y);
+  void currWorldPos( float x, float y );
+
+  /*!
+   *  @brief    Reports when the projection of the view changes (from within).
+   *
+   *  @param    is_perspective  True for a perspective
+   */
+  void setViewPerspective( bool is_perspective );
 
 protected:
 	/*!

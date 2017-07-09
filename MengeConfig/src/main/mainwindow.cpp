@@ -21,6 +21,7 @@
 #include <MengeCore/ProjectSpec.h>
 #include <MengeCore/PluginEngine/CorePluginEngine.h>
 #include <MengeCore/Runtime/SimulatorDBEntry.h>
+#include <MengeVis/Viewer/ViewConfig.h>
 
 #include <cassert>
 #include <iostream>
@@ -33,6 +34,7 @@ using Menge::Agents::SimulatorInterface;
 using Menge::PluginEngine::CorePluginEngine;
 using Menge::ProjectSpec;
 using Menge::SimulatorDBEntry;
+using MengeVis::Viewer::ViewConfig;
 
 MainWindow::MainWindow() : QMainWindow()
 {
@@ -304,6 +306,16 @@ bool MainWindow::loadSimulation( const ProjectSpec& project_spec ) {
     AppLogger::logStream << AppLogger::INFO_MSG << "Successfully loaded simulation."
       << AppLogger::END_MSG;
     emit simulationLoaded( sim_.get() );
+    ViewConfig viewConfig;
+    if ( project_spec.getView().empty() ) {
+      AppLogger::logStream << AppLogger::INFO_MSG << "No view specificaiton indicated. Using "
+        << "default view values." << AppLogger::END_MSG;
+    } else if ( !viewConfig.readXML( project_spec.getView() ) ) {
+      AppLogger::logStream << AppLogger::INFO_MSG << "Error parsing the requested view " <<
+        "specificaiton: " << project_spec.getView() << "; using default view values." 
+        << AppLogger::END_MSG;
+    }
+    _sceneViewer->setView( viewConfig );
     return true;
   } 
   return false;
