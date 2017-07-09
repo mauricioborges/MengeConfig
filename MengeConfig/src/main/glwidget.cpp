@@ -187,6 +187,7 @@ void GLWidget::setScene(GLScene * scene) {
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::setView( const ViewConfig& view_config ) {
+  _cameras.clear();
   view_config.setCameras( _cameras );
   auto w = width();
   auto h = height();
@@ -194,6 +195,10 @@ void GLWidget::setView( const ViewConfig& view_config ) {
     _cameras[ i ].setViewport( w, h );
   }
   emit setViewPerspective( _cameras[ 0 ].getProjection() == GLCamera::PERSP );
+  _lights.clear();
+  view_config.setLights( _lights );
+  makeCurrent();
+  initLighting();
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -236,28 +241,24 @@ void GLWidget::deactivated(size_t id) {
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::initializeGL() {
-	std::cout << "GLWidget::initializeGL\n";
-    // In this example the widget's corresponding top-level window can change
-    // several times during the widget's lifetime. Whenever this happens, the
-    // QOpenGLWidget's associated context is destroyed and a new one is created.
-    // Therefore we have to be prepared to clean up the resources on the
-    // aboutToBeDestroyed() signal, instead of the destructor. The emission of
-    // the signal will be followed by an invocation of initializeGL() where we
-    // can recreate all resources.
-    connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &GLWidget::cleanup);
+  // In this example the widget's corresponding top-level window can change
+  // several times during the widget's lifetime. Whenever this happens, the
+  // QOpenGLWidget's associated context is destroyed and a new one is created.
+  // Therefore we have to be prepared to clean up the resources on the
+  // aboutToBeDestroyed() signal, instead of the destructor. The emission of
+  // the signal will be followed by an invocation of initializeGL() where we
+  // can recreate all resources.
+  connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &GLWidget::cleanup);
 
-    initializeOpenGLFunctions();
+  initializeOpenGLFunctions();
 
 	glEnable(GL_NORMALIZE);
 	glShadeModel( GL_SMOOTH );
 	glClearColor(0.91f, 0.91f, 0.9f, 1);
 	glClearDepth( 1.f );
 	glEnable(GL_DEPTH_TEST);
-	if ( _lights.size() > 0 ) {
-		initLighting();
-	} else {
-		glDisable( GL_LIGHTING );
-	}
+  initLighting();
+  glEnable( GL_LIGHTING );
 
 	glEnable( GL_COLOR_MATERIAL );
 
@@ -267,8 +268,7 @@ void GLWidget::initializeGL() {
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::paintGL() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
 	if (_scene) {
 		_scene->drawGL(_cameras[_currCam], _lights, width(), height());
@@ -629,10 +629,14 @@ void GLWidget::setViewDirection(int direction){
 ///////////////////////////////////////////////////////////////////////////
 
 void GLWidget::initLighting() {
-	glEnable(GL_LIGHTING);
-	for (size_t i = 0; i < _lights.size(); ++i) {
-		_lights[i].initGL((int)i, GLLight::CAMERA);
-	}
+  if ( _lights.size() > 0 ) {
+    glEnable( GL_LIGHTING );
+    for ( size_t i = 0; i < _lights.size(); ++i ) {
+      _lights[ i ].initGL( (int)i, GLLight::CAMERA );
+    }
+  } else {
+    glDisable( GL_LIGHTING );
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////
