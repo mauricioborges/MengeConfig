@@ -128,7 +128,8 @@ protected:
 
 GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent),
-	_scene(0x0), _context(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true), _activeGrid(true), _hSnap(false), _vSnap(false), _isTopView(true)
+	_scene(0x0), _context(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true),
+  _activeGrid(true), _hSnap(false), _vSnap(false), _isTopView(true)
 {
 	setFocusPolicy(Qt::StrongFocus);
 	setMouseTracking(true);
@@ -156,22 +157,19 @@ GLWidget::GLWidget(QWidget *parent)
 
 ///////////////////////////////////////////////////////////////////////////
 
-GLWidget::~GLWidget()
-{
+GLWidget::~GLWidget() {
 	cleanup();
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
-QSize GLWidget::minimumSizeHint() const
-{
+QSize GLWidget::minimumSizeHint() const {
     return QSize(50, 50);
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
-QSize GLWidget::sizeHint() const
-{
+QSize GLWidget::sizeHint() const {
     return QSize(400, 400);
 }
 
@@ -198,8 +196,7 @@ void GLWidget::setCameraFarPlane(int i, float dist) {
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GLWidget::cleanup()
-{
+void GLWidget::cleanup() {
     makeCurrent();
 	// TODO: Notify the scene that the window is being destroyed.
     doneCurrent();
@@ -224,8 +221,7 @@ void GLWidget::deactivated(size_t id) {
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GLWidget::initializeGL()
-{
+void GLWidget::initializeGL() {
 	std::cout << "GLWidget::initializeGL\n";
     // In this example the widget's corresponding top-level window can change
     // several times during the widget's lifetime. Whenever this happens, the
@@ -256,8 +252,7 @@ void GLWidget::initializeGL()
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GLWidget::paintGL()
-{
+void GLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     
@@ -272,20 +267,17 @@ void GLWidget::paintGL()
 	if (_context) {
 		_context->drawGL(width(), height());
 	}
-
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GLWidget::resizeGL(int w, int h)
-{
+void GLWidget::resizeGL(int w, int h) {
 	newGLContext();
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GLWidget::mousePressEvent(QMouseEvent *event)
-{
+void GLWidget::mousePressEvent(QMouseEvent *event) {
 	if (_context) {
 		ContextResult result = _context->handleMouse(event, this);
 		if (result.needsRedraw()) {
@@ -311,8 +303,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GLWidget::mouseReleaseEvent(QMouseEvent *event)
-{
+void GLWidget::mouseReleaseEvent(QMouseEvent *event) {
 	if (_context) {
 		ContextResult result = _context->handleMouse(event, this);
 		if (result.needsRedraw()) {
@@ -324,8 +315,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 
 ///////////////////////////////////////////////////////////////////////////
 
-void GLWidget::mouseMoveEvent(QMouseEvent *event)
-{
+void GLWidget::mouseMoveEvent(QMouseEvent *event) {
 	Vector2 worldPos;
 	if (getWorldPos(event->pos(), worldPos)) {
 		emit currWorldPos(worldPos.x(), worldPos.y());

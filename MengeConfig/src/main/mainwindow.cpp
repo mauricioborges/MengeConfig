@@ -296,13 +296,10 @@ bool MainWindow::loadSimulation( const ProjectSpec& project_spec ) {
   size_t agentCount;  // Return value from dbEntry->getSimulator()
   float time_step = project_spec.getTimeStep();   // Return value from dbEntry->getSimulator()
   sim_.reset( dbEntry->getSimulator( agentCount, time_step,
-                                                    project_spec.getSubSteps(), 
-                                                    project_spec.getDuration(), 
-                                                    project_spec.getBehavior(),
-                                                    project_spec.getScene(),
-                                                    project_spec.getOutputName(),
-                                                    project_spec.getSCBVersion(), 
-                                                    false /*VERBOSE*/ ));
+                                     project_spec.getSubSteps(), project_spec.getDuration(),
+                                     project_spec.getBehavior(), project_spec.getScene(),
+                                     project_spec.getOutputName(), project_spec.getSCBVersion(),
+                                     false /*VERBOSE*/ ));
   if ( sim_ != nullptr ) {
     AppLogger::logStream << AppLogger::INFO_MSG << "Successfully loaded simulation."
       << AppLogger::END_MSG;

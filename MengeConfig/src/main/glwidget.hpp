@@ -92,7 +92,7 @@ public slots:
 	/*!
 	 *	@brief		Cleans up the OpenGL state when the OpenGL context is lost.
 	 */
-    void cleanup();
+  void cleanup();
 
 	/*!
 	 *	@brief		Reports to the viewer that a new context has been activated.
@@ -102,10 +102,10 @@ public slots:
 	void activated(size_t id);
 
 	/*!
-	*	@brief		Reports to the viewer that a context has been deactivated.
-	*
-	*	@param		id		The identifier for the context.
-	*/
+	 *	@brief		Reports to the viewer that a context has been deactivated.
+	 *
+	 *	@param		id		The identifier for the context.
+	 */
 	void deactivated(size_t id);
 
 signals:
@@ -128,12 +128,12 @@ protected:
 	/*!
 	 *	@brief		Initializes the OpenGL state
 	 */
-    void initializeGL() Q_DECL_OVERRIDE;
+  void initializeGL() Q_DECL_OVERRIDE;
 
 	/*!
 	 *	@brief		Draws the scene to the OpenGL window.
 	 */
-    void paintGL() Q_DECL_OVERRIDE;
+  void paintGL() Q_DECL_OVERRIDE;
 
 	/*!
 	 *	@brief		Provides the new size of the GL window.
