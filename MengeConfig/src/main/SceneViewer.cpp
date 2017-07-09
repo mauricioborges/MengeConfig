@@ -4,6 +4,7 @@
 #include "ContextManager.hpp"
 #include "glwidget.hpp"
 #include "ObstacleContext.hpp"
+#include "player_controller.hpp"
 
 #include <set>
 
@@ -46,11 +47,15 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	_glView = new GLWidget();
 	mainLayout->addWidget(_glView, 1);
 
+  _player_controller = new PlayerController();
+  mainLayout->addWidget( _player_controller, 0 );
+  connect( _player_controller, &PlayerController::needRedraw, this, &SceneViewer::updateForRedraw );
+
 	_statusLabel = new QLabel("Scene Viewer:");
 	QHBoxLayout * statusLayout = new QHBoxLayout();
 	statusLayout->setContentsMargins(5, 1, 5, 1);
 	statusLayout->addWidget(_statusLabel, 1);
-
+  
 	_posLabel = new QLabel("no point");
 	statusLayout->addWidget(_posLabel, 0, Qt::AlignRight);
 
@@ -64,10 +69,12 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	_toolBar->addAction(togAxisAct);
 	connect(togAxisAct, &QAction::triggered, _glView, &GLWidget::setDrawAxis);
 
-	QAction * togPerspAct = new QAction(QIcon(":/images/togglePersp.png"), tr("Toggle &Perspective"), this);
+	QAction * togPerspAct = new QAction(QIcon(":/images/togglePersp.png"),
+                                      tr("Toggle &Perspective"), this);
 	togPerspAct->setCheckable(true);
 	togPerspAct->setChecked(true);
-	togPerspAct->setToolTip(tr("Toggle the current camera's projection between perspective and orthographic"));
+	togPerspAct->setToolTip(
+    tr("Toggle the current camera's projection between perspective and orthographic"));
 	_toolBar->addAction(togPerspAct);
 	connect(togPerspAct, &QAction::triggered, _glView, &GLWidget::toggleProjection);
 
@@ -80,18 +87,21 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	_toolBar->addSeparator();
 	_toolBar->addWidget(_dirComboBox);
 	_toolBar->addSeparator();
-	// TODO: Figure out why the function pointer version didn't work and I had to use the old slot/signal crap.
-	//connect(dirComboBox, &QComboBox::currentIndexChanged, _glView, &GLWidget::setViewDirection);
+	// TODO: Figure out why the function pointer version didn't work and I had to use the old
+  // slot/signal crap. 
+  // connect(dirComboBox, &QComboBox::currentIndexChanged, _glView, &GLWidget::setViewDirection);
 	connect(_dirComboBox, SIGNAL(activated(int)), _glView, SLOT(setViewDirection(int)));
 
 	QAction * togGridAct = new QAction(QIcon(":/images/toggleGrid.png"), tr("Toggle &Grid"), this);
 	togGridAct->setCheckable(true);
 	togGridAct->setChecked(true);
-	togGridAct->setToolTip(tr("Toggle the reference grid; an inactive grid cannot be used for snapping."));
+	togGridAct->setToolTip(
+    tr("Toggle the reference grid; an inactive grid cannot be used for snapping."));
 	_toolBar->addAction(togGridAct);
 	connect(togGridAct, &QAction::triggered, this, &SceneViewer::toggleGrid);
 
-	QAction * gridPropAct = new QAction(QIcon(":/images/gridProperties.png"), tr("Grid &Properties"), this);
+	QAction * gridPropAct = new QAction(QIcon(":/images/gridProperties.png"),
+                                      tr("Grid &Properties"), this);
 	gridPropAct->setToolTip(tr("Edit the reference grid's properties."));
 	_toolBar->addAction(gridPropAct);
 	connect(gridPropAct, &QAction::triggered, _glView, &GLWidget::editGridProperties);
@@ -126,9 +136,10 @@ void SceneViewer::drawObstacle() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-void SceneViewer::setSimulation( const Menge::Agents::SimulatorInterface* sim ) {
+void SceneViewer::setSimulation( Menge::Agents::SimulatorInterface* sim ) {
   _sim = sim;
   buildScene();
+  _player_controller->setSimulation( sim );
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,6 +154,18 @@ void SceneViewer::toggleGrid(bool state) {
 	_glView->toggleReferenceGrid(state);
 	_gridHSnap->setEnabled(state);
 	_gridVSnap->setEnabled(state);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::updateForRedraw() {
+  for ( size_t i = 0; i < _visAgents.size(); ++i ) {
+    VisAgent* vis_agent = _visAgents[ i ];
+    const BaseAgent * agt = vis_agent->getAgent();
+    float h = _sim->getElevation( agt );
+    vis_agent->setPosition( agt->_pos.x(), agt->_pos.y(), h );
+  }
+  _glView->update();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

@@ -29,6 +29,8 @@ namespace MengeVis {
   }
 }
 
+class PlayerController;
+
 class SceneViewer : public QWidget {
 	Q_OBJECT
 
@@ -52,7 +54,7 @@ public:
    *
    *  @param    sim     The simulation that got initialized; if null, clears the viewer.
    */
-  void setSimulation( const Menge::Agents::SimulatorInterface* sim );
+  void setSimulation( Menge::Agents::SimulatorInterface* sim );
 
   /*!
    *  @brief    Configures the scene viewer bsaed on the given view configuration.
@@ -62,6 +64,11 @@ public:
   void setView( const MengeVis::Viewer::ViewConfig& view_config );
 
 private:
+
+  /*!
+   *  @brief    Slot which updates the scene based on indication that a redraw is necessary.
+   */
+  void updateForRedraw();
 
 	/*!
 	 *	@brief		Updates the status text on the viewer.
@@ -123,6 +130,9 @@ private:
 	*	@brief		The action to toggle the grid's vertical snap functiaonlity.
 	*/
 	QAction * _gridVSnap;
+
+  // The widget for playing the simulation.
+  PlayerController* _player_controller;
 
   // Menge-specific data and methods
 
