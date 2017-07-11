@@ -12,6 +12,7 @@
 #include <QtWidgets/QBoxLayout.h>
 #include <QtWidgets/qcombobox.h>
 #include <QtWidgets/QLabel.h>
+#include <QtWidgets/QMenu.h>
 #include <QtWidgets/qToolbar.h>
 
 #include <MengeCore/Agents/BaseAgent.h>
@@ -40,6 +41,10 @@ using MengeVis::SceneGraph::GLScene;
 SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	QVBoxLayout * mainLayout = new QVBoxLayout();
 
+  _contextMenu = new QMenu( tr( "Context Menu" ), this );
+  QMenu* grid_menu = _contextMenu->addMenu( tr( "Grid" ) );
+  _cameraContextMenu = _contextMenu->addMenu( "Cameras" );
+
 	_toolBar = new QToolBar();
 	mainLayout->addWidget(_toolBar, 0);
 	mainLayout->setMargin(0);
@@ -59,6 +64,9 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	_posLabel = new QLabel("no point");
 	statusLayout->addWidget(_posLabel, 0, Qt::AlignRight);
 
+  this->setContextMenuPolicy( Qt::CustomContextMenu );
+  connect( this, &SceneViewer::customContextMenuRequested, this, &SceneViewer::showContextMenu );
+
 	mainLayout->addLayout(statusLayout, 0);
 
 	// Populate tool bar
@@ -68,6 +76,7 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	togAxisAct->setToolTip(tr("Toggle the display of the axis in the scene viewer"));
 	_toolBar->addAction(togAxisAct);
 	connect(togAxisAct, &QAction::triggered, _glView, &GLWidget::setDrawAxis);
+  _contextMenu->addAction( togAxisAct );
 
 	QAction * togPerspAct = new QAction(QIcon(":/images/togglePersp.png"),
                                       tr("Toggle &Perspective"), this);
@@ -100,12 +109,14 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
     tr("Toggle the reference grid; an inactive grid cannot be used for snapping."));
 	_toolBar->addAction(togGridAct);
 	connect(togGridAct, &QAction::triggered, this, &SceneViewer::toggleGrid);
+  grid_menu->addAction( togGridAct );
 
 	QAction * gridPropAct = new QAction(QIcon(":/images/gridProperties.png"),
                                       tr("Grid &Properties"), this);
 	gridPropAct->setToolTip(tr("Edit the reference grid's properties."));
 	_toolBar->addAction(gridPropAct);
 	connect(gridPropAct, &QAction::triggered, _glView, &GLWidget::editGridProperties);
+  grid_menu->addAction( gridPropAct );
 
 	_gridHSnap = new QAction(QIcon(":/images/gridSnapHorizontal.png"), tr("&Horizontal Snap"), this);
 	_gridHSnap->setCheckable(true);
@@ -113,6 +124,7 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	_gridHSnap->setToolTip(tr("Causes mouse selection points to snap to horizontal grid lines."));
 	_toolBar->addAction(_gridHSnap);
 	connect(_gridHSnap, &QAction::triggered, _glView, &GLWidget::toggleHorizontalSnap);
+  grid_menu->addAction( _gridHSnap );
 
 	_gridVSnap = new QAction(QIcon(":/images/gridSnapVertical.png"), tr("&Vertical Snap"), this);
 	_gridVSnap->setCheckable(true);
@@ -120,6 +132,7 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	_gridVSnap->setToolTip(tr("Causes mouse selection points to snap to vertical grid lines."));
 	_toolBar->addAction(_gridVSnap);
 	connect(_gridVSnap, &QAction::triggered, _glView, &GLWidget::toggleVerticalSnap);
+  grid_menu->addAction( _gridVSnap );
 
 	connect(_glView, &GLWidget::userRotated, this, &SceneViewer::userRotated);
 	connect(_glView, &GLWidget::currWorldPos, this, &SceneViewer::setCurrentWorldPos);
@@ -147,6 +160,18 @@ void SceneViewer::setSimulation( Menge::Agents::SimulatorInterface* sim ) {
 
 void SceneViewer::setView( const MengeVis::Viewer::ViewConfig& view_config ) {
   _glView->setView( view_config );
+
+  _cameraContextMenu->clear();
+  QActionGroup* group = new QActionGroup( this );
+  for ( size_t c = 0; c < _glView->get_num_cameras(); ++c ) {
+    QAction* action = new QAction( QString::fromStdString( _glView->get_camera_name( c ) ), this );
+    action->setCheckable( true );
+    action->setChecked( c == 0 );
+    action->setActionGroup( group );
+    connect( action, &QAction::triggered,
+             this, [ this, c ]( bool checked ) { this->_glView->set_camera( c ); } );
+    _cameraContextMenu->addAction( action );
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,6 +215,12 @@ void SceneViewer::userRotated() {
 
 void SceneViewer::setCurrentWorldPos(float x, float y) {
 	_posLabel->setText(QString("(%1, %2)").arg(x, 0, 'f', 2).arg(y, 0, 'f', 2));
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SceneViewer::showContextMenu( const QPoint& pos ) {
+  _contextMenu->exec( mapToGlobal( pos ) );
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

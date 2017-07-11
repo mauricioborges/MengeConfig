@@ -4,9 +4,10 @@
 #include <QtWidgets/qwidget.h>
 
 QT_BEGIN_NAMESPACE
-class QToolBar;
-class QLabel;
 class QComboBox;
+class QLabel;
+class QMenu;
+class QToolBar;
 QT_END_NAMESPACE
 
 class GLWidget;
@@ -95,6 +96,11 @@ private:
 	 *	@param		y		The y-value of the current position.
 	 */
 	void setCurrentWorldPos(float x, float y);
+
+  /*!
+   *  @brief    Display the context menu.
+   */
+  void showContextMenu( const QPoint& pos );
 	
 	/*!
 	 *	@brief		The tool bar for this window.
@@ -112,13 +118,13 @@ private:
 	QComboBox * _dirComboBox;
 
 	/*!
-	*	@brief		The status text for the viewer.
-	*/
+	 *	@brief		The status text for the viewer.
+	 */
 	QLabel * _statusLabel;
 
 	/*!
-	*	@brief		The current world position under the mouse
-	*/
+	 *	@brief		The current world position under the mouse
+	 */
 	QLabel * _posLabel;
 
 	/*!
@@ -127,9 +133,19 @@ private:
 	QAction * _gridHSnap;
 
 	/*!
-	*	@brief		The action to toggle the grid's vertical snap functiaonlity.
-	*/
+	 *	@brief		The action to toggle the grid's vertical snap functiaonlity.
+	 */
 	QAction * _gridVSnap;
+
+  /*!
+   *  @brief  The context menu.  
+   */
+  QMenu* _contextMenu;
+
+  /*!
+   *  @brief  The context menu which contains the various camera names.
+   */
+  QMenu* _cameraContextMenu;
 
   // The widget for playing the simulation.
   PlayerController* _player_controller;

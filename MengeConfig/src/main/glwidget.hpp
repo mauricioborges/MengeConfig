@@ -8,6 +8,7 @@
 #include <QtGui/QMatrix4x4>
 
 #include <MengeCore/Math/Vector2.h>
+#include <MengeVis/SceneGraph/GLCamera.h>
 
 #include <memory>
 
@@ -95,6 +96,23 @@ public:
 	 *						Value is not validated.
 	 */
 	void setCameraFarPlane(int i, float dist);
+
+  /*!
+   *  @brief    Reports the number of cameras in the scene.
+   */
+  size_t get_num_cameras() const { return _cameras.size(); }
+
+  /*!
+   *  @brief    Reports the ith camera's name.
+   */
+  const std::string& get_camera_name( int i ) { return _cameras[ i ].get_name(); }
+
+  /*!
+   *  @brief    Sets the current camera to the given index.
+   *
+   *  @param    camera_index    The desired index; should be between 0 and get_num_cameras().
+   */
+  void set_camera( size_t camera_index );
 
 	friend class SceneViewer;
 

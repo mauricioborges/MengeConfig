@@ -215,6 +215,19 @@ void GLWidget::setCameraFarPlane(int i, float dist) {
 
 ///////////////////////////////////////////////////////////////////////////
 
+void GLWidget::set_camera( size_t camera_index ) {
+  if ( _currCam != camera_index ) {
+    bool reproject = 
+      _cameras[ _currCam ].getProjection() != _cameras[ camera_index ].getProjection();
+    _currCam = camera_index;
+    // Dirty the projection matrix.
+    if ( reproject ) _cameras[ _currCam ].setActive();
+    emit setViewPerspective( _cameras[ _currCam ].getProjection() == GLCamera::PERSP );
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////
+
 void GLWidget::cleanup() {
     makeCurrent();
 	// TODO: Notify the scene that the window is being destroyed.
