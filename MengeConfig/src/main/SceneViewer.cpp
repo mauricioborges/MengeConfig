@@ -5,6 +5,7 @@
 #include "glwidget.hpp"
 #include "ObstacleContext.hpp"
 #include "player_controller.hpp"
+#include "simulator_cache.h"
 
 #include <set>
 
@@ -185,11 +186,12 @@ void SceneViewer::toggleGrid(bool state) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void SceneViewer::updateForRedraw() {
-  for ( size_t i = 0; i < _visAgents.size(); ++i ) {
-    VisAgent* vis_agent = _visAgents[ i ];
+  const auto& cache = _player_controller->get_state();
+  for ( VisAgent* vis_agent : _visAgents ) {
     const BaseAgent * agt = vis_agent->getAgent();
-    float h = _sim->getElevation( agt );
-    vis_agent->setPosition( agt->_pos.x(), agt->_pos.y(), h );
+    Vector3 pos = cache.get_agent_position( agt );
+    // TODO: Be able to set the agent position with a Vector3.
+    vis_agent->setPosition( pos.x(), pos.y(), pos.z() );
   }
   _glView->update();
 }
@@ -250,6 +252,7 @@ void SceneViewer::buildScene() {
       _scene->addNode( agtNode );
       _visAgents.push_back(agtNode);
     }
+
     // Add obstacles.
     // TODO: If the bsptree (ObstacleKDTree.h) chops up the obstacles, this isn't doing the
     //		right thing.  Currently, the bsptree chops them

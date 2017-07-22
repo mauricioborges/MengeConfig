@@ -8,13 +8,15 @@ using Menge::Agents::SimulatorInterface;
 //				IMPLEMENTATION FOR SimulationPlayer
 ///////////////////////////////////////////////////////////////////////////
 
-SimulationPlayer::SimulationPlayer( QObject* parent ) : QAbstractAnimation( parent ) {}
+SimulationPlayer::SimulationPlayer( QObject* parent ) : 
+    QAbstractAnimation( parent ), _state(nullptr) {}
 
 ///////////////////////////////////////////////////////////////////////////
 
 void SimulationPlayer::setSimulation( SimulatorInterface* sim ) {
   // TODO: Set the simulator and reset all the values.
   _sim = sim;
+  _state.set_simulator( _sim );
   finished_sim_ = false;
   _curr_frame = 0;
   emit frameChanged( 0 );
@@ -47,4 +49,10 @@ void SimulationPlayer::start( QAbstractAnimation::DeletionPolicy policy ) {
   if ( !finished_sim_ ) {
     QAbstractAnimation::start( policy );
   }
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+const SimulatorState& SimulationPlayer::get_state() const {
+  return _state;
 }

@@ -7,6 +7,8 @@
 
 #include <QtWidgets/QFrame.h>
 
+#include "simulator_cache.h"
+
 QT_BEGIN_NAMESPACE
 class QPushButton;
 class QSlider;
@@ -43,6 +45,9 @@ public:
    *                  the player.
    */
   void setSimulation( Menge::Agents::SimulatorInterface* sim );
+
+  /*! Returns the current simulator state. */
+  const SimulatorState& get_state() const;
 
 signals:
   /*! 

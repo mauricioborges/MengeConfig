@@ -7,6 +7,8 @@
 
 #include <QtCore/QAbstractAnimation.h>
 
+#include "simulator_cache.h"
+
 // Forward declaration.
 namespace Menge {
   namespace Agents {
@@ -63,6 +65,9 @@ public:
    */
   void start( QAbstractAnimation::DeletionPolicy policy = QAbstractAnimation::KeepWhenStopped );
 
+  /*! Returns the current simulator state. */
+  const SimulatorState& get_state() const;
+
 signals:
   /*!
    *  @brief    Reports that the current frame has changed.
@@ -70,6 +75,9 @@ signals:
   void frameChanged( int frame );
 
 private:
+  // The state of the simulator.
+  SimulatorState _state;
+
   // The index of the frame that has last been processed. The simulation global time should be
   // _curr_frame * sim->getTimeStep().
   int _curr_frame{ 0 };

@@ -52,6 +52,10 @@ void PlayerController::setSimulation( Menge::Agents::SimulatorInterface* sim ) {
 
 ///////////////////////////////////////////////////////////////////////////
 
+const SimulatorState& PlayerController::get_state() const { return _player->get_state(); }
+
+///////////////////////////////////////////////////////////////////////////
+
 void PlayerController::togglePlayButton( bool checked ) {
   if ( checked ) {
     // Start playback 
