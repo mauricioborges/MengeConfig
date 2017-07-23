@@ -12,14 +12,15 @@ using Menge::Math::Vector3;
 ///////////////////////////////////////////////////////////////////////////
 
 SimulationPlayer::SimulationPlayer( QObject* parent ) : 
-    QAbstractAnimation( parent ), _state(0) {}
+    QAbstractAnimation( parent ) {}
 
 ///////////////////////////////////////////////////////////////////////////
 
 void SimulationPlayer::setSimulation( SimulatorInterface* sim ) {
   // TODO: Set the simulator and reset all the values.
   _sim = sim;
-  _state.reset( _sim->getNumAgents() );
+  _cache.Clear();
+  _cache.AddState( _sim );
   finished_sim_ = false;
   _curr_frame = 0;
   emit frameChanged( 0 );
@@ -34,7 +35,7 @@ void SimulationPlayer::updateCurrentTime( int ) {
   // TODO: Advance simulation, signal state change.
   if ( _sim->step() ) {
     ++_curr_frame;
-    updateState();
+    _cache.AddState( _sim );
     emit frameChanged( _curr_frame );
     // Signal state change.
   } else {
@@ -58,17 +59,8 @@ void SimulationPlayer::start( QAbstractAnimation::DeletionPolicy policy ) {
 ///////////////////////////////////////////////////////////////////////////
 
 const SimulatorState& SimulationPlayer::get_state() const {
-  return _state;
+  const size_t last_state = _cache.size() - 1;
+  return _cache.get_state( last_state );
 }
 
 ///////////////////////////////////////////////////////////////////////////
-
-void SimulationPlayer::updateState() {
-  // TODO: I should actually instantiate a SimulatorState from the simulator. That way the state
-  // can grow, but this class doesn't have to know *how* it grows.
-  for ( size_t i = 0; i < _sim->getNumAgents(); ++i ) {
-    const BaseAgent* agt = _sim->getAgent( i );
-    float h = _sim->getElevation( agt );
-    _state._positions[i] = Vector3( agt->_pos.x(), agt->_pos.y(), h );
-  }
-}

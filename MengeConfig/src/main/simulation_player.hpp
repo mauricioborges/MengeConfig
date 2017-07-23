@@ -75,11 +75,8 @@ signals:
   void frameChanged( int frame );
 
 private:
-  // Updates the state as a result of advancing the underlying simulator.
-  void updateState();
-
-  // The state of the simulator.
-  SimulatorState _state;
+  // The cache of simulator state.
+  SimulatorCache _cache;
 
   // The index of the frame that has last been processed. The simulation global time should be
   // _curr_frame * sim->getTimeStep().
