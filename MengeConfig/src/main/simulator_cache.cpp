@@ -1,17 +1,28 @@
 #include "simulator_cache.h"
 
+#include <cassert>
+
 #include "MengeCore/Agents/BaseAgent.h"
-#include "MengeCore/Agents/SimulatorInterface.h"
 
 using Menge::Agents::BaseAgent;
-using Menge::Agents::SimulatorInterface;
 using Menge::Math::Vector3;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //						Implementation of SimulatorState
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+SimulatorState::SimulatorState( size_t agent_count ) : _positions(agent_count) {}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 Vector3 SimulatorState::get_agent_position( const BaseAgent* agent ) const {
-  float h = _simulator->getElevation( agent );
-  return Vector3( agent->_pos.x(), agent->_pos.y(), h );
+  size_t id = agent->_id;
+  assert( id < _positions.size() );
+  return _positions[ id ];
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void SimulatorState::reset( size_t agent_count ) {
+  _positions.resize( agent_count );
 }

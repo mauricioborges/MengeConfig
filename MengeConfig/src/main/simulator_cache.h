@@ -8,30 +8,33 @@
 
 #include "MengeCore/Math/Vector3.h"
 
+#include <vector>
+
 // forward declarations
 namespace Menge {
   namespace Agents {
     class BaseAgent;
-    class SimulatorInterface;
   }  // namespace Agents
 }  // namespace Menge
 
 /*! The instantaneous state of the simulator. */
 class SimulatorState {
 public:
-  /** Constructor. Stores the provided simulator pointer; the pointer must have a lifespan greater
-   than this state instance. */
-  SimulatorState( const Menge::Agents::SimulatorInterface* simulator ) : _simulator( simulator ) {}
+  /** Constructor.
+   @param agent_count   The number of agents in the state. */
+  SimulatorState( size_t agent_count );
 
   /** Returns the agent position for the agent with the given identifier. */
   Menge::Math::Vector3 get_agent_position( const Menge::Agents::BaseAgent* agent ) const;
 
-  void set_simulator( const Menge::Agents::SimulatorInterface* simulator ) {
-    _simulator = simulator;
-  }
-
 private:
-  const Menge::Agents::SimulatorInterface* _simulator;
+  friend class SimulationPlayer;
+
+  // Resets the state for the given agent_count;
+  void reset( size_t agent_count );
+
+  // Agent positions -- where agent id serves as index into the vector.
+  std::vector<Menge::Math::Vector3> _positions;
 };
 
 /*!

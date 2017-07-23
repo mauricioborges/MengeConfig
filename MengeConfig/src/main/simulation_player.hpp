@@ -75,6 +75,9 @@ signals:
   void frameChanged( int frame );
 
 private:
+  // Updates the state as a result of advancing the underlying simulator.
+  void updateState();
+
   // The state of the simulator.
   SimulatorState _state;
 
