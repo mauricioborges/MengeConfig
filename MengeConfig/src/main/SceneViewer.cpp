@@ -229,7 +229,9 @@ void SceneViewer::showContextMenu( const QPoint& pos ) {
 
 void SceneViewer::clearScene() {
   if ( _scene != nullptr ) {
-    // TODO: Do the work to flush all of the scene elements.
+    _visAgents.clear();
+    _scene = nullptr;
+    // NOTE: _glView deletes the scene.
     _glView->setScene( _scene );
   }
 }

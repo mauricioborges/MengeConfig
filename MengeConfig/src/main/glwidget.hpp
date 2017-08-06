@@ -65,10 +65,11 @@ public:
 
 	/*!
 	 *	@brief		Sets the GLScene to be drawn.
-	 *				A viewer can only draw a single scene; all drawn
-	 *				elements belong either to the GLScene or a GLContext.
+	 *	A viewer can only draw a single scene; all drawn elements belong either to the GLScene or a
+   *  GLContext.
 	 *
-	 *	@param		scene	The GLScene to be rendered and temporally advanced.
+	 *	@param		scene	The GLScene to be rendered and temporally advanced. The viewer takes
+   *                  ownership of the scene.
 	 */
   void setScene( MengeVis::SceneGraph::GLScene * scene );
 
