@@ -58,12 +58,17 @@ signals:
 private:
   // Slot for toggling the play button.
   void togglePlayButton( bool checked );
-  // Slot for setting the frame from external mechanisms.
-  void setFrame( int frame_number );
-  // Slot for scrubbing the time line.
+  // Slot for setting the frame from the player.
+  void playerSetFrame( int frame_number );
+  // Slot for handling the action when a user scrubs the timeline to the given frame.
   void scrubFrame( int frame_number );
   // Slot for when the playback finishes on its own.
   void playbackFinished();
+  // Slot for when the simulation player changes the source. True --> cache playback, false -->
+  // simulation playback.
+  void sourceChanged( bool from_cache );
+  // Does the work for when time changes.
+  void timeChanged( int frame );
 
   // The animation object responsible for advancing the simulation.
   SimulationPlayer* _player;

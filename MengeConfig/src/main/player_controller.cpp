@@ -16,11 +16,14 @@
 PlayerController::PlayerController( QWidget* parent ) : QFrame( parent ) {
   _player = new SimulationPlayer( this );
   connect( _player, &SimulationPlayer::finished, this, &PlayerController::playbackFinished );
-  connect( _player, &SimulationPlayer::frameChanged, this, &PlayerController::setFrame );
+  connect( _player, &SimulationPlayer::playbackChangedFrame,
+           this, &PlayerController::playerSetFrame );
+  connect( _player, &SimulationPlayer::playbackSourceChanged,
+           this, &PlayerController::sourceChanged );
 
   // Set up the GUI
   QBoxLayout* hLayout = new QHBoxLayout();
-  hLayout->setMargin( 0 );
+  hLayout->setMargin( 5 );
 
   _play_button = new QPushButton( tr("Play") );
   _play_button->setCheckable( true );
@@ -29,7 +32,7 @@ PlayerController::PlayerController( QWidget* parent ) : QFrame( parent ) {
 
   _time_slider = new QSlider();
   _time_slider->setOrientation( Qt::Horizontal );
-  //connect( _time_slider, &QSlider::valueChanged, this, &PlayerController::setFrame );
+  connect( _time_slider, &QSlider::valueChanged, this, &PlayerController::scrubFrame );
   hLayout->addWidget( _time_slider );
 
   _time_label = new QLabel( "time" );
@@ -47,6 +50,7 @@ PlayerController::PlayerController( QWidget* parent ) : QFrame( parent ) {
 
 void PlayerController::setSimulation( Menge::Agents::SimulatorInterface* sim ) {
   setEnabled( sim != nullptr );
+  _time_slider->setMaximum( 0 );
   _player->setSimulation( sim );
 }
 
@@ -60,33 +64,34 @@ void PlayerController::togglePlayButton( bool checked ) {
   if ( checked ) {
     // Start playback 
     _play_button->setText( tr( "Stop" ) );
+    _time_slider->setEnabled( false );
     _player->start();
   } else {
     // Stop playback
     _play_button->setText( tr( "Play" ) );
+    _time_slider->setEnabled( true );
     _player->stop();
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
-void PlayerController::setFrame( int frame_number ) {
-  scrubFrame( frame_number );
-  if ( _time_slider->maximum() < frame_number ) {
-    _time_slider->setMaximum( frame_number );
+void PlayerController::playerSetFrame( int frame_number ) {
+  if ( _time_slider->sliderPosition() != frame_number ) {
+    
+    _time_slider->blockSignals( true );
+    _time_slider->setSliderPosition( frame_number );
+    _time_slider->blockSignals( false );
+    timeChanged( frame_number );
   }
-  _time_slider->blockSignals( true );
-  _time_slider->setSliderPosition( frame_number );
-  _time_slider->blockSignals( false );
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
 void PlayerController::scrubFrame( int frame_number ) {
-  _time_label->setText( QString::number( frame_number ) );
-  if ( _time_slider->sliderPosition() != frame_number ) {
-    emit needRedraw();
-  }
+  // TODO: Does this test make sense?  Where does scrubFrame get invoked from?
+  _player->setCurrentFrame( frame_number );
+  timeChanged( frame_number );
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -94,4 +99,21 @@ void PlayerController::scrubFrame( int frame_number ) {
 void PlayerController::playbackFinished() {
   _play_button->setText( tr( "Play" ) );
   _play_button->setChecked( false );
+  _time_slider->setEnabled( true );
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void PlayerController::sourceChanged( bool from_cache ) {
+
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+void PlayerController::timeChanged( int frame ) {
+  _time_label->setText( QString::number( frame ) );
+  if ( _time_slider->maximum() < frame ) {
+    _time_slider->setMaximum( frame );
+  }
+  emit needRedraw();
 }

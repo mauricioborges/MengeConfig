@@ -57,22 +57,28 @@ public:
    */
   void updateCurrentTime( int currentTime ) override;
 
-  // TODO: Allow resetting the state of the simulator to the beginning and simulating anew.
   /*!
-   *  @brief    Attempts to start playback. This is a no-op if the current simulation has already
-   *            run its full course (either hiting the duration limit *or* reaching a final
-   *            state. This renders stop/start to be similar to pause/resume in behavior.
-   */
-  void start( QAbstractAnimation::DeletionPolicy policy = QAbstractAnimation::KeepWhenStopped );
+   *  @brief    Sets the current frame for the contoller. The frame must have already been
+   *            placed in the cache by the simulator. If the frame value is greater than the 
+   *            highest simulated frame, then the highest frame will be set.
+   *            This does *not* emit a playbackChangedFrame signal but _may_ emit a
+   *            playbackSourceChanged (if it isn't already in the playback domain). */
+  void setCurrentFrame( int frame );
 
   /*! Returns the current simulator state. */
   const SimulatorState& get_state() const;
 
 signals:
   /*!
-   *  @brief    Reports that the current frame has changed.
+   *  @brief    That the player has changed frames due to playback advancement.
    */
-  void frameChanged( int frame );
+  void playbackChangedFrame( int frame );
+
+  /*!
+   *  @brief    Reports if the source is from cache (true) or simulation (false). This is emitted
+   *            when the playback source *changes*.
+   */
+  void playbackSourceChanged( bool from_cache );
 
 private:
   // The cache of simulator state.
