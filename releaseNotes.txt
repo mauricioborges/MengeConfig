@@ -1,0 +1,31 @@
+
+----------------------------------------------------------------
+
+Release 0.2.0
+	August 5, 2017
+	
+	New features
+		- Ability to load menge project files.
+		- Ability to scrub through simulated results.
+		- Add status bar and menu status bar messages.
+		- Added program icon.
+		- Updated to new Menge architecture (Menge 0.9.0).
+		- Add right-click context menu to scene viewer.
+		
+	Bugs fixed
+		- Obstacle editing.
+			- Fixed crash when canceling an incomplete obstacle
+			- Fixed "jumping" vertices when moving vertices.
+		- Correct debug build configuration.
+	
+
+----------------------------------------------------------------
+
+Release 0.1.0
+	February 14, 2016
+	
+	Initial implementation; grab bag of features
+		- QT application
+		- OpenGL Viewer (with various UI elements)
+		- Unused windows for tool properties, scene hierarchy, fsm visualizer.
+		- Initial obstacle editor added.
