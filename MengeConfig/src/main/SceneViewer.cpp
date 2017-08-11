@@ -161,6 +161,7 @@ void SceneViewer::setSimulation( Menge::Agents::SimulatorInterface* sim ) {
 
 void SceneViewer::setView( const MengeVis::Viewer::ViewConfig& view_config ) {
   _glView->setView( view_config );
+  _glView->set_camera( 0 );
 
   _cameraContextMenu->clear();
   QActionGroup* group = new QActionGroup( this );
