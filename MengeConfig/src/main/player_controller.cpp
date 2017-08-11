@@ -50,8 +50,11 @@ PlayerController::PlayerController( QWidget* parent ) : QFrame( parent ) {
 
 void PlayerController::setSimulation( Menge::Agents::SimulatorInterface* sim ) {
   setEnabled( sim != nullptr );
-  _time_slider->setMaximum( 0 );
   _player->setSimulation( sim );
+  // NOTE: It is *vitally* important that the time slider be affected *after* updating the player.
+  // Clamping the maximum implicitly causes a scrub of the time which causes a redraw. If the
+  // player hasn't been properly set, this can lead to undesirable artifacts.
+  _time_slider->setMaximum( 0 );
 }
 
 ///////////////////////////////////////////////////////////////////////////
