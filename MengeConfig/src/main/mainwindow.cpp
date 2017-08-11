@@ -54,6 +54,7 @@ MainWindow::MainWindow() : QMainWindow()
 
 	_fsmViewer = new FSMViewer();
 	splitter->addWidget(_fsmViewer);
+  _fsmViewer->setVisible( false );
 
 	vSplitter->addWidget(splitter);
 	setCentralWidget(vSplitter);
@@ -67,13 +68,15 @@ MainWindow::MainWindow() : QMainWindow()
 	_hierarchy = new SceneHierarchy();
 	_hierarchyDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	_hierarchyDock->setWidget(_hierarchy);
+  _hierarchyDock->setVisible( false );
 	addDockWidget(Qt::RightDockWidgetArea, _hierarchyDock);
-	connect(_hierarchyDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleHierarchy);
+  connect( _hierarchyDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleHierarchy );
 
 	_toolPropDock = new QDockWidget(tr("Tool Properties"), this);
 	_toolProperties = new ToolPropertyWidget();
 	_toolPropDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	_toolPropDock->setWidget(_toolProperties);
+  _toolPropDock->setVisible( false );
 	addDockWidget(Qt::LeftDockWidgetArea, _toolPropDock);
 	connect(_toolPropDock, &QDockWidget::visibilityChanged, this, &MainWindow::toggleToolProperties);
 
@@ -149,7 +152,7 @@ void MainWindow::buildMenu() {
 	_toggleSceneHierarchy->setText(tr("Scene Hierarchy"));
   _toggleSceneHierarchy->setStatusTip( tr( "Toggle the display of the scene hierarchy" ) );
 	_toggleSceneHierarchy->setCheckable(true);
-	_toggleSceneHierarchy->setChecked(true);
+	_toggleSceneHierarchy->setChecked(false);
 	menuView->addAction(_toggleSceneHierarchy);
 	connect(_toggleSceneHierarchy, &QAction::triggered, this, &MainWindow::toggleHierarchy);
 
@@ -158,7 +161,7 @@ void MainWindow::buildMenu() {
   _toggleFsmVis->setStatusTip( 
     tr( "Toggle the display of the Behavior Finite State Machine viewer" ) );
 	_toggleFsmVis->setCheckable(true);
-	_toggleFsmVis->setChecked(true);
+	_toggleFsmVis->setChecked(false);
 	menuView->addAction(_toggleFsmVis);
 	connect(_toggleFsmVis, &QAction::triggered, this, &MainWindow::toggleFSMViewer);
 

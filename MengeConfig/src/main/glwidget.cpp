@@ -130,7 +130,7 @@ protected:
 
 GLWidget::GLWidget(QWidget *parent)
 	: QOpenGLWidget(parent),
-	_scene(0x0), _context(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(true),
+	_scene(0x0), _context(0x0), _cameras(), _currCam(0), _downPos(), _lights(), _drawWorldAxis(false),
   _activeGrid(true), _hSnap(false), _vSnap(false), _isTopView(true)
 {
 	setFocusPolicy(Qt::StrongFocus);
@@ -152,6 +152,7 @@ GLWidget::GLWidget(QWidget *parent)
 	connect(mgr, &ContextManager::deactivated, this, &GLWidget::deactivated);
 
 	_grid = new GridNode();
+  _grid->setOrigin( -50.f, -50.f );
 	_grid->setSize(100.f, 100.f);
 	_grid->setMajorDist(5.f);
 	_grid->setMinorCount(4);

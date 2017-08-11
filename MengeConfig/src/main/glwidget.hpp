@@ -300,6 +300,8 @@ public:
 	 */
 	float getWorldScale(float len);
 
+  bool drawingWorldAxis() const { return _drawWorldAxis; }
+
 public slots:
 
 	/*!

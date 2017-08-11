@@ -73,7 +73,7 @@ SceneViewer::SceneViewer(QWidget * parent) : QWidget(parent) {
 	// Populate tool bar
 	QAction * togAxisAct = new QAction(QIcon(":/images/toggleAxis.png"), tr("Toggle &Axis"), this);
 	togAxisAct->setCheckable(true);
-	togAxisAct->setChecked(true);
+  togAxisAct->setChecked( _glView->drawingWorldAxis() );
 	togAxisAct->setToolTip(tr("Toggle the display of the axis in the scene viewer"));
 	_toolBar->addAction(togAxisAct);
 	connect(togAxisAct, &QAction::triggered, _glView, &GLWidget::setDrawAxis);
