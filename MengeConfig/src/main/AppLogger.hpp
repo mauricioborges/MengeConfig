@@ -6,7 +6,7 @@
 #ifndef __APP_LOGGER_H__
 #define __APP_LOGGER_H__
 
-#include <QtWidgets/qWidget.h>
+#include <QWidget>
 #include <QtGui/qcolor.h>
 #include <iostream>
 #include <sstream>

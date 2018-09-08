@@ -1,8 +1,8 @@
 #include "AppLogger.hpp"
 
 #include <QtCore/qdatetime.h>
-#include <QtWidgets/Qtextedit.h>
-#include <QtWidgets/qboxlayout.h>
+#include <QTextEdit>
+#include <QBoxLayout>
 
 
 
